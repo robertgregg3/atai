@@ -1,0 +1,80 @@
+.login__container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 100vh;
+    align-items: center;
+    justify-items: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-width: 400px;
+    gap: 0.8rem
+}
+
+input {
+    border: 2px solid #cccccc80;
+    border-radius: 5px;
+    height: 34px;
+  }
+
+.login__left-side {
+    background-color: #10a8a9;
+    height: 100vh;
+    width: 110%;
+    transform: skewX(5deg);
+    margin-left: -10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login__left-side img{
+    height: 120px;
+    transform: skewX(-5deg);
+}
+
+.login__button-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 1rem;
+    margin-top: 2rem;
+}
+
+.login__button-container > button {
+    color: #fff;
+    background-color: #000038;
+    padding: 1.3rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    border: none;
+}
+
+.login__button-container > button:hover {
+    background: #10a8a9;
+}
+
+.login__options{
+    display: flex;
+    gap: 2rem;
+    min-width: 350px;
+    justify-content: flex-start;
+    position: absolute;
+    top: 2rem;
+}
+
+.login__options button{
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin-bottom: 2rem;
+    padding-right: 2rem;
+    cursor: pointer;
+}
+
+.login__options button:first-child{
+    border-right: 1px solid #cccccc;
+}
