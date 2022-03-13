@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { auth } from '../../firebaseConfig';
+import { useStateValue } from '../../Context/StateProvider';
 import logo from '../../images/thebes.png'
 import './login.css';
 
@@ -8,6 +9,7 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
     const [login, setLogin] = useState(true);
+    const [{user}, dispatch] = useStateValue();
     
     const handleSignIn = (e) => {
         e.preventDefault();
@@ -18,9 +20,14 @@ const Login = () => {
         auth
         .createUserWithEmailAndPassword(email, password)
         .then((auth) => {
-            console.log(auth)
+            console.log('user: ', auth)
             auth.user.updateProfile({
                 displayName: name,
+            })
+            dispatch({
+                type: 'SET_USER',
+                user: auth.user,
+                displayName: name
             })
         })
         .catch(err => console.log(err))
@@ -34,7 +41,7 @@ const Login = () => {
       <>
           <div className="login__container">
             <div className="login__left-side">
-               <img src={logo} /> 
+               <img alt="Thebes logo" src={logo} /> 
             </div>
             <div>
                 <div className="login__options">
