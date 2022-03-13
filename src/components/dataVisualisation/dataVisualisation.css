@@ -194,3 +194,10 @@ select.form-select {
   background: #cccccc50 !important;
   border-radius: 38px;
 }
+
+.separator {
+  margin-bottom: 1.5rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #cccccc50
+}
