@@ -14,7 +14,7 @@ const Upload = () => {
 
 
     const handleRegister = () => {
-        history.push("/");
+        history.push("/dashboard");
     }
   return (
     <div className="upload">

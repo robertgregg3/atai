@@ -299,7 +299,7 @@ export const DataVisualisation = (rawData) => {
   }
 
   const handleUploadClick = () => {
-    history.push('/upload')
+    history.push('/')
   }
 
   return (

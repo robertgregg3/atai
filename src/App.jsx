@@ -32,21 +32,29 @@ const App = () => {
   }, [user, rawData])
   return (
     <>
-      {user ? (
         <Router>
           <Switch>
+          {user 
+            ? (
+            <Route path="/dashboard">
+              <DataVisualisation data={rawData} user={user} />
+            </Route>
+            ) 
+            : (
+              <Login />
+            )}
+            {user 
+            ? (
               <Route exact path="/">
-                <DataVisualisation data={rawData} user={user} />
-              </Route>
-              <Route path="/upload">
                 <Upload />
               </Route>
+              ) 
+            : (
+              <Login />
+            )}
           </Switch>
         </Router>
-        ) 
-        : (
-          <Login />
-        )}
+        
     </>
   );
 };

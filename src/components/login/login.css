@@ -78,3 +78,14 @@ input {
 .login__options button:first-child{
     border-right: 1px solid #cccccc;
 }
+
+.login__container-header {
+    display: flex;
+    flex-direction: column;
+}
+
+.login__container img {
+    height: 100px;
+    margin-top: -2rem;
+    margin-bottom: 2rem;;
+}

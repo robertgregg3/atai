@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { auth } from '../../firebaseConfig';
 import { useStateValue } from '../../Context/StateProvider';
-import logo from '../../images/thebes.png'
+import logo from '../../images/thebes.png';
+import ataiLogo from '../../images/atai2.svg';
 import './login.css';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -10,6 +12,7 @@ const Login = () => {
     const [name, setName] = useState('');
     const [login, setLogin] = useState(true);
     const [{user}, dispatch] = useStateValue();
+    const history = useHistory();
     
     const handleSignIn = (e) => {
         e.preventDefault();
@@ -31,6 +34,7 @@ const Login = () => {
             })
         })
         .catch(err => console.log(err))
+        history.push('/');
     }
 
     const handleButtonClick = (value) => {
@@ -47,6 +51,9 @@ const Login = () => {
                 <div className="login__options">
                     <button onClick={() => handleButtonClick(true)}>Login</button>
                     <button onClick={() => handleButtonClick(false)}>Create Account (DEMO Only)</button>
+                </div>
+                <div className="login__container-header">
+                    <img alt="Atai Logo" src={ataiLogo} />
                 </div>
                 <form>
                     {!login && (
