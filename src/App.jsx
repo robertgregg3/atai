@@ -43,7 +43,7 @@ const App = () => {
         <Router>
           <Switch>
               <Route exact path="/">
-                <Sidebar data={rawData} />
+                {/* <Sidebar data={rawData} /> */}
                 <DataVisualisation data={rawData} />
               </Route>
           </Switch>

@@ -4,6 +4,9 @@ import DoughnutChart from "../charts/DoughnutChart";
 import SavingsBarChart from "../charts/SavingsBarChart";
 import exportAsImage from '../../utils/exportAsImage';
 import SavingsTotalsBarChart from '../charts/SavingsTotalsBarChart';
+import ataiLogo from '../../images/atai1.svg';
+import BarChartIcon from '@mui/icons-material/BarChart';
+import DonutLargeIcon from '@mui/icons-material/DonutLarge';
 import "./dataVisualisation.css";
 
 export const DataVisualisation = (rawData) => {
@@ -247,21 +250,27 @@ export const DataVisualisation = (rawData) => {
   return (
     <div className="App">
       <div>
-        <div className="button-container">
-          <button onClick={() => formatSavingsTotalData(formattedData)}>
-            Show Savings Totals
-          </button>
-          <button onClick={() => formatCostCenterData(formattedData)}>
-            Show Cost Centre Savings
-          </button>
-          <button onClick={() => formatEnvironmentData(formattedData)}>
-            Show Environment Savings
-          </button>
-          <button onClick={() => formatProductData(formattedData)}>
-            Show Product Savings
-          </button>
+        <div className="sidebar">
+          <img src={ataiLogo} />
+          <div className="button-container">
+            <button onClick={() => formatSavingsTotalData(formattedData)}>
+              <BarChartIcon className="sidebar__icon" />Savings Totals
+            </button>
+            <button onClick={() => formatCostCenterData(formattedData)}>
+              <BarChartIcon className="sidebar__icon" />Cost Centre Savings
+            </button>
+            <button onClick={() => formatEnvironmentData(formattedData)}>
+              <BarChartIcon className="sidebar__icon" />Environment Savings
+            </button>
+            <button onClick={() => formatProductData(formattedData)}>
+              <DonutLargeIcon className="sidebar__icon" />Product Savings
+            </button>
+          </div>
         </div>
+      </div>
+      <div>
         <div className="options-container">
+        <h1>ATAI Data Visualisation</h1>
           <Form.Select aria-label="Default select example" onChange={onFormSelectChange}>
             <option className="select-option">Choose an option</option>
             <option className="select-option" value="savingsTotal">Savings Total</option>
@@ -270,7 +279,6 @@ export const DataVisualisation = (rawData) => {
             <option className="select-option" value="product">Product</option>
           </Form.Select>
         </div>
-      </div>
       {showDoughnutChart && (
         <div className="percentage-container">
           <input placeholder={othersPercentage} onChange={(e) => updateOtherPercentage(e)} size="3" />
@@ -278,7 +286,7 @@ export const DataVisualisation = (rawData) => {
         </div>
       )}
       <div className="chart-container">
-        <p>ATAI Data Visualisation</p>
+        
         {showSavingsTotalChart && (
           <div>
             <div className="update-others">
@@ -337,6 +345,7 @@ export const DataVisualisation = (rawData) => {
           </> 
           )
         }
+      </div>
       </div>
     </div>
   );
