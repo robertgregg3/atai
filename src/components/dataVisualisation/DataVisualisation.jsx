@@ -7,6 +7,7 @@ import DoughnutChart from "../charts/DoughnutChart";
 import SavingsBarChart from "../charts/SavingsBarChart";
 import exportAsImage from '../../utils/exportAsImage';
 import SavingsTotalsBarChart from '../charts/SavingsTotalsBarChart';
+import logo from '../../images/thebes.png';
 import ataiLogo from '../../images/atai1.svg';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import DonutLargeIcon from '@mui/icons-material/DonutLarge';
@@ -328,10 +329,12 @@ export const DataVisualisation = (rawData) => {
               Upload
           </button>
         </div>
+        <img alt="Thebes logo" src={logo} height="100px" />
       </div>
 
       <div className="data-area">
         <div className={`${showDoughnutChart ? 'header header-with-options' : 'header'}`}>
+        <h2>ATAI Data Visualisation</h2>
           {showDoughnutChart && (
             <div className="percentage-container">
               <input placeholder={othersPercentage} onChange={(e) => updateOtherPercentage(e)} size="3" />
@@ -351,8 +354,6 @@ export const DataVisualisation = (rawData) => {
             <span>Hi, {displayName} <AccountCircleIcon /></span>
           </div>
         </div>
-
-        <h2>ATAI Data Visualisation</h2>
 
         <div className={`${showDoughnutChart && 'data-area__chart' }`}>
           {showDoughnutChart && (

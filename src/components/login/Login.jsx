@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { auth } from '../../firebaseConfig';
 import { useStateValue } from '../../Context/StateProvider';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import logo from '../../images/thebes.png';
 import ataiLogo from '../../images/atai2.svg';
 import './login.css';
-import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 const Login = () => {
     const [email, setEmail] = useState('');
