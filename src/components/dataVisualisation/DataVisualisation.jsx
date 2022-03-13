@@ -3,6 +3,8 @@ import { Form } from 'react-bootstrap';
 import { useStateValue } from './../../Context/StateProvider';
 import { Link } from "react-router-dom";
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import { auth } from '../../firebaseConfig';
+import { getAuth, signOut } from "firebase/auth";
 import DoughnutChart from "../charts/DoughnutChart";
 import SavingsBarChart from "../charts/SavingsBarChart";
 import exportAsImage from '../../utils/exportAsImage';
@@ -14,6 +16,7 @@ import DonutLargeIcon from '@mui/icons-material/DonutLarge';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import LogoutIcon from '@mui/icons-material/Logout';
 import "./dataVisualisation.css";
 
 
@@ -39,7 +42,7 @@ const DownloadChart = ({reference, title}) => {
 }
 export const DataVisualisation = (rawData) => {
   const {data} = rawData;
-  const [{user, displayName}] = useStateValue();
+  const [{user, displayName}, dispatch] = useStateValue();
 
   const [formattedData, setFormattedData] = useState([]);
   const [chartData, setChartData] = useState([]);
@@ -303,6 +306,19 @@ export const DataVisualisation = (rawData) => {
     history.push('/')
   }
 
+  const handleLogoutClick = (e) => {
+    e.preventDefault();
+    console.log(e)
+    const auth = getAuth();
+    signOut(auth).then(authUser => {
+      console.log('user: ', authUser)
+      dispatch({
+        type: 'SET_USER',
+        user: null
+      })
+    })
+  }
+
   return (
     <div className="App">
       <div className="sidebar">
@@ -320,6 +336,7 @@ export const DataVisualisation = (rawData) => {
           <button onClick={() => formatProductData(formattedData)}>
             <DonutLargeIcon className="sidebar__icon" />Product Savings
           </button>
+          <span className="separator"></span>
           <button>
             <CloudDownloadIcon className="sidebar__icon" />
               <Link to="/static-data.csv" target="_blank" download>Download CSV</Link>
@@ -328,8 +345,13 @@ export const DataVisualisation = (rawData) => {
             <CloudUploadIcon className="sidebar__icon" />
               Upload
           </button>
+          <span className="separator"></span>
+          <button onClick={(e) => handleLogoutClick(e)}>
+            <LogoutIcon className="sidebar__icon" />
+              Logout
+          </button>
         </div>
-        <img alt="Thebes logo" src={logo} height="100px" />
+        <img alt="Thebes logo" className="thebes-logo" src={logo} height="100px" />
       </div>
 
       <div className="data-area">
@@ -358,9 +380,9 @@ export const DataVisualisation = (rawData) => {
         <div className={`${showDoughnutChart && 'data-area__chart' }`}>
           {showDoughnutChart && (
             <div className="chart__selection">
-                <button className={showProductCurrentYearChart ? 'chart-selected' : ''} onClick={() => handleChartSelectionClick('currentYear')}>Current Year: ${currentYearSavingsTotal}</button>
-                <button className={showProductYearChart ? 'chart-selected' : ''} onClick={() => handleChartSelectionClick('Year')}>Year: ${yearSavingsTotal}</button>
-                <button className={showProductMonthChart ? 'chart-selected' : ''} onClick={() => handleChartSelectionClick('Month')}>Monthly: ${monthSavingsTotal}</button>
+                <button className={showProductCurrentYearChart ? 'chart-selected' : ''} onClick={() => handleChartSelectionClick('currentYear')}>Current Year: ${currentYearSavingsTotal.toLocaleString()}</button>
+                <button className={showProductYearChart ? 'chart-selected' : ''} onClick={() => handleChartSelectionClick('Year')}>Year: ${yearSavingsTotal.toLocaleString()}</button>
+                <button className={showProductMonthChart ? 'chart-selected' : ''} onClick={() => handleChartSelectionClick('Month')}>Monthly: ${monthSavingsTotal.toLocaleString()}</button>
             </div>
           )}
           <div className="chart-container">

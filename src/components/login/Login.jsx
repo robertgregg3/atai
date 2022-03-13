@@ -16,6 +16,15 @@ const Login = () => {
     
     const handleSignIn = (e) => {
         e.preventDefault();
+        auth.signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+            let loggedInUser = userCredential;
+            console.log('user: ', loggedInUser)
+            dispatch({
+                type: 'SET_USER',
+                user: loggedInUser
+            })
+        })
     }
     
     const handleRegister = (e) => {
