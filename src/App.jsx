@@ -4,13 +4,14 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { useEffect } from 'react';
 import { auth } from "./firebaseConfig";
 import Login from './components/login/Login';
-import Sidebar from './components/sidebar/Sidebar';
 import useStaticDataCsv from "./hooks/useStaticData";
+import Upload from './components/upload/Upload';
 import "./App.css";
 
 
 const App = () => {
-  const [{user, data}, dispatch] = useStateValue();
+  const [{user, displayName}, dispatch] = useStateValue();
+
   const rawData = useStaticDataCsv();
 
   useEffect(() => {
@@ -20,31 +21,25 @@ const App = () => {
         dispatch({
           type: 'SET_USER',
           user: authUser,
+          displayName: authUser.displayName
         });
-        dispatch({
-          type: 'SET_DATA',
-          data: rawData,
-        })
-      } else {
-        dispatch({
-          type: 'SET_USER',
-          user: null,
-        })
         dispatch({
           type: 'SET_DATA',
           data: rawData,
         })
       }
     })
-  }, [])
+  }, [user, rawData])
   return (
     <>
       {user ? (
         <Router>
           <Switch>
               <Route exact path="/">
-                {/* <Sidebar data={rawData} /> */}
-                <DataVisualisation data={rawData} />
+                <DataVisualisation data={rawData} user={user} />
+              </Route>
+              <Route path="/upload">
+                <Upload />
               </Route>
           </Switch>
         </Router>

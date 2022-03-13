@@ -1,6 +1,7 @@
 export const initialState = {
     user: null,
-    data: []
+    data: [],
+    displayName: ''
 }
 
 const reducer = (state, action) => {
@@ -8,7 +9,8 @@ const reducer = (state, action) => {
         case "SET_USER":
             return {
                 ...state,
-                user: action.user
+                user: action.user,
+                displayName: action.displayName
             };
             case "SET_DATA":
                 return {

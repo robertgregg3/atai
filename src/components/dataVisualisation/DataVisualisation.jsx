@@ -1,5 +1,8 @@
 import { useEffect, useState, useRef } from "react";
 import { Form } from 'react-bootstrap';
+import { useStateValue } from './../../Context/StateProvider';
+import { Link } from "react-router-dom";
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import DoughnutChart from "../charts/DoughnutChart";
 import SavingsBarChart from "../charts/SavingsBarChart";
 import exportAsImage from '../../utils/exportAsImage';
@@ -7,17 +10,47 @@ import SavingsTotalsBarChart from '../charts/SavingsTotalsBarChart';
 import ataiLogo from '../../images/atai1.svg';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import DonutLargeIcon from '@mui/icons-material/DonutLarge';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import "./dataVisualisation.css";
 
+
+const DownloadChart = ({reference, title}) => {
+  const [downloadChartTitle, setDownloadChartTitle] = useState('Download Chart...')
+
+  const onDownloadChartFormChange = (e, chartTitle) => {
+      const value = e.target.value === "jpeg" ? 'jpeg' : 'png';
+      if(e.target.value !== downloadChartTitle) {
+        exportAsImage(reference.current, chartTitle, value)
+        setDownloadChartTitle(downloadChartTitle)
+      }
+    }
+  return (
+      <div className="download-chart">
+      <Form.Select aria-label="Download Chart" onChange={(e) => onDownloadChartFormChange(e, title)}>
+      <option className="select-option">{downloadChartTitle}</option>
+      <option className="select-option" value="jpeg">JPEG</option>
+      <option className="select-option" value="png">PNG</option>
+      </Form.Select>
+  </div>
+  )
+}
 export const DataVisualisation = (rawData) => {
   const {data} = rawData;
+  const [{user, displayName}] = useStateValue();
+
   const [formattedData, setFormattedData] = useState([]);
   const [chartData, setChartData] = useState([]);
   const [chartTitle, setChartTitle] = useState('Chart');
 
   const [showDoughnutChart, setShowDoughnutChart] = useState(false);
   const [showSavingsTotalChart, setShowSavingsTotalChart] = useState(false);
-  const [showBarChart, setBarChart] = useState(false);
+  const [showBarChartCostCenter, setBarChartCostCenter] = useState(false);
+  const [showBarChartEnvironment, setBarChartEnvironment] = useState(false);
+  const [showProductCurrentYearChart, setShowProductCurrentYearChart] = useState(true);
+  const [showProductYearChart, setShowProductYearChart] = useState(false);
+  const [showProductMonthChart, setShowProductMonthChart] = useState(false);
 
   const [othersPercentage, setOthersPercentage] = useState(2)
   const [productSavingsCurrentYear, setProductSavingsCurrentYear] = useState([]);
@@ -33,6 +66,11 @@ export const DataVisualisation = (rawData) => {
   const exportYear = useRef();
   const exportMonth = useRef();
   const exportSavingsTotals = useRef();
+  const exportCostCenterTotals = useRef();
+  const exportEnvironmentTotals = useRef();
+
+  const history = useHistory();
+
 
   const savingsTotals = {
     currentYear: 'ActualSavingsForCurrentYear',
@@ -42,7 +80,8 @@ export const DataVisualisation = (rawData) => {
 
   useEffect(() => {
     data && formatData(data);
-  }, []);
+    console.log(displayName)
+  }, [user, data, displayName]);
 
   const formatData = (data) => {
     // remove commas and $ signs from all fields
@@ -85,7 +124,8 @@ export const DataVisualisation = (rawData) => {
     setChartTitle('Total Savings Bar Chart')
     setShowSavingsTotalChart(true)
     setShowDoughnutChart(false)
-    setBarChart(false)
+    setBarChartCostCenter(false)
+    setBarChartEnvironment(false)
   };
 
   const formatCostCenterData = (data) => {
@@ -117,7 +157,9 @@ export const DataVisualisation = (rawData) => {
      
     setChartData(costCenterData);
     setChartTitle('Cost Centre Savings')
-    setBarChart(true)
+    setBarChartCostCenter(true)
+    setBarChartEnvironment(false)
+    setShowSavingsTotalChart(false)
     setShowDoughnutChart(false)
     setShowSavingsTotalChart(false)
   };
@@ -147,7 +189,9 @@ export const DataVisualisation = (rawData) => {
      
     setChartData(environmentData);
     setChartTitle('Environment Savings')
-    setBarChart(true)
+    setBarChartCostCenter(false)
+    setBarChartEnvironment(true)
+    setShowSavingsTotalChart(false)
     setShowDoughnutChart(false)
     setShowSavingsTotalChart(false)
   };
@@ -224,9 +268,10 @@ export const DataVisualisation = (rawData) => {
     setProductSavingsYear(Object.values(productSavingsYearOther))
     setProductSavingsMonth(Object.values(productSavingsMonthOther))
     setChartTitle('Product Savings')
-    setBarChart(false)
-    setShowDoughnutChart(true)
+    setBarChartCostCenter(false)
+    setBarChartEnvironment(false)
     setShowSavingsTotalChart(false)
+    setShowDoughnutChart(true)
 
   };
 
@@ -247,104 +292,150 @@ export const DataVisualisation = (rawData) => {
     formatProductData(formattedData);
   }
 
+  const handleChartSelectionClick = (value) => {
+    setShowProductCurrentYearChart(value === 'currentYear' ? true : false);
+    setShowProductYearChart(value === 'Year' ? true : false);
+    setShowProductMonthChart(value === 'Month' ? true : false);
+  }
+
+  const handleUploadClick = () => {
+    history.push('/upload')
+  }
+
   return (
     <div className="App">
-      <div>
-        <div className="sidebar">
-          <img src={ataiLogo} />
-          <div className="button-container">
-            <button onClick={() => formatSavingsTotalData(formattedData)}>
-              <BarChartIcon className="sidebar__icon" />Savings Totals
-            </button>
-            <button onClick={() => formatCostCenterData(formattedData)}>
-              <BarChartIcon className="sidebar__icon" />Cost Centre Savings
-            </button>
-            <button onClick={() => formatEnvironmentData(formattedData)}>
-              <BarChartIcon className="sidebar__icon" />Environment Savings
-            </button>
-            <button onClick={() => formatProductData(formattedData)}>
-              <DonutLargeIcon className="sidebar__icon" />Product Savings
-            </button>
-          </div>
+      <div className="sidebar">
+        <img alt="Atai Logo" src={ataiLogo} />
+        <div className="button-container">
+          <button onClick={() => formatSavingsTotalData(formattedData)}>
+            <BarChartIcon className="sidebar__icon" />Savings Totals
+          </button>
+          <button onClick={() => formatCostCenterData(formattedData)}>
+            <BarChartIcon className="sidebar__icon" />Cost Centre Savings
+          </button>
+          <button onClick={() => formatEnvironmentData(formattedData)}>
+            <BarChartIcon className="sidebar__icon" />Environment Savings
+          </button>
+          <button onClick={() => formatProductData(formattedData)}>
+            <DonutLargeIcon className="sidebar__icon" />Product Savings
+          </button>
+          <button>
+            <CloudDownloadIcon className="sidebar__icon" />
+              <Link to="/static-data.csv" target="_blank" download>Download CSV</Link>
+          </button>
+          <button onClick={handleUploadClick}>
+            <CloudUploadIcon className="sidebar__icon" />
+              Upload
+          </button>
         </div>
       </div>
-      <div>
-        <div className="options-container">
-        <h1>ATAI Data Visualisation</h1>
-          <Form.Select aria-label="Default select example" onChange={onFormSelectChange}>
-            <option className="select-option">Choose an option</option>
-            <option className="select-option" value="savingsTotal">Savings Total</option>
-            <option className="select-option" value="costCenter">Cost Center</option>
-            <option className="select-option" value="environment">Environment</option>
-            <option className="select-option" value="product">Product</option>
-          </Form.Select>
+
+      <div className="data-area">
+        <div className={`${showDoughnutChart ? 'header header-with-options' : 'header'}`}>
+          {showDoughnutChart && (
+            <div className="percentage-container">
+              <input placeholder={othersPercentage} onChange={(e) => updateOtherPercentage(e)} size="3" />
+              <button onClick={handleButtonClick}>Update "Other" percentage</button>
+            </div>
+          )}
+          <div className="options-container">
+            <Form.Select aria-label="ATI Chart options" onChange={onFormSelectChange}>
+              <option className="select-option">Choose an option</option>
+              <option className="select-option" value="savingsTotal">Savings Total</option>
+              <option className="select-option" value="costCenter">Cost Center</option>
+              <option className="select-option" value="environment">Environment</option>
+              <option className="select-option" value="product">Product</option>
+            </Form.Select>
+          </div>
+          <div className="user-info">
+            <span>Hi, {displayName} <AccountCircleIcon /></span>
+          </div>
         </div>
-      {showDoughnutChart && (
-        <div className="percentage-container">
-          <input placeholder={othersPercentage} onChange={(e) => updateOtherPercentage(e)} size="3" />
-          <button onClick={handleButtonClick}>Update "Other" percentage</button>
+
+        <h2>ATAI Data Visualisation</h2>
+
+        <div className={`${showDoughnutChart && 'data-area__chart' }`}>
+          {showDoughnutChart && (
+            <div className="chart__selection">
+                <button className={showProductCurrentYearChart ? 'chart-selected' : ''} onClick={() => handleChartSelectionClick('currentYear')}>Current Year: ${currentYearSavingsTotal}</button>
+                <button className={showProductYearChart ? 'chart-selected' : ''} onClick={() => handleChartSelectionClick('Year')}>Year: ${yearSavingsTotal}</button>
+                <button className={showProductMonthChart ? 'chart-selected' : ''} onClick={() => handleChartSelectionClick('Month')}>Monthly: ${monthSavingsTotal}</button>
+            </div>
+          )}
+          <div className="chart-container">
+            {showSavingsTotalChart && (
+              <div>
+                <div className="update-others">
+                  <DownloadChart reference={exportSavingsTotals} title={'Savings totals'} />
+                </div>
+                <div ref={exportSavingsTotals}>
+                  <SavingsTotalsBarChart chartData={chartData} chartTitle={chartTitle} />
+                </div>
+              </div>
+            )}
+            {showBarChartCostCenter && (
+              <div>
+                <div className="update-others">
+                  <DownloadChart reference={exportCostCenterTotals} title={'Cost Center Savings'} />
+                </div>
+                <div ref={exportCostCenterTotals}>
+                  <SavingsBarChart chartData={chartData} chartTitle={chartTitle} />
+                </div>
+              </div>
+            )}
+            {showBarChartEnvironment && (
+              <div>
+                <div className="update-others">
+                  <DownloadChart reference={exportEnvironmentTotals} title={'Environment Savings'} />
+                </div>
+                <div ref={exportEnvironmentTotals}>
+                  <SavingsBarChart chartData={chartData} chartTitle={chartTitle} />
+                </div>
+              </div>
+            )}
+            {showDoughnutChart && (
+              <>
+              {showProductCurrentYearChart && (
+                <div>
+                  <div className="update-others">
+                    <DownloadChart reference={exportCurrentYear} title={'Product Savings For the Current Year'} />
+                  </div>
+                  <div ref={exportCurrentYear}>
+                    <DoughnutChart 
+                      chartData={productSavingsCurrentYear} 
+                      chartTitle={'Product Savings For the Current Year'}
+                      chartLabels={productChartLabels} />
+                  </div>
+                </div>
+              )}
+            {showProductYearChart && (
+              <div>
+                <div className="update-others">
+                  <DownloadChart reference={exportYear} title={'Product Savings for the Year'} />
+                </div>
+                <div ref={exportYear}>
+                  <DoughnutChart 
+                    chartData={productSavingsYear} 
+                    chartTitle={'Product Savings for the Year'} 
+                    chartLabels={productChartLabels} />
+                </div>
+              </div>
+            )}
+            {showProductMonthChart && (
+              <div>
+                <div className="update-others">
+                 <DownloadChart reference={exportMonth} title={'Product Savings for the Month'} />
+                </div>
+              <div ref={exportMonth}>
+                <DoughnutChart 
+                  chartData={productSavingsMonth} 
+                  chartTitle={'Product Savings for the Month'} 
+                  chartLabels={productChartLabels} />
+                </div>
+              </div>
+            )}
+          </>)}
         </div>
-      )}
-      <div className="chart-container">
-        
-        {showSavingsTotalChart && (
-          <div>
-            <div className="update-others">
-                <button onClick={() => exportAsImage(exportSavingsTotals.current, "Savings Totals")}>Download jpg</button>
-            </div>
-            <div ref={exportSavingsTotals}>
-              <SavingsTotalsBarChart chartData={chartData} chartTitle={chartTitle} />
-            </div>
-          </div>
-        )}
-        {showBarChart && (
-          <div>
-            <div className="update-others">
-              <button onClick={() => exportAsImage(exportSavingsTotals.current, "Savings Totals")}>Download jpg</button>
-            </div>
-            <div ref={exportSavingsTotals}>
-              <SavingsBarChart chartData={chartData} chartTitle={chartTitle} />
-            </div>
-          </div>
-        )}
-        {showDoughnutChart && (
-          <>
-          <div>
-            <div className="update-others">
-                <button onClick={() => exportAsImage(exportCurrentYear.current, "Product - Current Year Savings")}>Download jpg</button>
-            </div>
-            <div ref={exportCurrentYear}>
-              <DoughnutChart 
-                chartData={productSavingsCurrentYear} 
-                chartTitle={'Product Savings For the Current Year'}
-                chartLabels={productChartLabels} />
-            </div>
-          </div>
-          <div>
-            <div className="update-others">
-                <button onClick={() => exportAsImage(exportYear.current, "Product - Year Savings")}>Download jpg</button>
-            </div>
-            <div ref={exportYear}>
-              <DoughnutChart 
-                chartData={productSavingsYear} 
-                chartTitle={'Product Savings for the Year'} 
-                chartLabels={productChartLabels} />
-            </div>
-          </div>
-          <div>
-            <div className="update-others">
-                <button onClick={() => exportAsImage(exportMonth.current, "Product - Monthly Savings")}>Download jpg</button>
-            </div>
-          <div ref={exportMonth}>
-            <DoughnutChart 
-              chartData={productSavingsMonth} 
-              chartTitle={'Product Savings for the Month'} 
-              chartLabels={productChartLabels} />
-            </div>
-          </div>
-          </> 
-          )
-        }
       </div>
       </div>
     </div>

@@ -5,7 +5,7 @@ import { useStateValue } from './../Context/StateProvider';
 
 function useStaticDataCsv() {
   const [csvData, setCvsData] = useState([]);
-  const [{}, dispatch] = useStateValue();
+  const [{user}, dispatch] = useStateValue();
 
 
   useEffect(() => {
