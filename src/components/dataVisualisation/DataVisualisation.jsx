@@ -354,7 +354,7 @@ export const DataVisualisation = (rawData) => {
         <div className="logo__and__copyright">
           <img alt="Thebes logo" className="thebes-logo" src={logo} height="100px" />
         <span>Copyright © 2022. All Rights Reserved.</span> <br />
-        <span>ATAITM & ATAI Wave® are registered trademarks owned by Thebes Cloud Management Ltd.</span>
+        <span>ATAI™ & ATAI Wave® are registered trademarks owned by Thebes Cloud Management Ltd.</span>
         </div>
       </div>
 
