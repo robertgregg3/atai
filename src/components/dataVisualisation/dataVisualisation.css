@@ -125,7 +125,8 @@ select.form-select {
   height: 100vh;
   background: #000038;
   padding: 1rem;
-  width: 300px;
+  width: 320px;
+  max-width: 320px;
   display: flex;
   flex-direction: column;
 }
@@ -137,12 +138,29 @@ select.form-select {
   margin-bottom: 2rem
 }
 
-.thebes-logo{
-  height: 60px !important;
-  width: 220px;
+.logo__and__copyright {
   position: absolute;
   bottom: 0;
-  left: 22px;
+  left: 0;
+  width: 200px;
+  font-size: small;
+  color: #fff;
+}
+
+.logo__and__copyright {
+  position: absolute;
+  bottom: 0;
+  width: 250px;
+  color: #ffffff99;
+  left: 15px;
+  display: grid;
+  justify-content: center;
+  font-size: 10px;
+  margin-bottom: 1rem;
+}
+
+.thebes-logo{
+  height: 60px !important;
 }
 
 .options-container {
