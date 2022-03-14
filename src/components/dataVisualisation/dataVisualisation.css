@@ -24,10 +24,8 @@
 }
 
 .button-container {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0;
   align-self: center;
+  display: grid;
 }
 
 .button-container > button,
@@ -127,8 +125,11 @@ select.form-select {
   padding: 1rem;
   width: 320px;
   max-width: 320px;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 10% 60% 30%;
+  justify-items: center;
+  padding-top: 3rem;
 }
 
 .sidebar img {
@@ -139,24 +140,12 @@ select.form-select {
 }
 
 .logo__and__copyright {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 200px;
-  font-size: small;
-  color: #fff;
-}
-
-.logo__and__copyright {
-  position: absolute;
-  bottom: 0;
-  width: 250px;
   color: #ffffff99;
-  left: 15px;
   display: grid;
-  justify-content: center;
   font-size: 10px;
-  margin-bottom: 1rem;
+  align-self: flex-end;
+  margin-bottom: 3rem;
+  justify-items: center;
 }
 
 .thebes-logo{
