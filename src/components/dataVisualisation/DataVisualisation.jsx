@@ -10,34 +10,35 @@ import SavingsTotalsBarChart from "../charts/SavingsTotalsBarChart";
 import "./dataVisualisation.css";
 import Sidebar from "../sidebar/Sidebar";
 import DashboardHeader from "../DashboardHeader/DashboardHeader";
+import DownloadChart from "../../utils/downloadChart";
 
-const DownloadChart = ({ reference, title }) => {
-  const [downloadChartTitle, setDownloadChartTitle] =
-    useState("Download Chart...");
+// const DownloadChart = ({ reference, title }) => {
+//   const [downloadChartTitle, setDownloadChartTitle] =
+//     useState("Download Chart...");
 
-  const onDownloadChartFormChange = (e, chartTitle) => {
-    const value = e.target.value === "jpeg" ? "jpeg" : "png";
-    if (e.target.value !== downloadChartTitle) {
-      exportAsImage(reference.current, chartTitle, value);
-      setDownloadChartTitle(downloadChartTitle);
-    }
-  };
-  return (
-    <div className="download-chart">
-      <Form.Select
-        aria-label="Download Chart"
-        onChange={(e) => onDownloadChartFormChange(e, title)}>
-        <option className="select-option">{downloadChartTitle}</option>
-        <option className="select-option" value="jpeg">
-          JPEG
-        </option>
-        <option className="select-option" value="png">
-          PNG
-        </option>
-      </Form.Select>
-    </div>
-  );
-};
+//   const onDownloadChartFormChange = (e, chartTitle) => {
+//     const value = e.target.value === "jpeg" ? "jpeg" : "png";
+//     if (e.target.value !== downloadChartTitle) {
+//       exportAsImage(reference.current, chartTitle, value);
+//       setDownloadChartTitle(downloadChartTitle);
+//     }
+//   };
+//   return (
+//     <div className="download-chart">
+//       <Form.Select
+//         aria-label="Download Chart"
+//         onChange={(e) => onDownloadChartFormChange(e, title)}>
+//         <option className="select-option">{downloadChartTitle}</option>
+//         <option className="select-option" value="jpeg">
+//           JPEG
+//         </option>
+//         <option className="select-option" value="png">
+//           PNG
+//         </option>
+//       </Form.Select>
+//     </div>
+//   );
+// };
 export const DataVisualisation = (rawData) => {
   const { data } = rawData;
   const [{ user, displayName }, dispatch] = useStateValue();
@@ -84,7 +85,7 @@ export const DataVisualisation = (rawData) => {
 
   useEffect(() => {
     data && formatData(data);
-    console.log(displayName);
+    console.log("user:", displayName);
   }, [user, data, displayName]);
 
   const formatData = (data) => {
@@ -389,8 +390,7 @@ export const DataVisualisation = (rawData) => {
       />
       <div className="data-area">
         <DashboardHeader chartTitle={chartTitle} displayName={displayName} />
-
-        <div className={`${showDoughnutChart && "data-area__chart"}`}>
+        <div className="chart-container">
           {showDoughnutChart && (
             <div className="chart__selection">
               <div className="percentage-container">
@@ -420,111 +420,93 @@ export const DataVisualisation = (rawData) => {
               </button>
             </div>
           )}
-          <div className="chart-container">
+          <div ref={exportSavingsTotals}>
             {showSavingsTotalChart && (
-              <div>
-                <div className="update-others">
-                  <DownloadChart
-                    reference={exportSavingsTotals}
-                    title={"Savings totals"}
-                  />
-                </div>
-                <div ref={exportSavingsTotals}>
-                  <SavingsTotalsBarChart
-                    chartData={chartData}
-                    chartTitle={chartTitle}
-                  />
-                </div>
-              </div>
-            )}
-            {showBarChartCostCenter && (
-              <div>
-                <div className="update-others">
-                  <DownloadChart
-                    reference={exportCostCenterTotals}
-                    title={"Cost Center Savings"}
-                  />
-                </div>
-                <div ref={exportCostCenterTotals}>
-                  <SavingsBarChart
-                    chartData={chartData}
-                    chartTitle={chartTitle}
-                  />
-                </div>
-              </div>
-            )}
-            {showBarChartEnvironment && (
-              <div>
-                <div className="update-others">
-                  <DownloadChart
-                    reference={exportEnvironmentTotals}
-                    title={"Environment Savings"}
-                  />
-                </div>
-                <div ref={exportEnvironmentTotals}>
-                  <SavingsBarChart
-                    chartData={chartData}
-                    chartTitle={chartTitle}
-                  />
-                </div>
-              </div>
-            )}
-            {showDoughnutChart && (
-              <>
-                {showProductCurrentYearChart && (
-                  <div>
-                    <div className="update-others">
-                      <DownloadChart
-                        reference={exportCurrentYear}
-                        title={"Product Savings For the Current Year"}
-                      />
-                    </div>
-                    <div ref={exportCurrentYear}>
-                      <DoughnutChart
-                        chartData={productSavingsCurrentYear}
-                        chartTitle={"Product Savings For the Current Year"}
-                        chartLabels={productChartLabels}
-                      />
-                    </div>
-                  </div>
-                )}
-                {showProductYearChart && (
-                  <div>
-                    <div className="update-others">
-                      <DownloadChart
-                        reference={exportYear}
-                        title={"Product Savings for the Year"}
-                      />
-                    </div>
-                    <div ref={exportYear}>
-                      <DoughnutChart
-                        chartData={productSavingsYear}
-                        chartTitle={"Product Savings for the Year"}
-                        chartLabels={productChartLabels}
-                      />
-                    </div>
-                  </div>
-                )}
-                {showProductMonthChart && (
-                  <div>
-                    <div className="update-others">
-                      <DownloadChart
-                        reference={exportMonth}
-                        title={"Product Savings for the Month"}
-                      />
-                    </div>
-                    <div ref={exportMonth}>
-                      <DoughnutChart
-                        chartData={productSavingsMonth}
-                        chartTitle={"Product Savings for the Month"}
-                        chartLabels={productChartLabels}
-                      />
-                    </div>
-                  </div>
-                )}
-              </>
+              <SavingsTotalsBarChart
+                chartData={chartData}
+                exportSavingsTotals={exportSavingsTotals.current}
+              />
             )}
           </div>
+          <div ref={exportCostCenterTotals}>
+            {showBarChartCostCenter && (
+              <SavingsBarChart
+                chartData={chartData}
+                exportCostCenterTotals={exportCostCenterTotals.current}
+              />
+            )}
+          </div>
+          {showBarChartEnvironment && (
+            <div>
+              <div className="update-others">
+                <DownloadChart
+                  reference={exportEnvironmentTotals}
+                  title={"Environment Savings"}
+                />
+              </div>
+              <div ref={exportEnvironmentTotals}>
+                <SavingsBarChart
+                  chartData={chartData}
+                  chartTitle={chartTitle}
+                />
+              </div>
+            </div>
+          )}
+          {showDoughnutChart && (
+            <>
+              {showProductCurrentYearChart && (
+                <div>
+                  <div className="update-others">
+                    <DownloadChart
+                      reference={exportCurrentYear}
+                      title={"Product Savings For the Current Year"}
+                    />
+                  </div>
+                  <div ref={exportCurrentYear}>
+                    <DoughnutChart
+                      chartData={productSavingsCurrentYear}
+                      chartTitle={"Product Savings For the Current Year"}
+                      chartLabels={productChartLabels}
+                    />
+                  </div>
+                </div>
+              )}
+              {showProductYearChart && (
+                <div>
+                  <div className="update-others">
+                    <DownloadChart
+                      reference={exportYear}
+                      title={"Product Savings for the Year"}
+                    />
+                  </div>
+                  <div ref={exportYear}>
+                    <DoughnutChart
+                      chartData={productSavingsYear}
+                      chartTitle={"Product Savings for the Year"}
+                      chartLabels={productChartLabels}
+                    />
+                  </div>
+                </div>
+              )}
+              {showProductMonthChart && (
+                <div>
+                  <div className="update-others">
+                    <DownloadChart
+                      reference={exportMonth}
+                      title={"Product Savings for the Month"}
+                    />
+                  </div>
+                  <div ref={exportMonth}>
+                    <DoughnutChart
+                      chartData={productSavingsMonth}
+                      chartTitle={"Product Savings for the Month"}
+                      chartLabels={productChartLabels}
+                    />
+                  </div>
+                </div>
+              )}
+            </>
+          )}
         </div>
       </div>
     </div>
