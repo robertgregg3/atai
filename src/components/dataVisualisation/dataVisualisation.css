@@ -22,44 +22,6 @@
   width: 40vw;
   height: 70vh;
 }
-
-.button-container {
-  align-self: center;
-  display: grid;
-}
-
-.button-container > button,
-.update-others button, 
-.percentage-container button {
-  color: #fff;
-  background-color: #000038;
-  padding: 1rem 1rem;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1rem;
-  border: none;
-  text-align: left;
-  /* font-family: 'Lato'; */
-  display: flex;
-  align-items: center;
-}
-
-.percentage-container button {
-  padding: 0.6rem 1rem;
-  border-radius: 4px;
-}
-  
-.button-container > button:hover {
-  background: #10a8a9;
-  color: #ffffff;
-}
-
-.sidebar__icon {
-  font-size: 2rem !important;
-  position: relative;
-  top: -2px;
-  margin-right: 1rem
-}
   
 select.form-select {
   width: 100%;
@@ -119,39 +81,6 @@ select.form-select {
   color: #ffffff;
 }
 
-.sidebar {
-  height: 100vh;
-  background: #000038;
-  padding: 1rem;
-  width: 320px;
-  max-width: 320px;
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 10% 60% 30%;
-  justify-items: center;
-  padding-top: 3rem;
-}
-
-.sidebar img {
-  /* width: 150px; */
-  height: 100px;
-  margin-top: 1rem;
-  margin-bottom: 2rem
-}
-
-.logo__and__copyright {
-  color: #ffffff99;
-  display: grid;
-  font-size: 10px;
-  align-self: flex-end;
-  margin-bottom: 3rem;
-  justify-items: center;
-}
-
-.thebes-logo{
-  height: 60px !important;
-}
-
 .options-container {
   max-width: 400px;
   justify-self: flex-end;
@@ -202,9 +131,3 @@ select.form-select {
   border-radius: 38px;
 }
 
-.separator {
-  margin-bottom: 1.5rem;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #cccccc50
-}
