@@ -1,14 +1,14 @@
-.header {
+header {
     background: #cccccc50;
     display: grid;
     width: 100%;
     grid-template-columns: auto auto;
     align-items: center;
     justify-content: space-between;
-    padding: 0.5rem;
+    height: 60px;
     z-index: -1;
   }
   
-.header > h6 {
+header > h6 {
     margin: 0 0 0 1.5rem;
 }  

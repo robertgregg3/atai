@@ -3,14 +3,14 @@ import "./DashboardHeader.css";
 
 const DashboardHeader = ({ displayName, chartTitle }) => {
   return (
-    <div className="header">
+    <header>
       <h6>{chartTitle}</h6>
       <div className="user-info">
         <span>
           Hi, {displayName} <AccountCircleIcon />
         </span>
       </div>
-    </div>
+    </header>
   );
 };
 
