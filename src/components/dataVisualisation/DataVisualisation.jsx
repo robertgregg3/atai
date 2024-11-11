@@ -1,44 +1,16 @@
 import { useEffect, useState, useRef } from "react";
-import { Form } from "react-bootstrap";
 import { useStateValue } from "./../../Context/StateProvider";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { getAuth, signOut } from "firebase/auth";
 import DoughnutChart from "../charts/DoughnutChart";
-import SavingsBarChart from "../charts/SavingsBarChart";
-import exportAsImage from "../../utils/exportAsImage";
 import SavingsTotalsBarChart from "../charts/SavingsTotalsBarChart";
 import "./dataVisualisation.css";
 import Sidebar from "../sidebar/Sidebar";
 import DashboardHeader from "../DashboardHeader/DashboardHeader";
 import DownloadChart from "../../utils/downloadChart";
+import SavingsCostCentreBarChart from "../charts/SavingsCostCentreBarChart";
+import SavingsEnvironmentBarChart from "../charts/SavingsEnvironmentBarChart";
 
-// const DownloadChart = ({ reference, title }) => {
-//   const [downloadChartTitle, setDownloadChartTitle] =
-//     useState("Download Chart...");
-
-//   const onDownloadChartFormChange = (e, chartTitle) => {
-//     const value = e.target.value === "jpeg" ? "jpeg" : "png";
-//     if (e.target.value !== downloadChartTitle) {
-//       exportAsImage(reference.current, chartTitle, value);
-//       setDownloadChartTitle(downloadChartTitle);
-//     }
-//   };
-//   return (
-//     <div className="download-chart">
-//       <Form.Select
-//         aria-label="Download Chart"
-//         onChange={(e) => onDownloadChartFormChange(e, title)}>
-//         <option className="select-option">{downloadChartTitle}</option>
-//         <option className="select-option" value="jpeg">
-//           JPEG
-//         </option>
-//         <option className="select-option" value="png">
-//           PNG
-//         </option>
-//       </Form.Select>
-//     </div>
-//   );
-// };
 export const DataVisualisation = (rawData) => {
   const { data } = rawData;
   const [{ user, displayName }, dispatch] = useStateValue();
@@ -430,28 +402,20 @@ export const DataVisualisation = (rawData) => {
           </div>
           <div ref={exportCostCenterTotals}>
             {showBarChartCostCenter && (
-              <SavingsBarChart
+              <SavingsCostCentreBarChart
                 chartData={chartData}
                 exportCostCenterTotals={exportCostCenterTotals.current}
               />
             )}
           </div>
-          {showBarChartEnvironment && (
-            <div>
-              <div className="update-others">
-                <DownloadChart
-                  reference={exportEnvironmentTotals}
-                  title={"Environment Savings"}
-                />
-              </div>
-              <div ref={exportEnvironmentTotals}>
-                <SavingsBarChart
-                  chartData={chartData}
-                  chartTitle={chartTitle}
-                />
-              </div>
-            </div>
-          )}
+          <div ref={exportEnvironmentTotals}>
+            {showBarChartEnvironment && (
+              <SavingsEnvironmentBarChart
+                chartData={chartData}
+                exportEnvironmentTotals={exportEnvironmentTotals.current}
+              />
+            )}
+          </div>
           {showDoughnutChart && (
             <>
               {showProductCurrentYearChart && (

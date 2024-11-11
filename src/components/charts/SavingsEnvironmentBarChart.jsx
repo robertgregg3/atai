@@ -20,7 +20,7 @@ ChartJS.register(
   Legend
 );
 
-const SavingsBarChart = ({ chartData, exportCostCenterTotals }) => {
+const SavingsEnvironmentBarChart = ({ chartData, exportEnvironmentTotals }) => {
   const [chartLabels, setChartLabels] = useState([]);
   const [barChartData, setBarChartData] = useState([]);
 
@@ -151,12 +151,12 @@ const SavingsBarChart = ({ chartData, exportCostCenterTotals }) => {
   return (
     <div className="chart-horizontal">
       <DownloadChart
-        reference={exportCostCenterTotals}
-        title={"Cost Centre Savings"}
+        reference={exportEnvironmentTotals}
+        title={"Environment Savings"}
       />
       <Bar options={options} data={data} />
     </div>
   );
 };
 
-export default SavingsBarChart;
+export default SavingsEnvironmentBarChart;
