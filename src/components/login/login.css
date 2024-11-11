@@ -85,7 +85,10 @@ input {
 }
 
 .login__container img {
-    height: 100px;
-    margin-top: -2rem;
-    margin-bottom: 2rem;;
+    width: 200px;
+    height: 200px;
+}
+
+.login__active {
+    text-decoration: underline;
 }
