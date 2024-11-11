@@ -37,19 +37,6 @@ h2{
   font-size: 1.5rem;
 }
 
-.header {
-  background: #cccccc50;
-  display: grid;
-  width: 100%;
-  grid-template-columns: 20% 60% 20%;
-  align-items: center;
-  position: absolute;
-  top: 0;
-}
-
-.header.header-with-options {
-  grid-template-columns: 20% 30% 30% 20%;
-}
 
 p {
   color: #333333;

@@ -1,17 +1,15 @@
 import { useEffect, useState, useRef } from "react";
 import { Form } from "react-bootstrap";
 import { useStateValue } from "./../../Context/StateProvider";
-import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
-import { auth } from "../../firebaseConfig";
 import { getAuth, signOut } from "firebase/auth";
 import DoughnutChart from "../charts/DoughnutChart";
 import SavingsBarChart from "../charts/SavingsBarChart";
 import exportAsImage from "../../utils/exportAsImage";
 import SavingsTotalsBarChart from "../charts/SavingsTotalsBarChart";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import "./dataVisualisation.css";
 import Sidebar from "../sidebar/Sidebar";
+import DashboardHeader from "../DashboardHeader/DashboardHeader";
 
 const DownloadChart = ({ reference, title }) => {
   const [downloadChartTitle, setDownloadChartTitle] =
@@ -390,52 +388,21 @@ export const DataVisualisation = (rawData) => {
         handleLogout={(e) => handleLogoutClick(e)}
       />
       <div className="data-area">
-        <div
-          className={`${
-            showDoughnutChart ? "header header-with-options" : "header"
-          }`}>
-          <h2>ATAI Data Visualisation</h2>
-          {showDoughnutChart && (
-            <div className="percentage-container">
-              <input
-                placeholder={othersPercentage}
-                onChange={(e) => updateOtherPercentage(e)}
-                size="3"
-              />
-              <button onClick={handleButtonClick}>
-                Update "Other" percentage
-              </button>
-            </div>
-          )}
-          <div className="options-container">
-            <Form.Select
-              aria-label="ATI Chart options"
-              onChange={onFormSelectChange}>
-              <option className="select-option">Choose an option</option>
-              <option className="select-option" value="savingsTotal">
-                Savings Total
-              </option>
-              <option className="select-option" value="costCenter">
-                Cost Center
-              </option>
-              <option className="select-option" value="environment">
-                Environment
-              </option>
-              <option className="select-option" value="product">
-                Product
-              </option>
-            </Form.Select>
-          </div>
-          <div className="user-info">
-            <span>
-              Hi, {displayName} <AccountCircleIcon />
-            </span>
-          </div>
-        </div>
+        <DashboardHeader chartTitle={chartTitle} displayName={displayName} />
 
         <div className={`${showDoughnutChart && "data-area__chart"}`}>
           {showDoughnutChart && (
             <div className="chart__selection">
+              <div className="percentage-container">
+                <input
+                  placeholder={othersPercentage}
+                  onChange={updateOtherPercentage}
+                  size="3"
+                />
+                <button onClick={handleButtonClick}>
+                  Update "Other" percentage
+                </button>
+              </div>
               <button
                 className={showProductCurrentYearChart ? "chart-selected" : ""}
                 onClick={() => handleChartSelectionClick("currentYear")}>

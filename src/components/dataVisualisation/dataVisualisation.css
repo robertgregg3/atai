@@ -3,10 +3,9 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
-  height: 100vh;
-  font-family: inherit;
-  position: relative;
-  justify-content: center;
+  min-height: 100svh;
+  gap: 2rem
+  
 }
 
 .chart-container {
