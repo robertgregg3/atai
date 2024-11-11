@@ -5,7 +5,6 @@ import { useEffect } from "react";
 import { auth } from "./firebaseConfig";
 import Login from "./components/login/Login";
 import useStaticDataCsv from "./hooks/useStaticData";
-import Upload from "./components/upload/Upload";
 import "./App.css";
 
 const App = () => {
@@ -15,7 +14,7 @@ const App = () => {
 
   useEffect(() => {
     auth.onAuthStateChanged((authUser) => {
-      console.log("User: ", authUser);
+      // console.log("User: ", authUser);
       if (authUser) {
         dispatch({
           type: "SET_USER",
@@ -40,15 +39,6 @@ const App = () => {
           ) : (
             <Login />
           )}
-          {/* {user 
-            ? (
-              <Route exact path="/">
-                <Upload />
-              </Route>
-              ) 
-            : (
-              <Login />
-            )} */}
         </Switch>
       </Router>
     </>
