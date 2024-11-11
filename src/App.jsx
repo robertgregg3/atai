@@ -1,49 +1,46 @@
 import { DataVisualisation } from "./components/dataVisualisation/DataVisualisation";
-import { useStateValue } from './Context/StateProvider';
+import { useStateValue } from "./Context/StateProvider";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { useEffect } from 'react';
+import { useEffect } from "react";
 import { auth } from "./firebaseConfig";
-import Login from './components/login/Login';
+import Login from "./components/login/Login";
 import useStaticDataCsv from "./hooks/useStaticData";
-import Upload from './components/upload/Upload';
+import Upload from "./components/upload/Upload";
 import "./App.css";
 
-
 const App = () => {
-  const [{user, displayName}, dispatch] = useStateValue();
+  const [{ user, displayName }, dispatch] = useStateValue();
 
   const rawData = useStaticDataCsv();
 
   useEffect(() => {
-    auth.onAuthStateChanged(authUser => {
-      console.log('User: ', authUser)
-      if(authUser) {
+    auth.onAuthStateChanged((authUser) => {
+      console.log("User: ", authUser);
+      if (authUser) {
         dispatch({
-          type: 'SET_USER',
+          type: "SET_USER",
           user: authUser,
-          displayName: authUser.displayName
+          displayName: authUser.displayName,
         });
         dispatch({
-          type: 'SET_DATA',
+          type: "SET_DATA",
           data: rawData,
-        })
+        });
       }
-    })
-  }, [user, rawData])
+    });
+  }, [user, rawData]);
   return (
     <>
-        <Router>
-          <Switch>
-          {user 
-            ? (
+      <Router>
+        <Switch>
+          {user ? (
             <Route path="/dashboard">
               <DataVisualisation data={rawData} user={user} />
             </Route>
-            ) 
-            : (
-              <Login />
-            )}
-            {user 
+          ) : (
+            <Login />
+          )}
+          {/* {user 
             ? (
               <Route exact path="/">
                 <Upload />
@@ -51,10 +48,9 @@ const App = () => {
               ) 
             : (
               <Login />
-            )}
-          </Switch>
-        </Router>
-        
+            )} */}
+        </Switch>
+      </Router>
     </>
   );
 };

@@ -4,11 +4,11 @@ import staticData from "./static-data.csv";
 
 const ATAI_DATA_URL = "";
 
-export const getAtaiData = async () => {
+export const getAtainrData = async () => {
   return await axios.get(ATAI_DATA_URL);
 };
 
-export const getAtaiDataFromCsv = () => {
+export const getAtainrDataFromCsv = () => {
   let data = [];
   d3.csv(staticData).then((staticData) => {
     data = staticData;
