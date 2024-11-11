@@ -16,24 +16,30 @@ const exportAsImage = async (element, imageFileName, type) => {
   html.style.width = htmlWidth + "px";
   body.style.width = bodyWidth + "px";
 
-  const canvas = await html2canvas(element);
-  const image = canvas.toDataURL(`image/${type}`, 1.0);
-  downloadImage(image, imageFileName);
+  const canvas = await html2canvas(element, {
+    useCORS: true,
+    willReadFrequently: true,
+  });
+
+  const mimeType = type === "png" ? "image/png" : "image/jpeg";
+  const image = canvas.toDataURL(mimeType, 1.0);
+  const fileNameWithExtension = `${imageFileName}.${type}`;
+
+  downloadImage(image, fileNameWithExtension);
   html.style.width = null;
   body.style.width = null;
+  canvas.remove();
 };
 
 const downloadImage = (blob, fileName) => {
   const fakeLink = window.document.createElement("a");
   fakeLink.style = "display:none;";
   fakeLink.download = fileName;
-
   fakeLink.href = blob;
 
   document.body.appendChild(fakeLink);
   fakeLink.click();
   document.body.removeChild(fakeLink);
-
   fakeLink.remove();
 };
 
