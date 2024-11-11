@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from "react";
-import './barChart.css';
+import React, { useEffect, useState } from "react";
+import "./barChart.css";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -7,9 +7,10 @@ import {
   BarElement,
   Title,
   Tooltip,
-  Legend
-} from 'chart.js';
-import { Bar } from 'react-chartjs-2';
+  Legend,
+} from "chart.js";
+import { Bar } from "react-chartjs-2";
+import DownloadChart from "../../utils/downloadChart";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -19,139 +20,140 @@ ChartJS.register(
   Legend
 );
 
-
-const SavingsBarChart = ({chartData, chartTitle}) => {
-  const [chartLabels, setChartLabels] = useState([])
-  const [barChartData, setBarChartData] = useState([])
-
+const SavingsBarChart = ({ chartData, exportCostCenterTotals }) => {
+  const [chartLabels, setChartLabels] = useState([]);
+  const [barChartData, setBarChartData] = useState([]);
 
   useEffect(() => {
-    const chartDataSets = Object.keys(chartData)
-    const savingsForCurrentYear = chartData['ActualSavingsForCurrentYear']
-    const savingsPerYear = chartData['ActualSavingsForYear']
-    const savingsPerMonth = chartData['ActualSavingsPerMonth']
+    const chartDataSets = Object.keys(chartData);
+    const savingsForCurrentYear = chartData["ActualSavingsForCurrentYear"];
+    const savingsPerYear = chartData["ActualSavingsForYear"];
+    const savingsPerMonth = chartData["ActualSavingsPerMonth"];
 
-    let chartDataLabels = []
-    
-    chartData && savingsForCurrentYear.map(data => {
-      if(data){
-        for (let key in data) {
-          return chartDataLabels = [...chartDataLabels, key]
+    let chartDataLabels = [];
+
+    chartData &&
+      savingsForCurrentYear.map((data) => {
+        if (data) {
+          for (let key in data) {
+            return (chartDataLabels = [...chartDataLabels, key]);
+          }
         }
-      }
-      return []
-    })     
+        return [];
+      });
 
-    setChartLabels(chartDataLabels)
+    setChartLabels(chartDataLabels);
 
-    let currentYearSavings = []
-    chartData && savingsForCurrentYear?.map(data => {
-      if(data){
-        for (let key in data) {
-          return currentYearSavings = [...currentYearSavings, data[key]]
+    let currentYearSavings = [];
+    chartData &&
+      savingsForCurrentYear?.map((data) => {
+        if (data) {
+          for (let key in data) {
+            return (currentYearSavings = [...currentYearSavings, data[key]]);
+          }
         }
-      }
-      return []
-    });
+        return [];
+      });
 
-    let yearSavings = []
-    chartData && savingsPerYear?.map(data => {
-      if(data){
-        for (let key in data) {
-          return yearSavings = [...yearSavings, data[key]]
+    let yearSavings = [];
+    chartData &&
+      savingsPerYear?.map((data) => {
+        if (data) {
+          for (let key in data) {
+            return (yearSavings = [...yearSavings, data[key]]);
+          }
         }
-      }
-      return []
-    });
+        return [];
+      });
 
-    let monthSavings = []
-    chartData && savingsPerMonth?.map(data => {
-      if(data){
-        for (let key in data) {
-          return monthSavings = [...monthSavings, data[key]]
+    let monthSavings = [];
+    chartData &&
+      savingsPerMonth?.map((data) => {
+        if (data) {
+          for (let key in data) {
+            return (monthSavings = [...monthSavings, data[key]]);
+          }
         }
-      } 
-      return  []
-    })
+        return [];
+      });
 
     setBarChartData([
       {
         label: chartDataSets[0],
         data: currentYearSavings,
-        backgroundColor: [
-          "#10a8a9",
-        ],
+        backgroundColor: ["#10a8a9"],
       },
       {
         label: chartDataSets[1],
         data: yearSavings,
-        backgroundColor: [
-          "#000038",
-        ],
+        backgroundColor: ["#000038"],
       },
       {
         label: chartDataSets[2],
         data: monthSavings,
-        backgroundColor: [
-          "#cccccc",
-        ],
-      }
-    ])
+        backgroundColor: ["#cccccc"],
+      },
+    ]);
+  }, [chartData]);
 
-  },[chartData, chartTitle])
-  
   const options = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       title: {
-        display: true,
-        text: chartTitle,
+        display: false,
       },
       legend: {
-        position: 'top',
+        position: "top",
         labels: {
           usePointStyle: true,
         },
       },
       tooltip: {
         callbacks: {
-            label: function(context) {
-                let label = context.dataset.label || '';
+          label: function (context) {
+            let label = context.dataset.label || "";
 
-                if (label) {
-                    label += ': ';
-                }
-                if (context.parsed.y !== null) {
-                    label += new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(context.parsed.y);
-                }
-                return label;
+            if (label) {
+              label += ": ";
             }
-        }
-      } 
+            if (context.parsed.y !== null) {
+              label += new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: "USD",
+              }).format(context.parsed.y);
+            }
+            return label;
+          },
+        },
+      },
     },
     scales: {
       yAxes: {
         ticks: {
-        callback: function(value) {
-            value = value.toString()
-                         .split(/(?=(?:...)*$)/)
-                         .join(',');
-            return '$' + value;
-          }
-        }
-      }
-    }
+          callback: function (value) {
+            value = value
+              .toString()
+              .split(/(?=(?:...)*$)/)
+              .join(",");
+            return "$" + value;
+          },
+        },
+      },
+    },
   };
-
 
   const data = {
     labels: chartLabels,
-    datasets: barChartData
+    datasets: barChartData,
   };
 
   return (
-    <div className='chart-horizontal'>
+    <div className="chart-horizontal">
+      <DownloadChart
+        reference={exportCostCenterTotals}
+        title={"Cost Centre Savings"}
+      />
       <Bar options={options} data={data} />
     </div>
   );
