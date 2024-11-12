@@ -53,26 +53,27 @@ export const DataVisualisation = ({ data }) => {
 
   const history = useHistory();
 
-  const formatData = (data) => {
-    // remove commas and $ signs from all fields
-    let tempFormattedData = [];
-
-    data.map((d) => {
-      for (let key in d) {
-        d[key] = d[key].replace(/\$|-|,/g, "");
-      }
-      return (tempFormattedData = [...tempFormattedData, d]);
-    });
-
-    setFormattedData(tempFormattedData);
-    formatSavingsTotalData(tempFormattedData);
-  };
-
   // formats the data
   useEffect(() => {
-    data && formatData(data);
-    console.log("user:", displayName);
-  }, [user, data, displayName, formatData]);
+    const formatData = (data) => {
+      // remove commas and $ signs from all fields
+      let tempFormattedData = [];
+
+      data.map((d) => {
+        for (let key in d) {
+          d[key] = d[key].replace(/\$|-|,/g, "");
+        }
+        return (tempFormattedData = [...tempFormattedData, d]);
+      });
+
+      setFormattedData(tempFormattedData);
+      formatSavingsTotalData(tempFormattedData);
+    };
+
+    if (data) {
+      formatData(data);
+    }
+  }, [user, data, displayName]);
 
   const formatSavingsTotalData = (data) => {
     // the last row of the csv contains the totals
