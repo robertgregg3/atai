@@ -25,10 +25,17 @@ const SavingsCostCentreBarChart = ({ chartData, exportCostCenterTotals }) => {
   const [barChartData, setBarChartData] = useState([]);
 
   useEffect(() => {
+    if (!chartData) return; // Check if chartData is not null or undefined
+
     const chartDataSets = Object.keys(chartData);
     const savingsForCurrentYear = chartData["ActualSavingsForCurrentYear"];
     const savingsPerYear = chartData["ActualSavingsForYear"];
     const savingsPerMonth = chartData["ActualSavingsPerMonth"];
+
+    if (!savingsForCurrentYear || !savingsPerYear || !savingsPerMonth) {
+      // If any of these are undefined, skip the rest of the logic
+      return;
+    }
 
     let chartDataLabels = [];
 
@@ -104,9 +111,10 @@ const SavingsCostCentreBarChart = ({ chartData, exportCostCenterTotals }) => {
         display: false,
       },
       legend: {
-        position: "top",
+        position: "bottom",
         labels: {
           usePointStyle: true,
+          padding: 20,
         },
       },
       tooltip: {
@@ -129,8 +137,20 @@ const SavingsCostCentreBarChart = ({ chartData, exportCostCenterTotals }) => {
       },
     },
     scales: {
-      yAxes: {
+      x: {
+        grid: {
+          display: false, // Hide the x-axis grid lines
+        },
         ticks: {
+          padding: 15, // Adds padding between x-axis labels and chart content
+        },
+      },
+      y: {
+        grid: {
+          drawBorder: false,
+        },
+        ticks: {
+          padding: 15, // Adds padding between y-axis labels and chart content
           callback: function (value) {
             value = value
               .toString()

@@ -104,9 +104,10 @@ const SavingsEnvironmentBarChart = ({ chartData, exportEnvironmentTotals }) => {
         display: false,
       },
       legend: {
-        position: "top",
+        position: "bottom",
         labels: {
           usePointStyle: true,
+          padding: 20,
         },
       },
       tooltip: {
@@ -129,8 +130,20 @@ const SavingsEnvironmentBarChart = ({ chartData, exportEnvironmentTotals }) => {
       },
     },
     scales: {
-      yAxes: {
+      x: {
+        grid: {
+          display: false, // Hide the x-axis grid lines
+        },
         ticks: {
+          padding: 15, // Adds padding between x-axis labels and chart content
+        },
+      },
+      y: {
+        grid: {
+          drawBorder: false,
+        },
+        ticks: {
+          padding: 15, // Adds padding between y-axis labels and chart content
           callback: function (value) {
             value = value
               .toString()

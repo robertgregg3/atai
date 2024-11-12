@@ -16,9 +16,10 @@ const SavingsTotalsBarChart = ({ chartData, exportSavingsTotals }) => {
         display: false,
       },
       legend: {
-        position: "top",
+        position: "bottom",
         labels: {
           usePointStyle: true,
+          padding: 20,
         },
       },
       tooltip: {
@@ -56,7 +57,7 @@ const SavingsTotalsBarChart = ({ chartData, exportSavingsTotals }) => {
   };
 
   const data = {
-    labels: ["Savings Totals"],
+    labels: [""],
     datasets: [
       {
         label: "Current Year Savings",
