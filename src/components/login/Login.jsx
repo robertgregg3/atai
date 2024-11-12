@@ -112,7 +112,7 @@ const Login = () => {
                 <button
                   onClick={handleRegister}
                   className="login__registerAccount">
-                  Create ATAI Account
+                  Create ATAINR Account
                 </button>
               )}
             </div>
