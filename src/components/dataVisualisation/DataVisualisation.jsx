@@ -317,7 +317,7 @@ export const DataVisualisation = ({ data }) => {
         handleLogout={(e) => handleLogoutClick(e)}
       />
       <div className="data-area">
-        <DashboardHeader chartTitle={chartTitle} displayName={displayName} />
+        <DashboardHeader chartTitle={chartTitle} />
         <div className="chart-container">
           {showDoughnutChart && (
             <div className="chart__selection">

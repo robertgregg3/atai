@@ -1,7 +1,10 @@
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import "./DashboardHeader.css";
+import { useStateValue } from "../../Context/StateProvider";
 
-const DashboardHeader = ({ displayName, chartTitle }) => {
+const DashboardHeader = ({ chartTitle }) => {
+  const [{ displayName }] = useStateValue();
+
   return (
     <header>
       <h6>{chartTitle}</h6>
