@@ -10,6 +10,12 @@ import SavingsCostCentreBarChart from "../charts/SavingsCostCentreBarChart";
 import SavingsEnvironmentBarChart from "../charts/SavingsEnvironmentBarChart";
 import "./dataVisualisation.css";
 
+const savingsTotals = {
+  currentYear: "ActualSavingsForCurrentYear",
+  year: "ActualSavingsForYear",
+  month: "ActualSavingsPerMonth",
+};
+
 export const DataVisualisation = ({ data }) => {
   const [{ user, displayName }, dispatch] = useStateValue();
 
@@ -46,12 +52,6 @@ export const DataVisualisation = ({ data }) => {
   const exportEnvironmentTotals = useRef();
 
   const history = useHistory();
-
-  const savingsTotals = {
-    currentYear: "ActualSavingsForCurrentYear",
-    year: "ActualSavingsForYear",
-    month: "ActualSavingsPerMonth",
-  };
 
   // formats the data
   useEffect(() => {
