@@ -3,6 +3,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import "./doughnutChart.css";
 import DownloadChart from "../../utils/downloadChart";
+import { useStateValue } from "../../Context/StateProvider";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const DoughnutChart = ({
@@ -11,6 +12,8 @@ const DoughnutChart = ({
   chartTitle,
   downloadChartReference,
 }) => {
+  const [{ sidebarOpen }] = useStateValue();
+
   useEffect(() => {}, []);
 
   const options = {
@@ -25,8 +28,8 @@ const DoughnutChart = ({
         position: "bottom",
         labels: {
           usePointStyle: true,
+          padding: 30,
         },
-        padding: 300,
       },
       tooltip: {
         callbacks: {
@@ -65,7 +68,10 @@ const DoughnutChart = ({
     ],
   };
   return (
-    <div className="chart-doughnut">
+    <div
+      className={`chart-horizontal ${
+        !sidebarOpen ? "chart--sidebar-closed" : ""
+      }`}>
       <DownloadChart reference={downloadChartReference} title={chartTitle} />
       <Doughnut data={data} options={options} />
     </div>

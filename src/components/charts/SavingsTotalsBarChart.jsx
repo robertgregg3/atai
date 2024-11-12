@@ -3,9 +3,11 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import "./savingsTotalsBarChart.css";
 import DownloadChart from "../../utils/downloadChart";
+import { useStateValue } from "../../Context/StateProvider";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const SavingsTotalsBarChart = ({ chartData, exportSavingsTotals }) => {
+  const [{ sidebarOpen }] = useStateValue();
   useEffect(() => {}, []);
 
   const options = {
@@ -77,7 +79,10 @@ const SavingsTotalsBarChart = ({ chartData, exportSavingsTotals }) => {
     ],
   };
   return (
-    <div className="chart-horizontal">
+    <div
+      className={`chart-horizontal ${
+        !sidebarOpen ? "chart--sidebar-closed" : ""
+      }`}>
       <DownloadChart reference={exportSavingsTotals} title={"Savings totals"} />
       <Bar data={data} options={options} />
     </div>

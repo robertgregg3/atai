@@ -10,7 +10,14 @@
   
 .chart-horizontal{
   height: 60vh;
-  width: 50vw;
+  width: 59vw;
+  transition: width 0.3s ease;
+  transition: height 0.3s ease;
+}
+
+.chart--sidebar-closed {
+  height: 70vh;
+  width: 80vw;
 }
 
 .chart-doughnut {
@@ -100,13 +107,13 @@ select.form-select {
 .chart__selection {
   display: grid;
   justify-items: center;
-  margin: auto;
-  grid-template-columns: auto auto auto auto;
+  margin: auto auto 1rem;
+  grid-template-columns:  auto;
   align-items: center;
   grid-gap: 0.5rem;
 }
 
-.chart__selection button {
+.chart__selection button:not(.percentage-button) {
   background: #ffffff;
   border: none;
   padding: 1rem;

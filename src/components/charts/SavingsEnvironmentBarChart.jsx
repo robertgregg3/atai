@@ -11,6 +11,7 @@ import {
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import DownloadChart from "../../utils/downloadChart";
+import { useStateValue } from "../../Context/StateProvider";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -23,6 +24,7 @@ ChartJS.register(
 const SavingsEnvironmentBarChart = ({ chartData, exportEnvironmentTotals }) => {
   const [chartLabels, setChartLabels] = useState([]);
   const [barChartData, setBarChartData] = useState([]);
+  const [{ sidebarOpen }] = useStateValue();
 
   useEffect(() => {
     const chartDataSets = Object.keys(chartData);
@@ -162,7 +164,10 @@ const SavingsEnvironmentBarChart = ({ chartData, exportEnvironmentTotals }) => {
   };
 
   return (
-    <div className="chart-horizontal">
+    <div
+      className={`chart-horizontal ${
+        !sidebarOpen ? "chart--sidebar-closed" : ""
+      }`}>
       <DownloadChart
         reference={exportEnvironmentTotals}
         title={"Environment Savings"}

@@ -11,6 +11,7 @@ import {
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import DownloadChart from "../../utils/downloadChart";
+import { useStateValue } from "../../Context/StateProvider";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -23,6 +24,7 @@ ChartJS.register(
 const SavingsCostCentreBarChart = ({ chartData, exportCostCenterTotals }) => {
   const [chartLabels, setChartLabels] = useState([]);
   const [barChartData, setBarChartData] = useState([]);
+  const [{ sidebarOpen }] = useStateValue();
 
   useEffect(() => {
     if (!chartData) return; // Check if chartData is not null or undefined
@@ -169,7 +171,10 @@ const SavingsCostCentreBarChart = ({ chartData, exportCostCenterTotals }) => {
   };
 
   return (
-    <div className="chart-horizontal">
+    <div
+      className={`chart-horizontal ${
+        !sidebarOpen ? "chart--sidebar-closed" : ""
+      }`}>
       <DownloadChart
         reference={exportCostCenterTotals}
         title={"Cost Centre Savings"}

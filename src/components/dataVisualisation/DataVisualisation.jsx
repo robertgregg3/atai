@@ -321,31 +321,39 @@ export const DataVisualisation = ({ data }) => {
         <div className="chart-container">
           {showDoughnutChart && (
             <div className="chart__selection">
-              <div className="percentage-container">
-                <input
-                  placeholder={othersPercentage}
-                  onChange={updateOtherPercentage}
-                  size="3"
-                />
-                <button onClick={handleButtonClick}>
-                  Update "Other" percentage
+              <div className="">
+                <div className="percentage-container">
+                  <input
+                    placeholder={othersPercentage}
+                    onChange={updateOtherPercentage}
+                    size="3"
+                  />
+                  <button
+                    className="percentage-button"
+                    onClick={handleButtonClick}>
+                    Update "Other" percentage
+                  </button>
+                </div>
+              </div>
+              <div>
+                <button
+                  className={
+                    showProductCurrentYearChart ? "chart-selected" : ""
+                  }
+                  onClick={() => handleChartSelectionClick("currentYear")}>
+                  Current Year: ${currentYearSavingsTotal.toLocaleString()}
+                </button>
+                <button
+                  className={showProductYearChart ? "chart-selected" : ""}
+                  onClick={() => handleChartSelectionClick("Year")}>
+                  Year: ${yearSavingsTotal.toLocaleString()}
+                </button>
+                <button
+                  className={showProductMonthChart ? "chart-selected" : ""}
+                  onClick={() => handleChartSelectionClick("Month")}>
+                  Monthly: ${monthSavingsTotal.toLocaleString()}
                 </button>
               </div>
-              <button
-                className={showProductCurrentYearChart ? "chart-selected" : ""}
-                onClick={() => handleChartSelectionClick("currentYear")}>
-                Current Year: ${currentYearSavingsTotal.toLocaleString()}
-              </button>
-              <button
-                className={showProductYearChart ? "chart-selected" : ""}
-                onClick={() => handleChartSelectionClick("Year")}>
-                Year: ${yearSavingsTotal.toLocaleString()}
-              </button>
-              <button
-                className={showProductMonthChart ? "chart-selected" : ""}
-                onClick={() => handleChartSelectionClick("Month")}>
-                Monthly: ${monthSavingsTotal.toLocaleString()}
-              </button>
             </div>
           )}
           <div ref={exportSavingsTotals}>
