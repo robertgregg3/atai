@@ -418,57 +418,36 @@ export const DataVisualisation = (rawData) => {
           </div>
           {showDoughnutChart && (
             <>
-              {showProductCurrentYearChart && (
-                <div>
-                  <div className="update-others">
-                    <DownloadChart
-                      reference={exportCurrentYear}
-                      title={"Product Savings For the Current Year"}
-                    />
-                  </div>
-                  <div ref={exportCurrentYear}>
-                    <DoughnutChart
-                      chartData={productSavingsCurrentYear}
-                      chartTitle={"Product Savings For the Current Year"}
-                      chartLabels={productChartLabels}
-                    />
-                  </div>
-                </div>
-              )}
-              {showProductYearChart && (
-                <div>
-                  <div className="update-others">
-                    <DownloadChart
-                      reference={exportYear}
-                      title={"Product Savings for the Year"}
-                    />
-                  </div>
-                  <div ref={exportYear}>
-                    <DoughnutChart
-                      chartData={productSavingsYear}
-                      chartTitle={"Product Savings for the Year"}
-                      chartLabels={productChartLabels}
-                    />
-                  </div>
-                </div>
-              )}
-              {showProductMonthChart && (
-                <div>
-                  <div className="update-others">
-                    <DownloadChart
-                      reference={exportMonth}
-                      title={"Product Savings for the Month"}
-                    />
-                  </div>
-                  <div ref={exportMonth}>
-                    <DoughnutChart
-                      chartData={productSavingsMonth}
-                      chartTitle={"Product Savings for the Month"}
-                      chartLabels={productChartLabels}
-                    />
-                  </div>
-                </div>
-              )}
+              <div ref={exportCurrentYear}>
+                {showProductCurrentYearChart && (
+                  <DoughnutChart
+                    chartData={productSavingsCurrentYear}
+                    chartTitle={"Product Savings For the Current Year"}
+                    chartLabels={productChartLabels}
+                    downloadChartReference={exportCurrentYear.current}
+                  />
+                )}
+              </div>
+              <div ref={exportYear}>
+                {showProductYearChart && (
+                  <DoughnutChart
+                    chartData={productSavingsYear}
+                    chartTitle={"Product Savings for the Year"}
+                    chartLabels={productChartLabels}
+                    downloadChartReference={exportYear.current}
+                  />
+                )}
+              </div>
+              <div ref={exportMonth}>
+                {showProductMonthChart && (
+                  <DoughnutChart
+                    chartData={productSavingsMonth}
+                    chartTitle={"Product Savings for the Month"}
+                    chartLabels={productChartLabels}
+                    downloadChartReference={exportMonth.current}
+                  />
+                )}
+              </div>
             </>
           )}
         </div>

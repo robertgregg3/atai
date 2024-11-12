@@ -1,12 +1,17 @@
 import { useEffect } from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
-import './doughnutChart.css'
+import "./doughnutChart.css";
+import DownloadChart from "../../utils/downloadChart";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const DoughnutChart = ({ chartData, chartLabels, chartTitle }) => {
-  useEffect(() => {
-  }, []);
+const DoughnutChart = ({
+  chartData,
+  chartLabels,
+  chartTitle,
+  downloadChartReference,
+}) => {
+  useEffect(() => {}, []);
 
   const options = {
     responsive: true,
@@ -17,24 +22,26 @@ const DoughnutChart = ({ chartData, chartLabels, chartTitle }) => {
         text: chartTitle,
       },
       legend: {
-        position: 'bottom',
+        position: "bottom",
         labels: {
           usePointStyle: true,
         },
-        padding: 300
+        padding: 300,
       },
       tooltip: {
         callbacks: {
-            label: (context) => {
-                let label = context.dataset.label || '';
-                if (label) {
-                    label += ` -- ${context.label}: $` + Math.round(context.parsed).toFixed(2);
-                }
-                return label;
+          label: (context) => {
+            let label = context.dataset.label || "";
+            if (label) {
+              label +=
+                ` -- ${context.label}: $` +
+                Math.round(context.parsed).toFixed(2);
             }
-        }
-      } 
-    }
+            return label;
+          },
+        },
+      },
+    },
   };
   const data = {
     labels: chartLabels,
@@ -52,15 +59,14 @@ const DoughnutChart = ({ chartData, chartLabels, chartTitle }) => {
           "#8989a0",
           "#0b7083",
         ],
-        borderColor: [
-          '#ffffff'
-        ],
+        borderColor: ["#ffffff"],
         borderWidth: 0,
       },
     ],
   };
   return (
     <div className="chart-doughnut">
+      <DownloadChart reference={downloadChartReference} title={chartTitle} />
       <Doughnut data={data} options={options} />
     </div>
   );

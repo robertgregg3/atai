@@ -5,6 +5,7 @@
   place-content: center;
   display: grid;
   min-height: calc(100svh - 60px);
+  justify-items: center;
 }
   
 .chart-horizontal{
@@ -15,6 +16,7 @@
 .chart-doughnut {
   width: 40vw;
   height: 70vh;
+  padding: 1rem;
 }
   
 select.form-select {
@@ -46,15 +48,10 @@ select.form-select {
 }
 
 .percentage-container {
-  width: 100%;
   justify-content: center;
   align-items: center;
   display: flex;
   gap: 0.5rem;
-}
-
-.update-others {
-  position: relative;
 }
   
 .update-others button {
@@ -101,14 +98,12 @@ select.form-select {
 }
 
 .chart__selection {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  justify-content: center;
-  top: -50%;
-  left: -200px;
-  height: 100vh;
+  display: grid;
+  justify-items: center;
+  margin: auto;
+  grid-template-columns: auto auto auto auto;
+  align-items: center;
+  grid-gap: 0.5rem;
 }
 
 .chart__selection button {
