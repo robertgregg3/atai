@@ -4,15 +4,13 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { getAuth, signOut } from "firebase/auth";
 import DoughnutChart from "../charts/DoughnutChart";
 import SavingsTotalsBarChart from "../charts/SavingsTotalsBarChart";
-import "./dataVisualisation.css";
 import Sidebar from "../sidebar/Sidebar";
 import DashboardHeader from "../DashboardHeader/DashboardHeader";
-import DownloadChart from "../../utils/downloadChart";
 import SavingsCostCentreBarChart from "../charts/SavingsCostCentreBarChart";
 import SavingsEnvironmentBarChart from "../charts/SavingsEnvironmentBarChart";
+import "./dataVisualisation.css";
 
-export const DataVisualisation = (rawData) => {
-  const { data } = rawData;
+export const DataVisualisation = ({ data }) => {
   const [{ user, displayName }, dispatch] = useStateValue();
 
   const [formattedData, setFormattedData] = useState([]);
@@ -55,6 +53,7 @@ export const DataVisualisation = (rawData) => {
     month: "ActualSavingsPerMonth",
   };
 
+  // formats the data
   useEffect(() => {
     data && formatData(data);
     console.log("user:", displayName);
@@ -77,6 +76,11 @@ export const DataVisualisation = (rawData) => {
 
   const formatSavingsTotalData = (data) => {
     // the last row of the csv contains the totals
+    // the last row of the csv contains the totals
+    // For each key in the array, retrieve the value from the totals array using totals[key].
+    // then remove any $, -, or , characters from the value.
+    // convert the cleaned string into a floating-point number.
+    // Filter Out NaN Values
     const savingsTotalsRow = data[data.length - 1];
 
     const savingsTotals = {
@@ -107,36 +111,28 @@ export const DataVisualisation = (rawData) => {
     setBarChartEnvironment(false);
   };
 
-  const formatCostCenterData = (data) => {
-    let costCenterLabels = [
+  const formatChartData = (data, labelKey, propKey, chartType) => {
+    let labels = [
       "ActualSavingsPerMonth",
       "ActualSavingsForYear",
       "ActualSavingsForCurrentYear",
     ];
-    let costCenterProperties = []; // fia, fii, fio etc
-    let costCenterData = {}; // the object used for the chart
+    let dataProperties = []; // fia, fii, fio etc
+    let newChartData = {}; // the object used for the chart
 
-    // grab the properties for the costCenter
     data.map((d) => {
-      if (costCenterProperties.indexOf(d.CostCenterTag) === -1) {
-        if (d.CostCenterTag !== "") {
-          return (costCenterProperties = [
-            ...costCenterProperties,
-            d.CostCenterTag,
-          ]);
+      if (dataProperties.indexOf(d[labelKey]) === -1) {
+        if (d[labelKey] !== "") {
+          return (dataProperties = [...dataProperties, d[labelKey]]);
         }
       }
       return [];
     });
 
-    // iterate through the labels and return an object with the labels as the keys
-    // then iterate through the properties and assign each key the value of an object
-    // in each object (fia, fii etc) map through the data and find total up the values of the column header (key)
-    // final check is to convert the string to number in the reduce function
-    costCenterLabels.map((label) => {
-      return (costCenterData[label] = costCenterProperties.map((prop) => ({
+    labels.map((label) => {
+      return (newChartData[label] = dataProperties.map((prop) => ({
         [prop]: data
-          .filter((item) => item.CostCenterTag === prop)
+          .filter((item) => item[labelKey] === prop)
           .reduce(
             (total, d) =>
               isNaN(parseFloat(d[label]))
@@ -147,56 +143,10 @@ export const DataVisualisation = (rawData) => {
       })));
     });
 
-    setChartData(costCenterData);
-    setChartTitle("Cost Centre Savings");
-    setBarChartCostCenter(true);
-    setBarChartEnvironment(false);
-    setShowSavingsTotalChart(false);
-    setShowDoughnutChart(false);
-    setShowSavingsTotalChart(false);
-  };
-
-  const formatEnvironmentData = (data) => {
-    let environmentLabels = [
-      "ActualSavingsPerMonth",
-      "ActualSavingsForYear",
-      "ActualSavingsForCurrentYear",
-    ];
-    let environmentProperties = []; // fia, fii, fio etc
-    let environmentData = {}; // the object used for the chart
-
-    // grab the properties for the environment
-    data.map((d) => {
-      if (environmentProperties.indexOf(d.EnvironmentTag) === -1) {
-        if (d.EnvironmentTag !== "") {
-          return (environmentProperties = [
-            ...environmentProperties,
-            d.EnvironmentTag,
-          ]);
-        }
-      }
-      return [];
-    });
-
-    environmentLabels.map((label) => {
-      return (environmentData[label] = environmentProperties.map((prop) => ({
-        [prop]: data
-          .filter((item) => item.EnvironmentTag === prop)
-          .reduce(
-            (total, d) =>
-              isNaN(parseFloat(d[label]))
-                ? total
-                : total + parseFloat(d[label]),
-            0
-          ),
-      })));
-    });
-
-    setChartData(environmentData);
-    setChartTitle("Environment Savings");
-    setBarChartCostCenter(false);
-    setBarChartEnvironment(true);
-    setShowSavingsTotalChart(false);
+    setChartData(newChartData);
+    setChartTitle(chartType);
+    setBarChartCostCenter(chartType === "Cost Centre Savings");
+    setBarChartEnvironment(chartType === "Environment Savings");
     setShowDoughnutChart(false);
     setShowSavingsTotalChart(false);
   };
@@ -310,14 +260,6 @@ export const DataVisualisation = (rawData) => {
     setShowDoughnutChart(true);
   };
 
-  const onFormSelectChange = (e) => {
-    const value = e.target.value;
-    if (value === "savingsTotal") formatSavingsTotalData(formattedData);
-    if (value === "costCenter") formatCostCenterData(formattedData);
-    if (value === "environment") formatEnvironmentData(formattedData);
-    if (value === "product") formatProductData(formattedData);
-  };
-
   const updateOtherPercentage = (e) => {
     e.preventDefault();
     setOthersPercentage(e.target.value);
@@ -355,8 +297,22 @@ export const DataVisualisation = (rawData) => {
     <div className="App">
       <Sidebar
         handleSavingsTotals={() => formatSavingsTotalData(formattedData)}
-        handleCostCentreSavings={() => formatCostCenterData(formattedData)}
-        handleEnvironmentData={() => formatEnvironmentData(formattedData)}
+        handleCostCentreSavings={() =>
+          formatChartData(
+            formattedData,
+            "CostCenterTag",
+            "costCenter",
+            "Cost Centre Savings"
+          )
+        }
+        handleEnvironmentData={() =>
+          formatChartData(
+            formattedData,
+            "EnvironmentTag",
+            "environment",
+            "Environment Savings"
+          )
+        }
         handleProductSavingsData={() => formatProductData(formattedData)}
         handleLogout={(e) => handleLogoutClick(e)}
       />
