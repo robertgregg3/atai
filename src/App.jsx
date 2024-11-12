@@ -59,7 +59,9 @@ const App = () => {
               <DataVisualisation data={rawData} user={user} />
             </Route>
           ) : (
-            <Login />
+            <Route path="/">
+              <Login />
+            </Route>
           )}
         </Switch>
       </Router>
