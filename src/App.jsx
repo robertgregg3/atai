@@ -32,7 +32,7 @@ const App = () => {
         setLoading(false); // Set loading to false once user data is fetched
       }
     });
-  }, [user, rawData]);
+  }, [user, rawData, dispatch]);
 
   if (loading) {
     return (

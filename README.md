@@ -1,6 +1,6 @@
 # Atainr Data Visualisation
 
-This showcases some basic Data visualisation skills using D3 charting library. Created in 2021. Layout is a basic dashboard with navigation in teh sidebar.
+This showcases some basic Data visualisation skills using D3 charting library. Created in 2021. Layout is a basic dashboard with navigation in the sidebar.
 
 ### Features include:
 

@@ -12,7 +12,7 @@ const Login = () => {
   const [activeButton, setActiveButton] = useState("Login");
   const [name, setName] = useState("");
   const [login, setLogin] = useState(true);
-  const [{}, dispatch] = useStateValue();
+  const [dispatch] = useStateValue();
   const history = useHistory();
 
   const handleSignIn = (e) => {
