@@ -1,7 +1,10 @@
+import { RiMenuFold4Fill, RiMenuFold3Fill } from "react-icons/ri";
+import { useStateValue } from "../../Context/StateProvider";
 import ataiLogo from "../../images/atai1.svg";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import DonutLargeIcon from "@mui/icons-material/DonutLarge";
 import LogoutIcon from "@mui/icons-material/Logout";
+
 import "./sidebar.css";
 
 const Sidebar = ({
@@ -11,8 +14,22 @@ const Sidebar = ({
   handleProductSavingsData,
   handleLogout,
 }) => {
+  const [{ sidebarOpen }, dispatch] = useStateValue();
+
+  const handleSideBarToggle = () => {
+    dispatch({ type: "TOGGLE_SIDEBAR", sidebarOpen: !sidebarOpen });
+  };
+
   return (
-    <div className="sidebar">
+    <div
+      className={`${
+        sidebarOpen ? "sidebar--open" : "sidebar--closed"
+      } sidebar`}>
+      {sidebarOpen ? (
+        <RiMenuFold3Fill onClick={handleSideBarToggle} />
+      ) : (
+        <RiMenuFold4Fill onClick={handleSideBarToggle} />
+      )}
       <img alt="Atainr Logo" src={ataiLogo} />
       <div className="nav-container">
         <div className="nav-items">
