@@ -8,26 +8,38 @@ import "./login.css";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [activeButton, setActiveButton] = useState("Login");
   const [name, setName] = useState("");
   const [login, setLogin] = useState(true);
-  const [{ user }, dispatch] = useStateValue();
+  const [{}, dispatch] = useStateValue();
   const history = useHistory();
 
   const handleSignIn = (e) => {
+    setError("");
     e.preventDefault();
-    auth.signInWithEmailAndPassword(email, password).then((userCredential) => {
-      let loggedInUser = userCredential;
-      console.log("user: ", loggedInUser);
-      dispatch({
-        type: "SET_USER",
-        user: loggedInUser,
+    auth
+      .signInWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        let loggedInUser = userCredential;
+        console.log("user: ", loggedInUser);
+        dispatch({
+          type: "SET_USER",
+          user: loggedInUser,
+        });
+        history.push("/dashboard");
+      })
+      .catch((err) => {
+        const formattedError = err.message.replace("Firebase: ", "");
+        setError(formattedError);
+        console.log(err);
       });
-    });
   };
 
   const handleRegister = (e) => {
+    setError("");
     e.preventDefault();
+
     auth
       .createUserWithEmailAndPassword(email, password)
       .then((auth) => {
@@ -40,9 +52,13 @@ const Login = () => {
           user: auth.user,
           displayName: name,
         });
+        history.push("/dashboard");
       })
-      .catch((err) => console.log(err));
-    history.push("/dashboard");
+      .catch((err) => {
+        const formattedError = err.message.replace("Firebase: ", "");
+        setError(formattedError);
+        console.log(err);
+      });
   };
 
   const handleButtonClick = (value, linkName) => {
@@ -87,20 +103,23 @@ const Login = () => {
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
+                  required
                 />
               </>
             )}
             <label>E-mail</label>
             <input
-              type="text"
+              type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              required
             />
             <label>Password</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              required
             />
 
             <div className="login__button-container">
@@ -115,6 +134,7 @@ const Login = () => {
                   Create ATAINR Account
                 </button>
               )}
+              <span className="error-message">{error}</span>
             </div>
           </form>
         </div>
