@@ -12,10 +12,11 @@ const Login = () => {
   const [activeButton, setActiveButton] = useState("Login");
   const [name, setName] = useState("");
   const [login, setLogin] = useState(true);
-  const [dispatch] = useStateValue();
+  const [state, dispatch] = useStateValue();
   const history = useHistory();
 
   const handleSignIn = (e) => {
+    console.log(state);
     setError("");
     e.preventDefault();
     auth
