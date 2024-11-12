@@ -2,7 +2,6 @@
     height: 100vh;
     background: #000038;
     display: grid;
-    grid-template-rows: auto 1fr auto;
     justify-items: center;
     padding: 3rem 1rem ;
     position: relative;
@@ -53,11 +52,10 @@
   
 .logo__and__copyright {
     color: #ffffff99;
-    display: grid;
     font-size: 10px;
-    align-self: flex-end;
-    margin-bottom: 3rem;
-    justify-items: center;
+    display: grid;
+    align-content: center;
+    text-align: center;
 }
 
 .nav-container {
