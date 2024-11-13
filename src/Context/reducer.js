@@ -2,7 +2,7 @@ export const initialState = {
   user: null,
   data: [],
   displayName: "",
-  sidebarOpen: true,
+  sidebarOpen: false,
 };
 
 const reducer = (state, action) => {
