@@ -14,22 +14,20 @@ const DownloadChart = ({ reference, title }) => {
   };
 
   return (
-    <div className="download-chart">
-      <Form.Select
-        aria-label="Download Chart"
-        defaultValue=""
-        onChange={(e) => handleDownload(e, title)}>
-        <option className="select-option" value="">
-          Download Chart
-        </option>
-        <option className="select-option" value="jpeg">
-          JPEG
-        </option>
-        <option className="select-option" value="png">
-          PNG
-        </option>
-      </Form.Select>
-    </div>
+    <Form.Select
+      aria-label="Download Chart"
+      defaultValue=""
+      onChange={(e) => handleDownload(e, title)}>
+      <option className="select-option" value="">
+        Download Chart
+      </option>
+      <option className="select-option" value="jpeg">
+        JPEG
+      </option>
+      <option className="select-option" value="png">
+        PNG
+      </option>
+    </Form.Select>
   );
 };
 
