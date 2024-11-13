@@ -39,11 +39,18 @@ select.form-select {
   color: #333;
 }
   
-.download-chart .form-select {
+.form-select {
   width: 175px;
   position: absolute;
-    right: 2rem;
-    top: 75px;
+  right: 2rem;
+  top: 75px;
+}
+
+@media(max-width: 750px) {
+  .form-select {
+    top: 125px;
+    z-index: -1;
+  }
 }
 
 .percentage-container input {

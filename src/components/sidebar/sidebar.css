@@ -33,6 +33,7 @@
     .sidebar {
         width: 200px;
         padding: 2rem 0;
+        position: fixed;
     }
 
     .sidebar--closed svg {

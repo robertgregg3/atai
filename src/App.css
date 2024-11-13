@@ -9,6 +9,7 @@
   }
 }
 
+
 * {
   font-family: 'Lato';
 }
@@ -32,6 +33,12 @@ a {
   grid-template-columns: auto 1fr;
   font-size: calc(10px + 2vmin);
   font-family: 'Lato', sans-serif;
+}
+
+@media screen and (max-width: 750px) {
+  .App {
+    grid-template-columns: 1fr;
+  }
 }
 
 h1, h2, h3, h4, h5, h6 {
