@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, memo } from "react";
 import { useStateValue } from "./../../Context/StateProvider";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { getAuth, signOut } from "firebase/auth";
@@ -16,7 +16,7 @@ const savingsTotals = {
   month: "ActualSavingsPerMonth",
 };
 
-export const DataVisualisation = ({ data }) => {
+export const DataVisualisation = memo(({ data }) => {
   const [{ user, displayName }, dispatch] = useStateValue();
 
   const [formattedData, setFormattedData] = useState([]);
@@ -419,4 +419,4 @@ export const DataVisualisation = ({ data }) => {
       </div>
     </div>
   );
-};
+});
