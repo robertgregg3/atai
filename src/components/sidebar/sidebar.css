@@ -33,6 +33,7 @@
     .sidebar {
         padding: 1rem 0;
         position: fixed;
+        z-index: 2;
     }
 
     .sidebar--closed svg {
@@ -89,6 +90,7 @@
 .percentage-container button {
   padding: 0.6rem 1rem;
   border-radius: 0.5rem;
+  font-size: 0.8rem;
 }
   
 .nav-items > button:hover {

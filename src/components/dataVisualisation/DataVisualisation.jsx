@@ -332,7 +332,7 @@ export const DataVisualisation = memo(({ data }) => {
                   <button
                     className="percentage-button"
                     onClick={handleButtonClick}>
-                    Update "Other" percentage
+                    "Other" %
                   </button>
                 </div>
               </div>
@@ -342,17 +342,17 @@ export const DataVisualisation = memo(({ data }) => {
                     showProductCurrentYearChart ? "chart-selected" : ""
                   }
                   onClick={() => handleChartSelectionClick("currentYear")}>
-                  Current Year: ${currentYearSavingsTotal.toLocaleString()}
+                  Current Year
                 </button>
                 <button
                   className={showProductYearChart ? "chart-selected" : ""}
                   onClick={() => handleChartSelectionClick("Year")}>
-                  Year: ${yearSavingsTotal.toLocaleString()}
+                  Year
                 </button>
                 <button
                   className={showProductMonthChart ? "chart-selected" : ""}
                   onClick={() => handleChartSelectionClick("Month")}>
-                  Monthly: ${monthSavingsTotal.toLocaleString()}
+                  Monthly
                 </button>
               </div>
             </div>
@@ -387,7 +387,7 @@ export const DataVisualisation = memo(({ data }) => {
                 {showProductCurrentYearChart && (
                   <DoughnutChart
                     chartData={productSavingsCurrentYear}
-                    chartTitle={"Product Savings For the Current Year"}
+                    chartTitle={`Current year savings $${currentYearSavingsTotal.toLocaleString()}`}
                     chartLabels={productChartLabels}
                     downloadChartReference={exportCurrentYear.current}
                   />
@@ -397,7 +397,7 @@ export const DataVisualisation = memo(({ data }) => {
                 {showProductYearChart && (
                   <DoughnutChart
                     chartData={productSavingsYear}
-                    chartTitle={"Product Savings for the Year"}
+                    chartTitle={`Year savings $${yearSavingsTotal.toLocaleString()}`}
                     chartLabels={productChartLabels}
                     downloadChartReference={exportYear.current}
                   />
@@ -407,7 +407,7 @@ export const DataVisualisation = memo(({ data }) => {
                 {showProductMonthChart && (
                   <DoughnutChart
                     chartData={productSavingsMonth}
-                    chartTitle={"Product Savings for the Month"}
+                    chartTitle={`Monthly savings $${monthSavingsTotal.toLocaleString()}`}
                     chartLabels={productChartLabels}
                     downloadChartReference={exportMonth.current}
                   />

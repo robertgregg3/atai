@@ -1,3 +1,4 @@
+import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
 import { DataVisualisation } from "./components/dataVisualisation/DataVisualisation";
 import { useStateValue } from "./Context/StateProvider";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
@@ -7,7 +8,6 @@ import { Audio } from "react-loader-spinner";
 import Login from "./components/login/Login";
 import useStaticDataCsv from "./hooks/useStaticData";
 import "./App.css";
-import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
 
 const App = () => {
   const [{ user }, dispatch] = useStateValue();
@@ -28,9 +28,9 @@ const App = () => {
           type: "SET_DATA",
           data: rawData,
         });
-        setLoading(false); // Set loading to false once user data is fetched
+        setLoading(false);
       } else {
-        setLoading(false); // Set loading to false once user data is fetched
+        setLoading(false);
       }
     });
   }, [user, rawData, dispatch]);
