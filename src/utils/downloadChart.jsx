@@ -3,7 +3,6 @@ import { Form } from "react-bootstrap";
 
 const DownloadChart = ({ reference, title }) => {
   const handleDownload = async (e, chartTitle) => {
-    // debugger;
     const selectedType = e.target.value;
     if (selectedType) {
       // Call exportAsImage with the selected file type

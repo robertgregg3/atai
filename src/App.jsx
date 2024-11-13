@@ -7,6 +7,7 @@ import { Audio } from "react-loader-spinner";
 import Login from "./components/login/Login";
 import useStaticDataCsv from "./hooks/useStaticData";
 import "./App.css";
+import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
 
 const App = () => {
   const [{ user }, dispatch] = useStateValue();
@@ -54,6 +55,9 @@ const App = () => {
     <>
       <Router>
         <Switch>
+          {user && window.location.pathname === "/" && (
+            <Redirect to="/dashboard" />
+          )}
           {user ? (
             <Route path="/dashboard">
               <DataVisualisation data={rawData} user={user} />
