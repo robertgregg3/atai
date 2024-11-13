@@ -20,6 +20,26 @@ const Sidebar = ({
     dispatch({ type: "TOGGLE_SIDEBAR", sidebarOpen: !sidebarOpen });
   };
 
+  const handleSavingsTotalClick = () => {
+    handleSavingsTotals();
+    handleSideBarToggle();
+  };
+
+  const handleCostCentreSavingsClick = () => {
+    handleCostCentreSavings();
+    handleSideBarToggle();
+  };
+
+  const handleEnvironmentDataClick = () => {
+    handleEnvironmentData();
+    handleSideBarToggle();
+  };
+
+  const handleProductSavingsDataClick = () => {
+    handleProductSavingsData();
+    handleSideBarToggle();
+  };
+
   return (
     <div
       className={`${
@@ -33,19 +53,19 @@ const Sidebar = ({
       <img alt="Atainr Logo" src={ataiLogo} />
       <div className="nav-container">
         <div className="nav-items">
-          <button onClick={handleSavingsTotals}>
+          <button onClick={() => handleSavingsTotalClick()}>
             <BarChartIcon className="sidebar__icon" />
             Savings Totals
           </button>
-          <button onClick={handleCostCentreSavings}>
+          <button onClick={() => handleCostCentreSavingsClick()}>
             <BarChartIcon className="sidebar__icon" />
             Cost Centre Savings
           </button>
-          <button onClick={handleEnvironmentData}>
+          <button onClick={() => handleEnvironmentDataClick()}>
             <BarChartIcon className="sidebar__icon" />
             Environment Savings
           </button>
-          <button onClick={handleProductSavingsData}>
+          <button onClick={() => handleProductSavingsDataClick()}>
             <DonutLargeIcon className="sidebar__icon" />
             Product Savings
           </button>

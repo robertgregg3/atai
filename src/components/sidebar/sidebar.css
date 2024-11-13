@@ -3,22 +3,10 @@
     background: #000038;
     display: grid;
     justify-items: center;
-    padding: 3rem 1rem ;
+    padding: 3rem 0rem;
     position: relative;
     margin-left: 0;
     transition: margin 0.3s ease;
-}
-
-.sidebar--closed {
-    margin-left: -290px;
-}
-
-.sidebar--closed svg {
-    right: 2rem;
-    background: #000038;
-    color: #ffffff;
-    padding: 0.2rem;
-    border-radius: 8px;
 }
 
 .sidebar > svg {
@@ -29,15 +17,26 @@
     font-size: 2.5rem;
 }
 
+.sidebar--closed {
+    margin-left: -290px;
+}
+
+.sidebar--closed svg {
+    right: -4.3rem;
+    background: #000038;
+    color: #ffffff;
+    padding: 0.2rem;
+    border-radius: 8px;
+}
+
 @media(max-width: 750px) {
     .sidebar {
-        width: 200px;
-        padding: 2rem 0;
+        padding: 1rem 0;
         position: fixed;
     }
 
     .sidebar--closed svg {
-        right: -160px;
+        right: -5.3rem;
         background: #000038;
         color: #ffffff;
         padding: 0.2rem;
@@ -57,12 +56,13 @@
     display: grid;
     align-content: center;
     text-align: center;
+    padding: 0.5rem;
 }
 
 .nav-container {
     display: grid;
     align-content: space-between;
-    padding-bottom: 2rem;
+    overflow-y: auto;
 }
 
 .nav-items {
@@ -75,7 +75,7 @@
 .percentage-container button {
   color: #fff;
   background-color: #000038;
-  padding: 1rem 1rem;
+  padding: 1rem;
   border-radius: 8px;
   cursor: pointer;
   font-size: 1rem;

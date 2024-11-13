@@ -15,8 +15,15 @@
   transition: height 0.3s ease;
 }
 
+@media(max-width: 750px) {
+  .chart-horizontal{
+    height: 60vh;
+    width: 80vw;
+  }
+}
+
 .chart--sidebar-closed {
-  height: 70vh;
+  height: 60vh;
   width: 80vw;
 }
 
@@ -46,7 +53,7 @@ select.form-select {
   top: 75px;
 }
 
-@media(max-width: 750px) {
+@media(max-width: 550px) {
   .form-select {
     top: 125px;
     z-index: -1;
