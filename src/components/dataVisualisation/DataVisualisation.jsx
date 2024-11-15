@@ -23,10 +23,6 @@ export const DataVisualisation = memo(({ data }) => {
   const [chartData, setChartData] = useState([]);
   const [chartTitle, setChartTitle] = useState("Chart");
 
-  const [showDoughnutChart, setShowDoughnutChart] = useState(false);
-  const [showSavingsTotalChart, setShowSavingsTotalChart] = useState(false);
-  const [showBarChartCostCenter, setBarChartCostCenter] = useState(false);
-  const [showBarChartEnvironment, setBarChartEnvironment] = useState(false);
   const [showProductCurrentYearChart, setShowProductCurrentYearChart] =
     useState(true);
   const [showProductYearChart, setShowProductYearChart] = useState(false);
@@ -50,6 +46,8 @@ export const DataVisualisation = memo(({ data }) => {
   const exportSavingsTotals = useRef();
   const exportCostCenterTotals = useRef();
   const exportEnvironmentTotals = useRef();
+
+  const [selectedChart, setSelectedChart] = useState("savings-total");
 
   const history = useHistory();
 
@@ -106,10 +104,7 @@ export const DataVisualisation = memo(({ data }) => {
     setMonthSavingTotal(parseFloat(savingsTotals.ActualSavingsPerMonth));
     setChartData(savingsValues);
     setChartTitle("Total Savings Bar Chart");
-    setShowSavingsTotalChart(true);
-    setShowDoughnutChart(false);
-    setBarChartCostCenter(false);
-    setBarChartEnvironment(false);
+    setSelectedChart("savings-total");
   };
 
   const formatChartData = (data, labelKey, propKey, chartType) => {
@@ -146,10 +141,11 @@ export const DataVisualisation = memo(({ data }) => {
 
     setChartData(newChartData);
     setChartTitle(chartType);
-    setBarChartCostCenter(chartType === "Cost Centre Savings");
-    setBarChartEnvironment(chartType === "Environment Savings");
-    setShowDoughnutChart(false);
-    setShowSavingsTotalChart(false);
+    setSelectedChart(
+      chartType === "Cost Centre Savings"
+        ? "cost-savings"
+        : "environment-savings"
+    );
   };
 
   // three separate charts for the yearly, monthly, current year savings
@@ -255,10 +251,7 @@ export const DataVisualisation = memo(({ data }) => {
     setProductSavingsYear(Object.values(productSavingsYearOther));
     setProductSavingsMonth(Object.values(productSavingsMonthOther));
     setChartTitle("Product Savings");
-    setBarChartCostCenter(false);
-    setBarChartEnvironment(false);
-    setShowSavingsTotalChart(false);
-    setShowDoughnutChart(true);
+    setSelectedChart("product-savings");
   };
 
   const updateOtherPercentage = (e) => {
@@ -275,10 +268,6 @@ export const DataVisualisation = memo(({ data }) => {
     setShowProductYearChart(value === "Year" ? true : false);
     setShowProductMonthChart(value === "Month" ? true : false);
   };
-
-  // const handleUploadClick = () => {
-  //   history.push("/");
-  // };
 
   const handleLogoutClick = (e) => {
     e.preventDefault();
@@ -320,7 +309,7 @@ export const DataVisualisation = memo(({ data }) => {
       <div className="data-area">
         <DashboardHeader chartTitle={chartTitle} />
         <div className="chart-container">
-          {showDoughnutChart && (
+          {selectedChart === "product-savings" && (
             <div className="chart__selection">
               <div className="">
                 <div className="percentage-container">
@@ -358,7 +347,7 @@ export const DataVisualisation = memo(({ data }) => {
             </div>
           )}
           <div ref={exportSavingsTotals}>
-            {showSavingsTotalChart && (
+            {selectedChart === "savings-total" && (
               <SavingsTotalsBarChart
                 chartData={chartData}
                 exportSavingsTotals={exportSavingsTotals.current}
@@ -366,7 +355,7 @@ export const DataVisualisation = memo(({ data }) => {
             )}
           </div>
           <div ref={exportCostCenterTotals}>
-            {showBarChartCostCenter && (
+            {selectedChart === "cost-savings" && (
               <SavingsCostCentreBarChart
                 chartData={chartData}
                 exportCostCenterTotals={exportCostCenterTotals.current}
@@ -374,14 +363,14 @@ export const DataVisualisation = memo(({ data }) => {
             )}
           </div>
           <div ref={exportEnvironmentTotals}>
-            {showBarChartEnvironment && (
+            {selectedChart === "environment-savings" && (
               <SavingsEnvironmentBarChart
                 chartData={chartData}
                 exportEnvironmentTotals={exportEnvironmentTotals.current}
               />
             )}
           </div>
-          {showDoughnutChart && (
+          {selectedChart === "product-savings" && (
             <>
               <div ref={exportCurrentYear}>
                 {showProductCurrentYearChart && (
