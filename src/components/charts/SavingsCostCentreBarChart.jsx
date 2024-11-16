@@ -12,6 +12,7 @@ import {
 import { Bar } from "react-chartjs-2";
 import DownloadChart from "../../utils/downloadChart";
 import { useStateValue } from "../../Context/StateProvider";
+import formatChartData from "../../utils/formatChartData";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -22,88 +23,33 @@ ChartJS.register(
 );
 
 const SavingsCostCentreBarChart = ({ chartData, exportCostCenterTotals }) => {
-  const [chartLabels, setChartLabels] = useState([]);
-  const [barChartData, setBarChartData] = useState([]);
   const [{ sidebarOpen }] = useStateValue();
 
-  useEffect(() => {
-    if (!chartData) return; // Check if chartData is not null or undefined
+  const currentYear = formatChartData(chartData.ActualSavingsForCurrentYear);
+  const monthSavings = formatChartData(chartData.ActualSavingsForYear);
+  const yearSavings = formatChartData(chartData.ActualSavingsPerMonth);
+  const chartLabels = formatChartData(
+    chartData.ActualSavingsForCurrentYear,
+    true
+  );
 
-    const chartDataSets = Object.keys(chartData);
-    const savingsForCurrentYear = chartData["ActualSavingsForCurrentYear"];
-    const savingsPerYear = chartData["ActualSavingsForYear"];
-    const savingsPerMonth = chartData["ActualSavingsPerMonth"];
-
-    if (!savingsForCurrentYear || !savingsPerYear || !savingsPerMonth) {
-      // If any of these are undefined, skip the rest of the logic
-      return;
-    }
-
-    let chartDataLabels = [];
-
-    chartData &&
-      savingsForCurrentYear.map((data) => {
-        if (data) {
-          for (let key in data) {
-            return (chartDataLabels = [...chartDataLabels, key]);
-          }
-        }
-        return [];
-      });
-
-    setChartLabels(chartDataLabels);
-
-    let currentYearSavings = [];
-    chartData &&
-      savingsForCurrentYear?.map((data) => {
-        if (data) {
-          for (let key in data) {
-            return (currentYearSavings = [...currentYearSavings, data[key]]);
-          }
-        }
-        return [];
-      });
-
-    let yearSavings = [];
-    chartData &&
-      savingsPerYear?.map((data) => {
-        if (data) {
-          for (let key in data) {
-            return (yearSavings = [...yearSavings, data[key]]);
-          }
-        }
-        return [];
-      });
-
-    let monthSavings = [];
-    chartData &&
-      savingsPerMonth?.map((data) => {
-        if (data) {
-          for (let key in data) {
-            return (monthSavings = [...monthSavings, data[key]]);
-          }
-        }
-        return [];
-      });
-
-    setBarChartData([
-      {
-        label: chartDataSets[0],
-        data: currentYearSavings,
-        backgroundColor: ["#10a8a9"],
-      },
-      {
-        label: chartDataSets[1],
-        data: yearSavings,
-        backgroundColor: ["#000038"],
-      },
-      {
-        label: chartDataSets[2],
-        data: monthSavings,
-        backgroundColor: ["#cccccc"],
-      },
-    ]);
-  }, [chartData]);
+  const barChartData = [
+    {
+      label: "Current Year Savings",
+      data: currentYear,
+      backgroundColor: ["#10a8a9"],
+    },
+    {
+      label: "Yearly Savings",
+      data: yearSavings,
+      backgroundColor: ["#000038"],
+    },
+    {
+      label: "Monthly Savings",
+      data: monthSavings,
+      backgroundColor: ["#cccccc"],
+    },
+  ];
 
   const options = {
     responsive: true,
@@ -169,6 +115,8 @@ const SavingsCostCentreBarChart = ({ chartData, exportCostCenterTotals }) => {
     labels: chartLabels,
     datasets: barChartData,
   };
+
+  if (!chartData) return; // Check if chartData is not null or undefined
 
   return (
     <div

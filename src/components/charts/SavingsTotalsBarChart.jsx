@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import "./savingsTotalsBarChart.css";
@@ -8,7 +7,6 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 const SavingsTotalsBarChart = ({ chartData, exportSavingsTotals }) => {
   const [{ sidebarOpen }] = useStateValue();
-  useEffect(() => {}, []);
 
   const options = {
     responsive: true,
