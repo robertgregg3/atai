@@ -26,8 +26,8 @@ const SavingsCostCentreBarChart = ({ chartData, exportCostCenterTotals }) => {
   const [{ sidebarOpen }] = useStateValue();
 
   const currentYear = formatChartData(chartData.ActualSavingsForCurrentYear);
-  const monthSavings = formatChartData(chartData.ActualSavingsForYear);
-  const yearSavings = formatChartData(chartData.ActualSavingsPerMonth);
+  const monthSavings = formatChartData(chartData.ActualSavingsPerMonth);
+  const yearSavings = formatChartData(chartData.ActualSavingsForYear);
   const chartLabels = formatChartData(
     chartData.ActualSavingsForCurrentYear,
     true
