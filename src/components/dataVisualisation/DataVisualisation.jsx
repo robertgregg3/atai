@@ -9,11 +9,19 @@ import DashboardHeader from "../DashboardHeader/DashboardHeader";
 import SavingsCostCentreBarChart from "../charts/SavingsCostCentreBarChart";
 import SavingsEnvironmentBarChart from "../charts/SavingsEnvironmentBarChart";
 import "./dataVisualisation.css";
+import prepareChartTotals from "../../utils/prepareChartTotals";
 
-const savingsTotals = {
-  currentYear: "ActualSavingsForCurrentYear",
-  year: "ActualSavingsForYear",
-  month: "ActualSavingsPerMonth",
+const savingsTotalLabels = [
+  "ActualSavingsForCurrentYear",
+  "ActualSavingsForYear",
+  "ActualSavingsPerMonth",
+];
+
+const chartTitles = {
+  "savings-total": "Total Savings Bar Chart",
+  "cost-savings": "Cost Savings Bar Chart",
+  "environment-savings": "Environment Savings Bar Chart",
+  "product-savings": "Product Savings Doughnut Chart",
 };
 
 export const DataVisualisation = memo(({ data }) => {
@@ -21,7 +29,7 @@ export const DataVisualisation = memo(({ data }) => {
 
   const [formattedData, setFormattedData] = useState([]);
   const [chartData, setChartData] = useState([]);
-  const [chartTitle, setChartTitle] = useState("Chart");
+  const [chartTitle, setChartTitle] = useState("");
 
   const [showProductCurrentYearChart, setShowProductCurrentYearChart] =
     useState(true);
@@ -55,17 +63,14 @@ export const DataVisualisation = memo(({ data }) => {
   useEffect(() => {
     const formatData = (data) => {
       // remove commas and $ signs from all fields
-      let tempFormattedData = [];
-
-      data.map((d) => {
+      let tempFormattedData = data.map((d) => {
         for (let key in d) {
-          d[key] = d[key].replace(/\$|-|,/g, "");
+          return (d[key] = d[key].replace(/\$|-|,/g, ""));
         }
-        return (tempFormattedData = [...tempFormattedData, d]);
       });
 
       setFormattedData(tempFormattedData);
-      formatSavingsTotalData(tempFormattedData);
+      formatSavingsTotalData();
     };
 
     if (data) {
@@ -73,74 +78,57 @@ export const DataVisualisation = memo(({ data }) => {
     }
   }, [user, data, displayName]);
 
-  const formatSavingsTotalData = (data) => {
-    // the last row of the csv contains the totals
-    // the last row of the csv contains the totals
-    // For each key in the array, retrieve the value from the totals array using totals[key].
-    // then remove any $, -, or , characters from the value.
-    // convert the cleaned string into a floating-point number.
-    // Filter Out NaN Values
-    const savingsTotalsRow = data[data.length - 1];
-
-    const savingsTotals = {
-      ActualSavingsForCurrentYear: savingsTotalsRow.ActualSavingsForCurrentYear,
-      ActualSavingsForYear: savingsTotalsRow.ActualSavingsForYear,
-      ActualSavingsPerMonth: savingsTotalsRow.ActualSavingsPerMonth,
-    };
-
-    const formatChartData = Object.values(savingsTotals);
-
-    let savingsValues = [];
-    formatChartData.map((t) => {
-      t = t.replace(/\$|-|,/g, "");
-      t = parseFloat(t);
-      return (savingsValues = [...savingsValues, t]);
-    });
-
-    setCurrentYearSavingTotal(
-      parseFloat(savingsTotals.ActualSavingsForCurrentYear)
-    );
-    setYearSavingTotal(parseFloat(savingsTotals.ActualSavingsForYear));
-    setMonthSavingTotal(parseFloat(savingsTotals.ActualSavingsPerMonth));
-    setChartData(savingsValues);
-    setChartTitle("Total Savings Bar Chart");
+  const formatSavingsTotalData = () => {
+    const chartTotals = prepareChartTotals(data);
+    setChartData([chartTotals[0], chartTotals[1], chartTotals[2]]);
     setSelectedChart("savings-total");
   };
 
-  const formatChartData = (data, labelKey, propKey, chartType) => {
+  // Update chart title when the chart is updated
+  useEffect(() => {
+    return setChartTitle(chartTitles[selectedChart] || "");
+  }, [selectedChart]);
+
+  const formatChartData = (chartType, labelKey) => {
     let labels = [
       "ActualSavingsPerMonth",
       "ActualSavingsForYear",
       "ActualSavingsForCurrentYear",
     ];
-    let dataProperties = []; // fia, fii, fio etc
-    let newChartData = {}; // the object used for the chart
 
-    data.map((d) => {
-      if (dataProperties.indexOf(d[labelKey]) === -1) {
-        if (d[labelKey] !== "") {
-          return (dataProperties = [...dataProperties, d[labelKey]]);
+    const newChartData = labels.reduce((acc, label) => {
+      acc[label] = [];
+
+      // Create a map to store totals by tag
+      const totalsByTag = {};
+
+      // Use forEach to iterate over the data and accumulate totals
+      data.forEach((item) => {
+        if (item[labelKey] && item[labelKey].trim() !== "") {
+          // Clean the value and convert to a number
+          const cleanedValue =
+            parseFloat(item[label].replace(/[^0-9.-]+/g, "")) || 0;
+
+          // Initialize the total for the current tag if not already done
+          if (!totalsByTag[item[labelKey]]) {
+            totalsByTag[item[labelKey]] = 0;
+          }
+          totalsByTag[item[labelKey]] += cleanedValue;
         }
-      }
-      return [];
-    });
+      });
 
-    labels.map((label) => {
-      return (newChartData[label] = dataProperties.map((prop) => ({
-        [prop]: data
-          .filter((item) => item[labelKey] === prop)
-          .reduce(
-            (total, d) =>
-              isNaN(parseFloat(d[label]))
-                ? total
-                : total + parseFloat(d[label]),
-            0
-          ),
-      })));
-    });
+      // Convert the totalsByTag object to an array of { tag: value } objects
+      const formattedArray = Object.keys(totalsByTag).map((tag) => ({
+        [tag]: parseFloat(totalsByTag[tag].toFixed(2)),
+      }));
+
+      // Assign the formatted array to the current label
+      acc[label] = formattedArray;
+
+      return acc;
+    }, {});
 
     setChartData(newChartData);
-    setChartTitle(chartType);
     setSelectedChart(
       chartType === "Cost Centre Savings"
         ? "cost-savings"
@@ -151,9 +139,9 @@ export const DataVisualisation = memo(({ data }) => {
   // three separate charts for the yearly, monthly, current year savings
   const formatProductData = (data) => {
     let productLabels = [
-      savingsTotals.currentYear,
-      savingsTotals.year,
-      savingsTotals.month,
+      savingsTotalLabels[0],
+      savingsTotalLabels[1],
+      savingsTotalLabels[2],
     ];
     let productProperties = ["other"]; // all different product names and an "other" property for making the chart readible.
     let productData = {}; // the object used to iterate through and calculate the totals/move items into "other" category
@@ -250,7 +238,6 @@ export const DataVisualisation = memo(({ data }) => {
     setProductChartLabels(Object.keys(productSavingsCurrentYearOther));
     setProductSavingsYear(Object.values(productSavingsYearOther));
     setProductSavingsMonth(Object.values(productSavingsMonthOther));
-    setChartTitle("Product Savings");
     setSelectedChart("product-savings");
   };
 
@@ -288,20 +275,10 @@ export const DataVisualisation = memo(({ data }) => {
       <Sidebar
         handleSavingsTotals={() => formatSavingsTotalData(formattedData)}
         handleCostCentreSavings={() =>
-          formatChartData(
-            formattedData,
-            "CostCenterTag",
-            "costCenter",
-            "Cost Centre Savings"
-          )
+          formatChartData("Cost Centre Savings", "CostCenterTag")
         }
         handleEnvironmentData={() =>
-          formatChartData(
-            formattedData,
-            "EnvironmentTag",
-            "environment",
-            "Environment Savings"
-          )
+          formatChartData("Environment Savings", "EnvironmentTag")
         }
         handleProductSavingsData={() => formatProductData(formattedData)}
         handleLogout={(e) => handleLogoutClick(e)}
