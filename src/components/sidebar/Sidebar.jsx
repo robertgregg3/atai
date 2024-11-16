@@ -1,10 +1,11 @@
 import { RiMenuFold4Fill, RiMenuFold3Fill } from "react-icons/ri";
 import { useStateValue } from "../../Context/StateProvider";
+import { getAuth, signOut } from "firebase/auth";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import ataiLogo from "../../images/atai1.svg";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import DonutLargeIcon from "@mui/icons-material/DonutLarge";
 import LogoutIcon from "@mui/icons-material/Logout";
-
 import "./sidebar.css";
 
 const Sidebar = ({
@@ -12,9 +13,9 @@ const Sidebar = ({
   handleCostCentreSavings,
   handleEnvironmentData,
   handleProductSavingsData,
-  handleLogout,
 }) => {
   const [{ sidebarOpen }, dispatch] = useStateValue();
+  const history = useHistory();
 
   const handleSideBarToggle = () => {
     dispatch({ type: "TOGGLE_SIDEBAR", sidebarOpen: !sidebarOpen });
@@ -38,6 +39,20 @@ const Sidebar = ({
   const handleProductSavingsDataClick = () => {
     handleProductSavingsData();
     handleSideBarToggle();
+  };
+
+  const handleLogoutClick = (e) => {
+    e.preventDefault();
+    console.log(e);
+    const auth = getAuth();
+    signOut(auth).then((authUser) => {
+      console.log("user: ", authUser);
+      dispatch({
+        type: "SET_USER",
+        user: null,
+      });
+    });
+    history.push("/");
   };
 
   return (
@@ -72,7 +87,7 @@ const Sidebar = ({
         </div>
         <div className="logout">
           <span className="separator"></span>
-          <button onClick={handleLogout}>
+          <button onClick={() => handleLogoutClick()}>
             <LogoutIcon className="sidebar__icon" />
             Logout
           </button>
