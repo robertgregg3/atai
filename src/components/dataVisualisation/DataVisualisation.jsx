@@ -1,15 +1,13 @@
 import { useEffect, useState, useRef, memo } from "react";
 import { useStateValue } from "./../../Context/StateProvider";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
-import { getAuth, signOut } from "firebase/auth";
 import DoughnutChart from "../charts/DoughnutChart";
 import SavingsTotalsBarChart from "../charts/SavingsTotalsBarChart";
 import Sidebar from "../sidebar/Sidebar";
 import DashboardHeader from "../DashboardHeader/DashboardHeader";
 import SavingsCostCentreBarChart from "../charts/SavingsCostCentreBarChart";
 import SavingsEnvironmentBarChart from "../charts/SavingsEnvironmentBarChart";
-import "./dataVisualisation.css";
 import prepareChartTotals from "../../utils/prepareChartTotals";
+import "./dataVisualisation.css";
 
 const savingsTotalLabels = [
   "ActualSavingsForCurrentYear",
@@ -25,39 +23,19 @@ const chartTitles = {
 };
 
 export const DataVisualisation = memo(({ data }) => {
-  const [{ user, displayName }, dispatch] = useStateValue();
+  const [{ user, displayName }] = useStateValue();
 
   const [formattedData, setFormattedData] = useState([]);
   const [chartData, setChartData] = useState([]);
   const [chartTitle, setChartTitle] = useState("");
 
-  const [showProductCurrentYearChart, setShowProductCurrentYearChart] =
-    useState(true);
-  const [showProductYearChart, setShowProductYearChart] = useState(false);
-  const [showProductMonthChart, setShowProductMonthChart] = useState(false);
-
-  const [othersPercentage, setOthersPercentage] = useState(2);
-  const [productSavingsCurrentYear, setProductSavingsCurrentYear] = useState(
-    []
-  );
-  const [productSavingsYear, setProductSavingsYear] = useState([]);
-  const [productSavingsMonth, setProductSavingsMonth] = useState([]);
-  const [productChartLabels, setProductChartLabels] = useState([]);
-
-  const [currentYearSavingsTotal, setCurrentYearSavingTotal] = useState(0);
-  const [yearSavingsTotal, setYearSavingTotal] = useState(0);
-  const [monthSavingsTotal, setMonthSavingTotal] = useState(0);
-
-  const exportCurrentYear = useRef();
-  const exportYear = useRef();
-  const exportMonth = useRef();
-  const exportSavingsTotals = useRef();
-  const exportCostCenterTotals = useRef();
-  const exportEnvironmentTotals = useRef();
+  const exportSavingsTotalsRef = useRef();
+  const exportCostCenterTotalRef = useRef();
+  const exportEnvironmentTotalRef = useRef();
+  const productTotalRef = useRef();
 
   const [selectedChart, setSelectedChart] = useState("savings-total");
-
-  const history = useHistory();
+  const [triggerAnimation, setTriggerAnimation] = useState(false);
 
   // formats the data
   useEffect(() => {
@@ -89,18 +67,18 @@ export const DataVisualisation = memo(({ data }) => {
     return setChartTitle(chartTitles[selectedChart] || "");
   }, [selectedChart]);
 
-  const formatChartData = (chartType, labelKey) => {
-    let labels = [
-      "ActualSavingsPerMonth",
-      "ActualSavingsForYear",
-      "ActualSavingsForCurrentYear",
-    ];
-
-    const newChartData = labels.reduce((acc, label) => {
+  const formatChartData = (
+    chartType,
+    labelKey,
+    useOthersPercentage = false
+  ) => {
+    const newChartData = savingsTotalLabels.reduce((acc, label) => {
       acc[label] = [];
 
       // Create a map to store totals by tag
       const totalsByTag = {};
+
+      let overallTotal = 0;
 
       // Use forEach to iterate over the data and accumulate totals
       data.forEach((item) => {
@@ -108,6 +86,11 @@ export const DataVisualisation = memo(({ data }) => {
           // Clean the value and convert to a number
           const cleanedValue =
             parseFloat(item[label].replace(/[^0-9.-]+/g, "")) || 0;
+
+          // Accumulate the overall total if the "others" percentage logic is used
+          if (useOthersPercentage) {
+            overallTotal += cleanedValue;
+          }
 
           // Initialize the total for the current tag if not already done
           if (!totalsByTag[item[labelKey]]) {
@@ -117,10 +100,32 @@ export const DataVisualisation = memo(({ data }) => {
         }
       });
 
-      // Convert the totalsByTag object to an array of { tag: value } objects
-      const formattedArray = Object.keys(totalsByTag).map((tag) => ({
+      // Convert the totalsByTag object to an array
+      let formattedArray = Object.keys(totalsByTag).map((tag) => ({
         [tag]: parseFloat(totalsByTag[tag].toFixed(2)),
       }));
+
+      if (useOthersPercentage) {
+        // Calculate the maximum amount allowed before moving to "other"
+        const percentageToOther = 2; // Adjust as needed
+        const maxAmountToOther = (overallTotal / 100) * percentageToOther;
+
+        // Separate the totals into those above and below the threshold
+        let othersTotal = 0;
+        formattedArray = Object.keys(totalsByTag).reduce((result, tag) => {
+          if (totalsByTag[tag] > maxAmountToOther) {
+            result.push({ [tag]: parseFloat(totalsByTag[tag].toFixed(2)) });
+          } else {
+            othersTotal += totalsByTag[tag];
+          }
+          return result;
+        }, []);
+
+        // Add the "other" category if there are any accumulated amounts
+        if (othersTotal > 0) {
+          formattedArray.push({ other: parseFloat(othersTotal.toFixed(2)) });
+        }
+      }
 
       // Assign the formatted array to the current label
       acc[label] = formattedArray;
@@ -129,145 +134,8 @@ export const DataVisualisation = memo(({ data }) => {
     }, {});
 
     setChartData(newChartData);
-    setSelectedChart(
-      chartType === "Cost Centre Savings"
-        ? "cost-savings"
-        : "environment-savings"
-    );
-  };
-
-  // three separate charts for the yearly, monthly, current year savings
-  const formatProductData = (data) => {
-    let productLabels = [
-      savingsTotalLabels[0],
-      savingsTotalLabels[1],
-      savingsTotalLabels[2],
-    ];
-    let productProperties = ["other"]; // all different product names and an "other" property for making the chart readible.
-    let productData = {}; // the object used to iterate through and calculate the totals/move items into "other" category
-
-    // calculate percentage which is the limit before moving to 'other' property in productProperties.
-    const percentageToOther = othersPercentage;
-    const maxAmountToOtherCurrentYear = Math.round(
-      (currentYearSavingsTotal / 100) * percentageToOther
-    );
-    const maxAmountToOtherYear = Math.round(
-      (yearSavingsTotal / 100) * percentageToOther
-    );
-    const maxAmountToOtherMonth = Math.round(
-      (monthSavingsTotal / 100) * percentageToOther
-    );
-
-    // get the list of product names
-    data.map((d) => {
-      if (
-        d.ProductNameTag !== "" &&
-        productProperties.indexOf(d.ProductNameTag) === -1
-      ) {
-        return (productProperties = [...productProperties, d.ProductNameTag]);
-      }
-      return [];
-    });
-
-    // add up all of the product names for each of the currentYear, Monthly etc
-    productLabels.map((label) => {
-      return (productData[label] = productProperties.map((prop) => ({
-        [prop]: data
-          .filter((item) => item.ProductNameTag === prop)
-          .reduce(
-            (total, d) =>
-              isNaN(parseFloat(d[label]))
-                ? total
-                : total + parseFloat(d[label]),
-            0
-          ),
-      })));
-    });
-
-    // go through ONE of the properties in the productData object and for each item in
-    // if the value for each of the products is not higher than the minimum (maxAmountToOtherCurrentYear)
-    // then add it to the others property
-    // otherwise add the property and amoun to the object
-    let productSavingsCurrentYearOther = { other: 0 };
-    productData[productLabels[0]].map((item) => {
-      for (let key in item) {
-        if (item[key] > maxAmountToOtherCurrentYear) {
-          productSavingsCurrentYearOther = {
-            ...productSavingsCurrentYearOther,
-            [key]: item[key],
-          };
-        } else {
-          return (productSavingsCurrentYearOther.other += item[key]);
-        }
-      }
-      return {};
-    });
-
-    let productSavingsYearOther = { other: 0 };
-    productData[productLabels[1]].map((item) => {
-      for (let key in item) {
-        if (item[key] > maxAmountToOtherYear) {
-          productSavingsYearOther = {
-            ...productSavingsYearOther,
-            [key]: item[key],
-          };
-        } else {
-          return (productSavingsYearOther.other += item[key]);
-        }
-      }
-      return {};
-    });
-
-    let productSavingsMonthOther = { other: 0 };
-    productData[productLabels[2]].map((item) => {
-      for (let key in item) {
-        if (item[key] > maxAmountToOtherMonth) {
-          productSavingsMonthOther = {
-            ...productSavingsMonthOther,
-            [key]: item[key],
-          };
-        } else {
-          return (productSavingsMonthOther.other += item[key]);
-        }
-      }
-      return {};
-    });
-
-    // set the labels and the data for the three charts
-    setProductSavingsCurrentYear(Object.values(productSavingsCurrentYearOther));
-    setProductChartLabels(Object.keys(productSavingsCurrentYearOther));
-    setProductSavingsYear(Object.values(productSavingsYearOther));
-    setProductSavingsMonth(Object.values(productSavingsMonthOther));
-    setSelectedChart("product-savings");
-  };
-
-  const updateOtherPercentage = (e) => {
-    e.preventDefault();
-    setOthersPercentage(e.target.value);
-  };
-
-  const handleButtonClick = () => {
-    formatProductData(formattedData);
-  };
-
-  const handleChartSelectionClick = (value) => {
-    setShowProductCurrentYearChart(value === "currentYear" ? true : false);
-    setShowProductYearChart(value === "Year" ? true : false);
-    setShowProductMonthChart(value === "Month" ? true : false);
-  };
-
-  const handleLogoutClick = (e) => {
-    e.preventDefault();
-    console.log(e);
-    const auth = getAuth();
-    signOut(auth).then((authUser) => {
-      console.log("user: ", authUser);
-      dispatch({
-        type: "SET_USER",
-        user: null,
-      });
-    });
-    history.push("/");
+    setSelectedChart(chartType);
+    setTriggerAnimation((prev) => !prev);
   };
 
   return (
@@ -275,112 +143,52 @@ export const DataVisualisation = memo(({ data }) => {
       <Sidebar
         handleSavingsTotals={() => formatSavingsTotalData(formattedData)}
         handleCostCentreSavings={() =>
-          formatChartData("Cost Centre Savings", "CostCenterTag")
+          formatChartData("cost-savings", "CostCenterTag", false)
         }
         handleEnvironmentData={() =>
-          formatChartData("Environment Savings", "EnvironmentTag")
+          formatChartData("environment-savings", "EnvironmentTag", false)
         }
-        handleProductSavingsData={() => formatProductData(formattedData)}
-        handleLogout={(e) => handleLogoutClick(e)}
+        handleProductSavingsData={() =>
+          formatChartData("product-savings", "ProductNameTag", true)
+        }
       />
       <div className="data-area">
         <DashboardHeader chartTitle={chartTitle} />
         <div className="chart-container">
-          {selectedChart === "product-savings" && (
-            <div className="chart__selection">
-              <div className="">
-                <div className="percentage-container">
-                  <input
-                    placeholder={othersPercentage}
-                    onChange={updateOtherPercentage}
-                    size="3"
-                  />
-                  <button
-                    className="percentage-button"
-                    onClick={handleButtonClick}>
-                    "Other" %
-                  </button>
-                </div>
-              </div>
-              <div>
-                <button
-                  className={
-                    showProductCurrentYearChart ? "chart-selected" : ""
-                  }
-                  onClick={() => handleChartSelectionClick("currentYear")}>
-                  Current Year
-                </button>
-                <button
-                  className={showProductYearChart ? "chart-selected" : ""}
-                  onClick={() => handleChartSelectionClick("Year")}>
-                  Year
-                </button>
-                <button
-                  className={showProductMonthChart ? "chart-selected" : ""}
-                  onClick={() => handleChartSelectionClick("Month")}>
-                  Monthly
-                </button>
-              </div>
-            </div>
-          )}
-          <div ref={exportSavingsTotals}>
+          <div ref={exportSavingsTotalsRef}>
             {selectedChart === "savings-total" && (
               <SavingsTotalsBarChart
                 chartData={chartData}
-                exportSavingsTotals={exportSavingsTotals.current}
+                exportSavingsTotals={exportSavingsTotalsRef.current}
               />
             )}
           </div>
-          <div ref={exportCostCenterTotals}>
+          <div ref={exportCostCenterTotalRef}>
             {selectedChart === "cost-savings" && (
               <SavingsCostCentreBarChart
                 chartData={chartData}
-                exportCostCenterTotals={exportCostCenterTotals.current}
+                exportCostCenterTotals={exportCostCenterTotalRef.current}
               />
             )}
           </div>
-          <div ref={exportEnvironmentTotals}>
+          <div ref={exportEnvironmentTotalRef}>
             {selectedChart === "environment-savings" && (
               <SavingsEnvironmentBarChart
                 chartData={chartData}
-                exportEnvironmentTotals={exportEnvironmentTotals.current}
+                exportEnvironmentTotals={exportEnvironmentTotalRef.current}
               />
             )}
           </div>
-          {selectedChart === "product-savings" && (
-            <>
-              <div ref={exportCurrentYear}>
-                {showProductCurrentYearChart && (
-                  <DoughnutChart
-                    chartData={productSavingsCurrentYear}
-                    chartTitle={`Current year savings $${currentYearSavingsTotal.toLocaleString()}`}
-                    chartLabels={productChartLabels}
-                    downloadChartReference={exportCurrentYear.current}
-                  />
-                )}
-              </div>
-              <div ref={exportYear}>
-                {showProductYearChart && (
-                  <DoughnutChart
-                    chartData={productSavingsYear}
-                    chartTitle={`Year savings $${yearSavingsTotal.toLocaleString()}`}
-                    chartLabels={productChartLabels}
-                    downloadChartReference={exportYear.current}
-                  />
-                )}
-              </div>
-              <div ref={exportMonth}>
-                {showProductMonthChart && (
-                  <DoughnutChart
-                    chartData={productSavingsMonth}
-                    chartTitle={`Monthly savings $${monthSavingsTotal.toLocaleString()}`}
-                    chartLabels={productChartLabels}
-                    downloadChartReference={exportMonth.current}
-                  />
-                )}
-              </div>
-            </>
-          )}
+          <div ref={productTotalRef}>
+            {selectedChart === "product-savings" && (
+              <DoughnutChart
+                chartData={chartData}
+                exportProductTotal={productTotalRef.current}
+                triggerAnimation={triggerAnimation} // Pass the state
+                setTriggerAnimation={setTriggerAnimation}
+              />
+            )}
+          </div>
         </div>
       </div>
     </div>
