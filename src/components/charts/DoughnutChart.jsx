@@ -55,7 +55,7 @@ const DoughnutChart = ({
       chartInstance.config.data.datasets[0].data = [...currentChartData];
       chartInstance.update(); // Trigger chart update and animation
     }
-  }, [triggerAnimation, currentChartData]);
+  }, [triggerAnimation]);
 
   const handleChartSelectionClick = (filter, timeFrame) => {
     setCurrentChartData(() => filter);
