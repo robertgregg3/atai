@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, memo } from "react";
-import Sidebar from "@components/Sidebar/Sidebar";
+import Sidebar from "../Sidebar/Sidebar";
 import DoughnutChart from "@charts/DoughnutChart"
 import DashboardHeader from "../DashboardHeader/DashboardHeader";
 import SavingsTotalsBarChart from "@components/charts/SavingsTotalsBarChart";
