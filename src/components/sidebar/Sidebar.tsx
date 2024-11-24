@@ -10,7 +10,7 @@ import { stateEnums } from "../../context/reducer";
 import ataiLogo from "../../images/atai1.svg";
 import "./sidebar.css";
 
-interface SIdebarProps {
+interface SidebarProps {
   handleSavingsTotals: () => void;
   handleCostCentreSavings: () => void;
   handleEnvironmentData: () => void;
@@ -22,7 +22,7 @@ const Sidebar = ({
   handleCostCentreSavings,
   handleEnvironmentData,
   handleProductSavingsData,
-}: SIdebarProps) => {
+}: SidebarProps) => {
   const { state, dispatch } = useContext(StateContext);
   const { sidebarOpen } = state;
   const navigate = useNavigate();

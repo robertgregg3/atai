@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef, memo } from "react";
+import Sidebar from "@components/Sidebar/Sidebar";
 import DoughnutChart from "@charts/DoughnutChart"
-import Sidebar from "@components/Sidebar";
 import DashboardHeader from "../DashboardHeader/DashboardHeader";
 import SavingsTotalsBarChart from "@components/charts/SavingsTotalsBarChart";
 import SavingsCostCentreBarChart from "@charts/SavingsCostCentreBarChart";
