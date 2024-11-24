@@ -1,12 +1,12 @@
 import { useEffect, useState, useRef, memo } from "react";
-import Sidebar from "../Sidebar/Sidebar";
+// import Sidebar from "../Sidebar/Sidebar";
 import DoughnutChart from "@charts/DoughnutChart"
 import DashboardHeader from "../DashboardHeader/DashboardHeader";
 import SavingsTotalsBarChart from "@components/charts/SavingsTotalsBarChart";
 import SavingsCostCentreBarChart from "@charts/SavingsCostCentreBarChart";
 import SavingsEnvironmentLineChart from "@components/charts/SavingsEnvironmentLineChart";
 import prepareChartTotals from "@utils/prepareChartTotals";
-import getFormattedChartData from "@utils/getFormattedChartData";
+// import getFormattedChartData from "@utils/getFormattedChartData";
 import "./dataVisualisation.css";
 
 const chartTitles = {
@@ -19,11 +19,11 @@ const chartTitles = {
 export type ChartTitlesType = | "savings-total" | "cost-savings" | "environment-savings" | "product-savings";
 export type SavingsTotalTypes = | "ActualSavingsForCurrentYear" | "ActualSavingsForYear" | "ActualSavingsPerMonth";
 
-const savingsTotalLabels:SavingsTotalTypes[] = [
-  "ActualSavingsForCurrentYear",
-  "ActualSavingsForYear",
-  "ActualSavingsPerMonth",
-];
+// const savingsTotalLabels:SavingsTotalTypes[] = [
+//   "ActualSavingsForCurrentYear",
+//   "ActualSavingsForYear",
+//   "ActualSavingsPerMonth",
+// ];
 
 export type CsvDataProps = Partial<{
   ActualSavingsForCurrentYear: string | number
@@ -109,24 +109,24 @@ export const DataVisualisation: React.FC<DataVisualisationProps> = memo(({ data 
     return setChartTitle(chartTitles[selectedChart]);
   }, [selectedChart]);
 
-  const formatChartData = (
-    chartType: ChartTitlesType, 
-    labelKey: string,  
-    useOthersPercentage = false
-  ) => {
-    const formattedData = getFormattedChartData(labelKey, data, useOthersPercentage, savingsTotalLabels);
-    setComplexChartData({
-      ActualSavingsForCurrentYear: formattedData.ActualSavingsForCurrentYear ?? [],
-      ActualSavingsForYear: formattedData.ActualSavingsForYear ?? [],
-      ActualSavingsPerMonth: formattedData.ActualSavingsPerMonth ?? []
-    });
-    setSelectedChart(chartType);
-    setTriggerAnimation((prev) => !prev);
-  };
+  // const formatChartData = (
+  //   chartType: ChartTitlesType, 
+  //   labelKey: string,  
+  //   useOthersPercentage = false
+  // ) => {
+  //   const formattedData = getFormattedChartData(labelKey, data, useOthersPercentage, savingsTotalLabels);
+  //   setComplexChartData({
+  //     ActualSavingsForCurrentYear: formattedData.ActualSavingsForCurrentYear ?? [],
+  //     ActualSavingsForYear: formattedData.ActualSavingsForYear ?? [],
+  //     ActualSavingsPerMonth: formattedData.ActualSavingsPerMonth ?? []
+  //   });
+  //   setSelectedChart(chartType);
+  //   setTriggerAnimation((prev) => !prev);
+  // };
 
   return (
     <div className="App">
-      <Sidebar
+      {/* <Sidebar
         handleSavingsTotals={() => formatSavingsTotalData()}
         handleCostCentreSavings={() =>
           formatChartData("cost-savings", "CostCenterTag", false)
@@ -137,7 +137,7 @@ export const DataVisualisation: React.FC<DataVisualisationProps> = memo(({ data 
         handleProductSavingsData={() =>
           formatChartData("product-savings", "ProductNameTag", true)
         }
-      />
+      /> */}
       <div className="data-area">
         <DashboardHeader chartTitle={chartTitle} />
         <div className="chart-container">
