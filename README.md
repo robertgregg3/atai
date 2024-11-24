@@ -1,11 +1,50 @@
-# Atainr Data Visualisation
+# React + TypeScript + Vite
 
-This showcases some basic Data visualisation skills using D3 charting library. Created in 2021. Layout is a basic dashboard with navigation in the sidebar.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-### Features include:
+Currently, two official plugins are available:
 
-- Logging in / out flow with firebase for authentication
-- Processing very complex data and displaying in several chart layouts
-- The company I created this demo from were enabled to upload the csv file to then be processed. They were also allowed to download that csv and upload a new one. This has been disabled to put into my portfolio website but the functionality is still there.
-- Download an image of the chart data in JPEG / PNG formats
-- Mostly responsive. That wasn't a requirement but I have added some basic responsiveness.
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+
+## Expanding the ESLint configuration
+
+If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+
+- Configure the top-level `parserOptions` property like this:
+
+```js
+export default tseslint.config({
+  languageOptions: {
+    // other options...
+    parserOptions: {
+      project: ['./tsconfig.node.json', './tsconfig.app.json'],
+      tsconfigRootDir: import.meta.dirname,
+    },
+  },
+})
+```
+
+- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
+- Optionally add `...tseslint.configs.stylisticTypeChecked`
+- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+
+```js
+// eslint.config.js
+import react from 'eslint-plugin-react'
+
+export default tseslint.config({
+  // Set the react version
+  settings: { react: { version: '18.3' } },
+  plugins: {
+    // Add the react plugin
+    react,
+  },
+  rules: {
+    // other rules...
+    // Enable its recommended rules
+    ...react.configs.recommended.rules,
+    ...react.configs['jsx-runtime'].rules,
+  },
+})
+```
