@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef, memo } from "react";
-import Sidebar from "../Sidebar/Sidebar";
 import DoughnutChart from "@charts/DoughnutChart"
 import DashboardHeader from "../DashboardHeader/DashboardHeader";
+import DashboardSidebar from "@components/DashboardSidebar/DashboardSidebar";
 import SavingsTotalsBarChart from "@components/charts/SavingsTotalsBarChart";
 import SavingsCostCentreBarChart from "@charts/SavingsCostCentreBarChart";
 import SavingsEnvironmentLineChart from "@components/charts/SavingsEnvironmentLineChart";
@@ -126,7 +126,7 @@ export const DataVisualisation: React.FC<DataVisualisationProps> = memo(({ data 
 
   return (
     <div className="App">
-      <Sidebar
+      <DashboardSidebar
         handleSavingsTotals={() => formatSavingsTotalData()}
         handleCostCentreSavings={() =>
           formatChartData("cost-savings", "CostCenterTag", false)

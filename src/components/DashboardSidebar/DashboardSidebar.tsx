@@ -8,21 +8,21 @@ import { SlLogout } from "react-icons/sl";
 import { useContext } from "react";
 import { stateEnums } from "../../context/reducer";
 import ataiLogo from "../../images/atai1.svg";
-import "./sidebar.css";
+import "./DashboardSidebar.css";
 
-interface SidebarProps {
+interface DashboardSidebarProps {
   handleSavingsTotals: () => void;
   handleCostCentreSavings: () => void;
   handleEnvironmentData: () => void;
   handleProductSavingsData: () => void;
 }
 
-const Sidebar = ({
+const DashboardSidebar = ({
   handleSavingsTotals,
   handleCostCentreSavings,
   handleEnvironmentData,
   handleProductSavingsData,
-}: SidebarProps) => {
+}: DashboardSidebarProps) => {
   const { state, dispatch } = useContext(StateContext);
   const { sidebarOpen } = state;
   const navigate = useNavigate();
@@ -113,4 +113,4 @@ const Sidebar = ({
   );
 };
 
-export default Sidebar;
+export default DashboardSidebar;
