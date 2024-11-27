@@ -19,7 +19,7 @@ const mapLabelKeys = (chartType: ChartTitlesType) => {
   }
 }
 
-const getFormatedChartData = (
+const getFormattedChartData = (
   chartType: string,
   data: CsvDataProps[],
   useOthersPercentage = false,
@@ -82,4 +82,4 @@ const getFormatedChartData = (
   return newChartData;
 };
 
-export default getFormatedChartData;
+export default getFormattedChartData;
