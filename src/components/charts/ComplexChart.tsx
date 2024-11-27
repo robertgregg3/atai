@@ -3,37 +3,44 @@ import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
+  PointElement,
   BarElement,
+  LineElement,
   Title,
   Tooltip,
   Legend,
   TooltipItem,
 } from "chart.js";
+import { Line } from "react-chartjs-2";
 import { Bar } from "react-chartjs-2";
-import DownloadChart from "@utils/DownloadChart";
-import formatChartData from "@utils/formatChartData";
+import { ChartType, ComplexChartDataTypes } from "./chart.types";
 import { StateContext } from "@context/StateProvider";
 import { ChartDataFilteredProps } from "./DoughnutChart";
+import formatChartData from "@utils/formatChartData";
+import DownloadChart from "@utils/DownloadChart";
 import formatChartLabels from "@utils/formatChartLabels";
-import { ComplexBarChartDataTypes } from "./chart.types";
 
 ChartJS.register(
   CategoryScale,
   LinearScale,
+  PointElement,
+  LineElement,
   BarElement,
   Title,
   Tooltip,
   Legend
 );
 
-interface BarChartProps {
-  chartData: ComplexBarChartDataTypes;
+interface ChartProps {
+  chartData: ComplexChartDataTypes;
+  chartType: ChartType;
 }
 
-const SavingsCostCentreBarChart = ({ chartData }: BarChartProps) => {
+const ComplexChart = ({ chartData, chartType = 'bar' }: ChartProps) => {
   const { state } = useContext(StateContext);
   const { sidebarOpen } = state;
-  const exportCostCenterTotalRef = useRef<HTMLDivElement>(null);
+  const chartExportRef = useRef<HTMLDivElement>(null);
+
 
   const chartDataFormatted: ChartDataFilteredProps = {
     ActualSavingsForCurrentYear: formatChartData({ chartData: chartData.ActualSavingsForCurrentYear}),
@@ -47,17 +54,17 @@ const SavingsCostCentreBarChart = ({ chartData }: BarChartProps) => {
     {
       label: "Current Year Savings",
       data: chartDataFormatted.ActualSavingsForCurrentYear,
-      backgroundColor: ["#10a8a9"],
+      backgroundColor: "#10a8a9",
     },
     {
       label: "Yearly Savings",
       data: chartDataFormatted.ActualSavingsForYear,
-      backgroundColor: ["#000038"],
+      backgroundColor: "#000038",
     },
     {
       label: "Monthly Savings",
       data: chartDataFormatted.ActualSavingsPerMonth,
-      backgroundColor: ["#cccccc"],
+      backgroundColor: "#cccccc",
     },
   ];
 
@@ -77,7 +84,7 @@ const SavingsCostCentreBarChart = ({ chartData }: BarChartProps) => {
       },
       tooltip: {
         callbacks: {
-          label: function (tooltipItem: TooltipItem<"bar">) {
+          label: function (tooltipItem: TooltipItem<typeof chartType>) {
             let label = tooltipItem.dataset.label || "";
             const value = tooltipItem.raw as number;
 
@@ -104,9 +111,12 @@ const SavingsCostCentreBarChart = ({ chartData }: BarChartProps) => {
         },
         ticks: {
           padding: 15, // Adds padding between y-axis labels and chart content
-          callback: function (tickValue: string | number) {
-            const value = tickValue.toString().split(/(?=(?:...)*$)/).join(",");
-            return "$" + value;
+          callback: function (value: string | number) {
+            const formattedValue = value
+              .toString()
+              .split(/(?=(?:...)*$)/)
+              .join(",");
+            return "$" + formattedValue;
           },
         },
       },
@@ -123,15 +133,16 @@ const SavingsCostCentreBarChart = ({ chartData }: BarChartProps) => {
   return (
     <div
       className={`chart-horizontal ${!sidebarOpen ? "chart--sidebar-closed" : ""}`}
-      ref={exportCostCenterTotalRef}
+      ref={chartExportRef}
     >
       <DownloadChart
-        reference={exportCostCenterTotalRef}
-        title={"Cost Centre Savings"}
+        reference={chartExportRef}
+        title={"Environment Savings"}
       />
-      <Bar options={options} data={data} />
+      {chartType === 'line' && <Line options={options} data={data} />}
+      {chartType === 'bar' && <Bar options={options} data={data} />}
     </div>
   );
 };
 
-export default SavingsCostCentreBarChart;
+export default ComplexChart;
