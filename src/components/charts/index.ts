@@ -1,4 +1,3 @@
 export * from './DoughnutChart';
-export * from './SavingsCostCentreBarChart';
-export * from './SavingsEnvironmentLineChart';
+export * from './ComplexChart';
 export * from './SavingsTotalsBarChart';

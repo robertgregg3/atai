@@ -5,12 +5,12 @@ import { StateContext } from "@context/StateProvider";
 import formatChartData from "@utils/formatChartData";
 import formatChartLabels from "@utils/formatChartLabels";
 import DownloadChart from "@utils/DownloadChart";
-import { ComplexBarChartDataTypes, SavingsTotalsTypes } from "./chart.types";
+import { ComplexChartDataTypes, SavingsTotalsTypes } from "./chart.types";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 export interface DoughnutChartProps {
-  chartData: ComplexBarChartDataTypes;
+  chartData: ComplexChartDataTypes;
   savingsTotals: SavingsTotalsTypes;
   triggerAnimation: boolean;
   setTriggerAnimation: React.Dispatch<React.SetStateAction<boolean>>;

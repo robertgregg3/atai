@@ -1,4 +1,4 @@
-import { ChartTitlesType, ComplexBarChartDataTypes, SavingsTotalType } from "@components/charts/chart.types";
+import { ChartTitlesType, ComplexChartDataTypes, SavingsTotalType } from "@components/charts/chart.types";
 import { ChartTypes, CsvDataProps } from "@components/dataVisualisation/DataVisualisation";
 
 const mapLabelKeys = (chartType: ChartTitlesType) => {
@@ -24,7 +24,7 @@ const getFormatedChartData = (
   data: CsvDataProps[],
   useOthersPercentage = false,
   savingsTotalLabels: SavingsTotalType[] 
-): Partial<ComplexBarChartDataTypes>  => {
+): Partial<ComplexChartDataTypes>  => {
 
   const labelKey = mapLabelKeys(chartType as ChartTitlesType) ?? '';
   

@@ -4,7 +4,7 @@ export interface SavingsTotalsTypes {
     ActualSavingsPerMonth: string | number;
   }
   
-  export interface ComplexBarChartDataTypes {
+  export interface ComplexChartDataTypes {
     ActualSavingsForCurrentYear: { key: string, value: number}[];
     ActualSavingsForYear: { key: string, value: number}[];
     ActualSavingsPerMonth: { key: string, value: number}[];
@@ -12,3 +12,5 @@ export interface SavingsTotalsTypes {
 
 export type ChartTitlesType = | "savings" | "cost" | "environment" | "product";
 export type SavingsTotalType = | "ActualSavingsForCurrentYear" | "ActualSavingsForYear" | "ActualSavingsPerMonth";
+
+export type ChartType = | "bar" | "doughnut" | "line";

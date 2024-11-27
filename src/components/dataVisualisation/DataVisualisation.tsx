@@ -1,13 +1,12 @@
 import { useEffect, useState, memo, useMemo } from "react";
-import { ChartTitlesType, ComplexBarChartDataTypes, SavingsTotalsTypes, SavingsTotalType } from "@components/charts/chart.types";
+import { ChartTitlesType, ComplexChartDataTypes, SavingsTotalsTypes, SavingsTotalType } from "@components/charts/chart.types";
 import DoughnutChart from "@charts/DoughnutChart"
 import DashboardHeader from "../DashboardHeader/DashboardHeader";
 import DashboardSidebar from "@components/DashboardSidebar/DashboardSidebar";
 import SavingsTotalsBarChart from "@components/charts/SavingsTotalsBarChart";
-import SavingsCostCentreBarChart from "@charts/SavingsCostCentreBarChart";
-import SavingsEnvironmentLineChart from "@components/charts/SavingsEnvironmentLineChart";
 import prepareChartTotals from "@utils/prepareChartTotals";
 import getFormattedChartData from "@utils/getFormattedChartData";
+import ComplexChart from "@components/charts/ComplexChart";
 import "./dataVisualisation.css";
 
 export enum ChartTypes {
@@ -40,7 +39,7 @@ export interface CsvDataProps {
   [key: string]: string | number;
 }
 
-const initialState: ComplexBarChartDataTypes = {
+const initialState: ComplexChartDataTypes = {
   ActualSavingsForCurrentYear: [],
   ActualSavingsForYear: [],
   ActualSavingsPerMonth: []
@@ -51,7 +50,7 @@ interface DataVisProps {
 
 // pulling in the data for the dashboard
 // formatting the data
-// displaying with teh data
+// displaying with the data
 export const DataVisualisation: React.FC<DataVisProps> = memo(({ data } : DataVisProps) => {
 
   // used for the Savings Bar Chart
@@ -60,7 +59,7 @@ export const DataVisualisation: React.FC<DataVisProps> = memo(({ data } : DataVi
 
   // used for the Cost Centre, Environment and Product charts
   // formatted with formatChartData
-  const [complexChartData, setComplexChartData] = useState<ComplexBarChartDataTypes>({
+  const [complexChartData, setComplexChartData] = useState<ComplexChartDataTypes>({
     ActualSavingsForCurrentYear: [],
     ActualSavingsForYear: [],
     ActualSavingsPerMonth: []
@@ -138,8 +137,8 @@ export const DataVisualisation: React.FC<DataVisProps> = memo(({ data } : DataVi
       <div className="data-area">
         <DashboardHeader chartTitle={chartTitle} />
           {selectedChart === "savings" && <SavingsTotalsBarChart chartData={barChartData} />}
-          {selectedChart === "cost" && <SavingsCostCentreBarChart chartData={complexChartData} />}
-          {selectedChart === "environment" && <SavingsEnvironmentLineChart chartData={complexChartData} /> }
+          {selectedChart === "cost" && <ComplexChart chartData={complexChartData} chartType="bar" />}
+          {selectedChart === "environment" && <ComplexChart chartData={complexChartData} chartType="line" /> }
           {selectedChart === "product" && (
             <DoughnutChart
               chartData={complexChartData}
