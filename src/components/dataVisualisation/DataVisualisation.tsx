@@ -137,7 +137,6 @@ export const DataVisualisation: React.FC<DataVisProps> = memo(({ data } : DataVi
       />
       <div className="data-area">
         <DashboardHeader chartTitle={chartTitle} />
-        <div className="chart-container">
           {selectedChart === "savings" && <SavingsTotalsBarChart chartData={barChartData} />}
           {selectedChart === "cost" && <SavingsCostCentreBarChart chartData={complexChartData} />}
           {selectedChart === "environment" && <SavingsEnvironmentLineChart chartData={complexChartData} /> }
@@ -149,7 +148,6 @@ export const DataVisualisation: React.FC<DataVisProps> = memo(({ data } : DataVi
               setTriggerAnimation={setTriggerAnimation}
             />
           )}
-        </div>
       </div>
     </div>
   );

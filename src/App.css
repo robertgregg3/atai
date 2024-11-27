@@ -30,7 +30,7 @@ a {
 
 .App {
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: 1fr;
   font-size: calc(10px + 2vmin);
   font-family: 'Lato', sans-serif;
 }
