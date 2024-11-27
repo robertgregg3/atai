@@ -17,7 +17,6 @@ import { ChartDataFilteredProps } from "./DoughnutChart";
 import formatChartData from "@utils/formatChartData";
 import DownloadChart from "@utils/DownloadChart";
 import formatChartLabels from "@utils/formatChartLabels";
-import "./barChart.css";
 
 ChartJS.register(
   CategoryScale,

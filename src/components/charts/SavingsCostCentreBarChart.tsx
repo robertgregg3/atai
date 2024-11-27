@@ -1,5 +1,4 @@
 import { useContext, useRef } from "react";
-import "./barChart.css";
 import {
   Chart as ChartJS,
   CategoryScale,

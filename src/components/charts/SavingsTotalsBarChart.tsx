@@ -3,7 +3,6 @@ import { Bar } from "react-chartjs-2";
 import { useContext, useRef } from "react";
 import { StateContext } from "@context/StateProvider";
 import DownloadChart from "@utils/DownloadChart";
-import "./savingsTotalsBarChart.css";
 
 ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, BarElement );
 
@@ -50,7 +49,7 @@ const SavingsTotalsBarChart = ({chartData}: SavingsTotalsBarChartProps) => {
           display: false, // Hide the x-axis grid lines
         },
         ticks: {
-          padding: 15, // Adds padding between x-axis labels and chart content
+          padding: 0, // Adds padding between x-axis labels and chart content
         },
       },
       y: {

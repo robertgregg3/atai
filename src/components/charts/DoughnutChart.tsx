@@ -5,7 +5,6 @@ import { StateContext } from "@context/StateProvider";
 import formatChartData from "@utils/formatChartData";
 import formatChartLabels from "@utils/formatChartLabels";
 import DownloadChart from "@utils/DownloadChart";
-import "./doughnutChart.css";
 import { ComplexBarChartDataTypes, SavingsTotalsTypes } from "./chart.types";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -90,7 +89,7 @@ const DoughnutChart = ({
         display: true,
         labels: {
         usePointStyle: true,
-        padding: 15,
+        padding: 25,
         },
       },
       tooltip: {
