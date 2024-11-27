@@ -1,19 +1,17 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, TooltipItem } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import { StateContext } from "@context/StateProvider";
+import { ComplexChartDataTypes, SavingsTotalsTypes } from "./chart.types";
 import formatChartData from "@utils/formatChartData";
 import formatChartLabels from "@utils/formatChartLabels";
 import DownloadChart from "@utils/DownloadChart";
-import { ComplexChartDataTypes, SavingsTotalsTypes } from "./chart.types";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 export interface DoughnutChartProps {
   chartData: ComplexChartDataTypes;
   savingsTotals: SavingsTotalsTypes;
-  triggerAnimation: boolean;
-  setTriggerAnimation: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface ChartDataFilteredProps {
@@ -25,16 +23,13 @@ export interface ChartDataFilteredProps {
 const DoughnutChart = ({
   chartData,
   savingsTotals, 
-  triggerAnimation,
-  setTriggerAnimation,
 }: DoughnutChartProps) => {
-  const [ options, setOptions ] = useState<any>();
+  const [ triggerAnimation, setTriggerAnimation ] = useState<boolean>();
   const { state } = useContext(StateContext);
   const { sidebarOpen } = state;
   const chartRef = useRef<ChartJS<"doughnut"> | null>(null); // chart rerender when totals change
   const productTotalRef = useRef<HTMLDivElement>(null);
 
-  
   const chartDataFormatted: ChartDataFilteredProps = {
     ActualSavingsForCurrentYear: formatChartData({ chartData: chartData.ActualSavingsForCurrentYear}),
     ActualSavingsPerMonth: formatChartData({ chartData: chartData.ActualSavingsPerMonth}),
@@ -70,44 +65,47 @@ const DoughnutChart = ({
     timeFrame,
   }: HandleChartSelectionClickProps) => {
     setCurrentChart(timeFrame);
-    setCurrentTotal(savingsTotals[timeFrame === 'current year' ? 'ActualSavingsForCurrentYear' : timeFrame === 'year' ? 'ActualSavingsForYear' : 'ActualSavingsPerMonth']);
-    setTriggerAnimation((prev: boolean) => !prev);
+    setCurrentTotal(
+      savingsTotals[timeFrame === 'current year' 
+        ? 'ActualSavingsForCurrentYear' 
+        : timeFrame === 'year' 
+        ? 'ActualSavingsForYear' 
+        : 'ActualSavingsPerMonth']);
+    setTriggerAnimation((prev) => !prev);
     setCurrentChartData(() => filter);
   };
 
-  useEffect(() => {
-    setOptions({
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-      title: {
-        display: true,
-        text: `Total Savings for ${currentChart}: $${currentTotal} `,
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+    title: {
+      display: true,
+      text: `Total Savings for ${currentChart}: $${currentTotal} `,
+    },
+    legend: {
+      position: "bottom" as const,
+      display: true,
+      labels: {
+      usePointStyle: true,
+      padding: 25,
       },
-      legend: {
-        position: "bottom",
-        display: true,
-        labels: {
-        usePointStyle: true,
-        padding: 25,
-        },
-      },
-      tooltip: {
-        callbacks: {
-        label: (context: { dataset: { label: string }; label: string; parsed: number }) => {
-          let label = context.dataset.label || "";
-          if (label) {
+    },
+    tooltip: {
+      callbacks: {
+      label: (tooltipItem: TooltipItem<"doughnut">) => {
+        let label = tooltipItem.dataset.label || "";
+        if (label) {
           label +=
-            ` -- ${context.label}: $` +
-            Math.round(context.parsed).toFixed(2);
-          }
-          return label;
-        },
-        },
+            ` -- ${tooltipItem.label}: $` +
+            Math.round(tooltipItem.raw as number).toFixed(2);
+        }
+        return label;
       },
       },
-    });
-  }, [triggerAnimation]);
+    },
+    },
+  };
 
   const data = {
     labels: chartLabels,

@@ -7,10 +7,10 @@ import DownloadChart from "@utils/DownloadChart";
 ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, BarElement );
 
 interface SavingsTotalsBarChartProps {
-  chartData: number[];
+  data: number[];
 }
 
-const SavingsTotalsBarChart = ({chartData}: SavingsTotalsBarChartProps) => {
+const SavingsTotalsBarChart = ({data}: SavingsTotalsBarChartProps) => {
   const { state } = useContext(StateContext);
   const { sidebarOpen } = state;
   const exportSavingsTotalsRef = useRef<HTMLDivElement>(null);
@@ -67,22 +67,22 @@ const SavingsTotalsBarChart = ({chartData}: SavingsTotalsBarChartProps) => {
     },
   };
 
-  const data = {
+  const preparedChartData = {
     labels: [""],
     datasets: [
       {
         label: "Current Year Savings",
-        data: [chartData[0]],
+        data: [data[0]],
         backgroundColor: ["#10a8a9"],
       },
       {
         label: "Yearly Savings",
-        data: [chartData[1]],
+        data: [data[1]],
         backgroundColor: ["#000038"],
       },
       {
         label: "Monthly Savings",
-        data: [chartData[2]],
+        data: [data[2]],
         backgroundColor: ["#cccccc"],
       },
     ],
@@ -93,7 +93,7 @@ const SavingsTotalsBarChart = ({chartData}: SavingsTotalsBarChartProps) => {
       ref={exportSavingsTotalsRef}
     >
       <DownloadChart reference={exportSavingsTotalsRef} title={"Savings totals"} />
-      <Bar data={data} options={options} />
+      <Bar data={preparedChartData} options={options} />
     </div>
   );
 };

@@ -32,38 +32,37 @@ ChartJS.register(
 );
 
 interface ChartProps {
-  chartData: ComplexChartDataTypes;
-  chartType: ChartType;
+  data: ComplexChartDataTypes;
+  type: ChartType;
 }
 
-const ComplexChart = ({ chartData, chartType = 'bar' }: ChartProps) => {
+const ComplexChart = ({ data, type = 'bar' }: ChartProps) => {
   const { state } = useContext(StateContext);
   const { sidebarOpen } = state;
   const chartExportRef = useRef<HTMLDivElement>(null);
 
-
-  const chartDataFormatted: ChartDataFilteredProps = {
-    ActualSavingsForCurrentYear: formatChartData({ chartData: chartData.ActualSavingsForCurrentYear}),
-    ActualSavingsForYear: formatChartData({ chartData: chartData.ActualSavingsForYear }),
-    ActualSavingsPerMonth: formatChartData({ chartData: chartData.ActualSavingsPerMonth }),
+  const dataFormatted: ChartDataFilteredProps = {
+    ActualSavingsForCurrentYear: formatChartData({ chartData: data.ActualSavingsForCurrentYear}),
+    ActualSavingsForYear: formatChartData({ chartData: data.ActualSavingsForYear }),
+    ActualSavingsPerMonth: formatChartData({ chartData: data.ActualSavingsPerMonth }),
   };
 
-  const chartLabels = formatChartLabels({ chartData: chartData.ActualSavingsForCurrentYear });
+  const chartLabels = formatChartLabels({ chartData: data.ActualSavingsForCurrentYear });
 
-  const barChartData = [
+  const chartData = [
     {
       label: "Current Year Savings",
-      data: chartDataFormatted.ActualSavingsForCurrentYear,
+      data: dataFormatted.ActualSavingsForCurrentYear,
       backgroundColor: "#10a8a9",
     },
     {
       label: "Yearly Savings",
-      data: chartDataFormatted.ActualSavingsForYear,
+      data: dataFormatted.ActualSavingsForYear,
       backgroundColor: "#000038",
     },
     {
       label: "Monthly Savings",
-      data: chartDataFormatted.ActualSavingsPerMonth,
+      data: dataFormatted.ActualSavingsPerMonth,
       backgroundColor: "#cccccc",
     },
   ];
@@ -84,7 +83,7 @@ const ComplexChart = ({ chartData, chartType = 'bar' }: ChartProps) => {
       },
       tooltip: {
         callbacks: {
-          label: function (tooltipItem: TooltipItem<typeof chartType>) {
+          label: function (tooltipItem: TooltipItem<typeof type>) {
             let label = tooltipItem.dataset.label || "";
             const value = tooltipItem.raw as number;
 
@@ -102,7 +101,7 @@ const ComplexChart = ({ chartData, chartType = 'bar' }: ChartProps) => {
           display: false, // Hide the x-axis grid lines
         },
         ticks: {
-          padding: 15, // Adds padding between x-axis labels and chart content
+          padding: 5, // Adds padding between x-axis labels and chart content
         },
       },
       y: {
@@ -123,12 +122,12 @@ const ComplexChart = ({ chartData, chartType = 'bar' }: ChartProps) => {
     },
   };
 
-  const data = {
+  const preparedChartData = {
     labels: chartLabels,
-    datasets: barChartData,
+    datasets: chartData,
   };
 
-  if (!chartData) return; // Check if chartData is not null or undefined
+  if (!data) return; // Check if data is not null or undefined
 
   return (
     <div
@@ -139,8 +138,8 @@ const ComplexChart = ({ chartData, chartType = 'bar' }: ChartProps) => {
         reference={chartExportRef}
         title={"Environment Savings"}
       />
-      {chartType === 'line' && <Line options={options} data={data} />}
-      {chartType === 'bar' && <Bar options={options} data={data} />}
+      {type === 'line' && <Line options={options} data={preparedChartData} />}
+      {type === 'bar' && <Bar options={options} data={preparedChartData} />}
     </div>
   );
 };
