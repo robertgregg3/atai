@@ -36,7 +36,7 @@ const SavingsTotalsBarChart = ({chartData}: SavingsTotalsBarChartProps) => {
             const value = tooltipItem.raw as number;
 
             if (label) {
-              label += ": ";
+              label += `: ${value}`;
             }
             return label;
           },

@@ -89,7 +89,7 @@ const ComplexChart = ({ chartData, chartType = 'bar' }: ChartProps) => {
             const value = tooltipItem.raw as number;
 
             if (label) {
-              label += ": ";
+              label += label += `: ${value}`;;
             }
             return label;
           },
