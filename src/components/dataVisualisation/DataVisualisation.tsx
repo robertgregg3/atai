@@ -1,13 +1,13 @@
-import { useEffect, useState, memo, useMemo } from "react";
-import { ChartTitlesType, ComplexChartDataTypes, SavingsTotalsTypes, SavingsTotalType } from "@components/charts/chart.types";
+import { useState, memo, useMemo } from "react";
+import { ChartTitlesType, ComplexChartDataTypes, SavingsTotalType } from "@components/charts/chart.types";
 import DoughnutChart from "@charts/DoughnutChart"
 import DashboardHeader from "../DashboardHeader/DashboardHeader";
 import DashboardSidebar from "@components/DashboardSidebar/DashboardSidebar";
 import SavingsTotalsBarChart from "@components/charts/SavingsTotalsBarChart";
-import prepareChartTotals from "@utils/prepareChartTotals";
-import getFormattedChartData from "@utils/getFormattedChartData";
 import ComplexChart from "@components/charts/ComplexChart";
+import useSimpleBarChartData from "@hooks/useSimpleBarChartData";
 import "./dataVisualisation.css";
+import useComplexChartData from "@hooks/useComplexChartData";
 
 export enum ChartTypes {
   SAVINGS = "savings",
@@ -48,106 +48,34 @@ interface DataVisProps {
   data: CsvDataProps[];
 }
 
-// pulling in the data for the dashboard
-// formatting the data
-// displaying with the data
+// pulling in the data for the dashboard, formatting the data, displaying with the data
 export const DataVisualisation: React.FC<DataVisProps> = memo(({ data } : DataVisProps) => {
 
-  // used for the Savings Bar Chart
-  // formatted with formatSavingsTotalData
-  const [barChartData, setBarChartData] = useState<number[]>([]);
+  // hooks to format the various chart data
+  const { barChartData } = useSimpleBarChartData(data);
+  const { complexChartData: costData } = useComplexChartData( data, 'cost', false, savingsTotalLabels);
+  const { complexChartData: environmentData } = useComplexChartData(data, 'environment', false, savingsTotalLabels);
+  const { complexChartData: productData, savingsTotals } = useComplexChartData(data, 'product', true, savingsTotalLabels);
 
-  // used for the Cost Centre, Environment and Product charts
-  // formatted with formatChartData
-  const [complexChartData, setComplexChartData] = useState<ComplexChartDataTypes>({
-    ActualSavingsForCurrentYear: [],
-    ActualSavingsForYear: [],
-    ActualSavingsPerMonth: []
-  });
-
-  // used for the doughnut chart as it has totals displayed
-  const [savingsTotals, setSavingsTotals] = useState<SavingsTotalsTypes>({
-    ActualSavingsForCurrentYear: 0,
-    ActualSavingsForYear: 0,
-    ActualSavingsPerMonth: 0
-  });
-  
   // used to switch between the different charts, triggered by the sidebar
-  // component which either calls formatSavingsTotalData or formatChartData
   const [selectedChart, setSelectedChart] = useState<ChartTitlesType>("savings");
-  const [triggerAnimation, setTriggerAnimation] = useState<boolean>(false);
   const chartTitle = useMemo(() => chartTitles[selectedChart], [selectedChart]);
-  
-  // formats the data
-  useEffect(() => {
-    if (data) {
-      const totals = data[data.length -1]
-      const savingsCurtrentYear = String(totals.ActualSavingsForCurrentYear).trim().replace(/[^0-9.-]+/g, "");
-      const savingsYear = String(totals.ActualSavingsForYear).trim().replace(/[^0-9.-]+/g, "");
-      const savingsMonth = String(totals.ActualSavingsPerMonth).trim().replace(/[^0-9.-]+/g, "")
-
-      formatSavingsTotalData();
-
-      setSavingsTotals({
-        ActualSavingsForCurrentYear: parseFloat(savingsCurtrentYear),
-        ActualSavingsForYear: parseFloat(savingsYear),
-        ActualSavingsPerMonth: parseFloat(savingsMonth)
-      })
-    }
-  }, [data]);
-
-  // TODO: abstract into a hook
-  const formatSavingsTotalData = () => {
-    const chartTotals = prepareChartTotals(data);
-
-    if(chartTotals) {
-      setBarChartData([
-        chartTotals[0] ?? 0,
-        chartTotals[1] ?? 0,
-        chartTotals[2] ?? 0
-      ]);
-    }
-    
-    setSelectedChart("savings");
-  };
-
-  const formatChartData = (
-    chartType: ChartTitlesType, 
-    useOthersPercentage = false
-  ) => {
-    const formattedData = getFormattedChartData(chartType, data, useOthersPercentage, savingsTotalLabels);
-
-    setComplexChartData({
-      ActualSavingsForCurrentYear: formattedData.ActualSavingsForCurrentYear ?? [],
-      ActualSavingsForYear: formattedData.ActualSavingsForYear ?? [],
-      ActualSavingsPerMonth: formattedData.ActualSavingsPerMonth ?? []
-    });
-    setSelectedChart(chartType);
-    setTriggerAnimation((prev) => !prev);
-  };
 
   return (
     <div className="App">
       <DashboardSidebar
-        handleSavingsTotals={() => formatSavingsTotalData()}
-        handleCostCentreSavings={() => formatChartData("cost")}
-        handleEnvironmentData={() => formatChartData("environment")}
-        handleProductSavingsData={() => formatChartData("product", true)}
+        handleSavingsTotals={() => setSelectedChart('savings')}
+        handleCostCentreSavings={() => setSelectedChart("cost")}
+        handleEnvironmentData={() => setSelectedChart("environment")}
+        handleProductSavingsData={() => setSelectedChart("product")}
       />
       <div className="data-area">
         <DashboardHeader chartTitle={chartTitle} />
-          {selectedChart === "savings" && <SavingsTotalsBarChart chartData={barChartData} />}
-          {selectedChart === "cost" && <ComplexChart chartData={complexChartData} chartType="bar" />}
-          {selectedChart === "environment" && <ComplexChart chartData={complexChartData} chartType="line" /> }
-          {selectedChart === "product" && (
-            <DoughnutChart
-              chartData={complexChartData}
-              savingsTotals={savingsTotals}
-              triggerAnimation={triggerAnimation} // Pass the state
-              setTriggerAnimation={setTriggerAnimation}
-            />
-          )}
-      </div>
+          {selectedChart === "savings" && <SavingsTotalsBarChart data={barChartData} />}
+          {selectedChart === "cost" && <ComplexChart data={costData} type="bar" />}
+          {selectedChart === "environment" && <ComplexChart data={environmentData} type="line" /> } 
+          {selectedChart === "product" && <DoughnutChart chartData={productData} savingsTotals={savingsTotals} />}
+        </div>
     </div>
   );
 });
