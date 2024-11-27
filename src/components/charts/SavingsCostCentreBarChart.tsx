@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useRef } from "react";
 import "./barChart.css";
 import {
   Chart as ChartJS,
@@ -15,8 +15,8 @@ import DownloadChart from "@utils/DownloadChart";
 import formatChartData from "@utils/formatChartData";
 import { StateContext } from "@context/StateProvider";
 import { ChartDataFilteredProps } from "./DoughnutChart";
-import { ComplexBarChartDataProps } from "@components/dataVisualisation/DataVisualisation";
 import formatChartLabels from "@utils/formatChartLabels";
+import { ComplexBarChartDataTypes } from "./chart.types";
 
 ChartJS.register(
   CategoryScale,
@@ -28,12 +28,13 @@ ChartJS.register(
 );
 
 interface BarChartProps {
-  chartData: ComplexBarChartDataProps;
-  exportRef: HTMLDivElement | null;}
+  chartData: ComplexBarChartDataTypes;
+}
 
-const SavingsCostCentreBarChart = ({ chartData, exportRef }: BarChartProps) => {
+const SavingsCostCentreBarChart = ({ chartData }: BarChartProps) => {
   const { state } = useContext(StateContext);
   const { sidebarOpen } = state;
+  const exportCostCenterTotalRef = useRef<HTMLDivElement>(null);
 
   const chartDataFormatted: ChartDataFilteredProps = {
     ActualSavingsForCurrentYear: formatChartData({ chartData: chartData.ActualSavingsForCurrentYear}),
@@ -122,11 +123,11 @@ const SavingsCostCentreBarChart = ({ chartData, exportRef }: BarChartProps) => {
 
   return (
     <div
-      className={`chart-horizontal ${
-        !sidebarOpen ? "chart--sidebar-closed" : ""
-      }`}>
+      className={`chart-horizontal ${!sidebarOpen ? "chart--sidebar-closed" : ""}`}
+      ref={exportCostCenterTotalRef}
+    >
       <DownloadChart
-        reference={exportRef}
+        reference={exportCostCenterTotalRef}
         title={"Cost Centre Savings"}
       />
       <Bar options={options} data={data} />

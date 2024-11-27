@@ -3,16 +3,32 @@ import exportAsImage from "./exportAsImage";
 import "../App.css";
 
 interface DownloadChartProps {
-  reference: HTMLDivElement | null;
+  reference: {
+    current: HTMLDivElement | null;
+  },
   title: string;
 }
 
 const DownloadChart = ({ reference, title }: DownloadChartProps) => {
-  const handleDownload = async (e: ChangeEvent<HTMLSelectElement>, title: string) => {
+  const handleDownload = async (
+    e: ChangeEvent<HTMLSelectElement>, 
+    title: string
+  ) => {
+  
+    if (!reference.current) {
+      console.error("Reference is null. Cannot download the chart.");
+      return;
+    }
+
     const selectedType = e.target.value;
+
     if (selectedType) {
       // Call exportAsImage with the selected file type
-      await exportAsImage({element: reference, imageFileName: title, type: selectedType});
+      await exportAsImage({
+        element: reference.current, 
+        imageFileName: title, 
+        type: selectedType
+      });
       // Reset the dropdown to its initial state
       e.target.value = "";
     }

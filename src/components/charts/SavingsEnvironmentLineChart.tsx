@@ -1,5 +1,4 @@
-import { useContext } from "react";
-import "./barChart.css";
+import { useContext, useRef } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -12,12 +11,13 @@ import {
   TooltipItem,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-import DownloadChart from "@utils/DownloadChart";
-import formatChartData from "@utils/formatChartData";
+import { ComplexBarChartDataTypes } from "./chart.types";
 import { StateContext } from "@context/StateProvider";
 import { ChartDataFilteredProps } from "./DoughnutChart";
-import { ComplexBarChartDataProps } from "@components/dataVisualisation/DataVisualisation";
+import formatChartData from "@utils/formatChartData";
+import DownloadChart from "@utils/DownloadChart";
 import formatChartLabels from "@utils/formatChartLabels";
+import "./barChart.css";
 
 ChartJS.register(
   CategoryScale,
@@ -30,12 +30,14 @@ ChartJS.register(
 );
 
 interface BarChartProps {
-  chartData: ComplexBarChartDataProps;
-  exportRef: HTMLDivElement | null;}
+  chartData: ComplexBarChartDataTypes;
+}
 
-const SavingsEnvironmentLineChart = ({ chartData, exportRef }: BarChartProps) => {
+const SavingsEnvironmentLineChart = ({ chartData }: BarChartProps) => {
   const { state } = useContext(StateContext);
   const { sidebarOpen } = state;
+  const exportEnvironmentTotalRef = useRef<HTMLDivElement>(null);
+
 
   const chartDataFormatted: ChartDataFilteredProps = {
     ActualSavingsForCurrentYear: formatChartData({ chartData: chartData.ActualSavingsForCurrentYear}),
@@ -127,12 +129,12 @@ const SavingsEnvironmentLineChart = ({ chartData, exportRef }: BarChartProps) =>
 
   return (
     <div
-      className={`chart-horizontal ${
-        !sidebarOpen ? "chart--sidebar-closed" : ""
-      }`}>
+      className={`chart-horizontal ${!sidebarOpen ? "chart--sidebar-closed" : ""}`}
+      ref={exportEnvironmentTotalRef}
+    >
       <DownloadChart
-        reference={exportRef}
-        title={"Cost Centre Savings"}
+        reference={exportEnvironmentTotalRef}
+        title={"Environment Savings"}
       />
       <Line options={options} data={data} />
     </div>

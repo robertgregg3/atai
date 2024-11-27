@@ -2,18 +2,17 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import { StateContext } from "@context/StateProvider";
-import { ComplexBarChartDataProps, SavingsTotals } from "@components/dataVisualisation/DataVisualisation";
 import formatChartData from "@utils/formatChartData";
 import formatChartLabels from "@utils/formatChartLabels";
 import DownloadChart from "@utils/DownloadChart";
 import "./doughnutChart.css";
+import { ComplexBarChartDataTypes, SavingsTotalsTypes } from "./chart.types";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 export interface DoughnutChartProps {
-  chartData: ComplexBarChartDataProps;
-  savingsTotals: SavingsTotals;
-  exportRef: HTMLDivElement | null;  
+  chartData: ComplexBarChartDataTypes;
+  savingsTotals: SavingsTotalsTypes;
   triggerAnimation: boolean;
   setTriggerAnimation: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -27,17 +26,15 @@ export interface ChartDataFilteredProps {
 const DoughnutChart = ({
   chartData,
   savingsTotals, 
-  exportRef,
   triggerAnimation,
   setTriggerAnimation,
 }: DoughnutChartProps) => {
-
-  console.log('chartData', chartData)
-
   const [ options, setOptions ] = useState<any>();
   const { state } = useContext(StateContext);
   const { sidebarOpen } = state;
-  const chartRef = useRef<ChartJS<"doughnut"> | null>(null);
+  const chartRef = useRef<ChartJS<"doughnut"> | null>(null); // chart rerender when totals change
+  const productTotalRef = useRef<HTMLDivElement>(null);
+
   
   const chartDataFormatted: ChartDataFilteredProps = {
     ActualSavingsForCurrentYear: formatChartData({ chartData: chartData.ActualSavingsForCurrentYear}),
@@ -45,14 +42,10 @@ const DoughnutChart = ({
     ActualSavingsForYear: formatChartData({ chartData: chartData.ActualSavingsForYear}),
   };
   
-  debugger;
-  // const chartDataFormatted: ChartDataFilteredProps = formatChartData({ chartData, legend: false});
-  
   const [currentChartData, setCurrentChartData] = useState<number[]>(chartDataFormatted.ActualSavingsForCurrentYear);
   const [currentChart, setCurrentChart] = useState<string>("current year");
   const [currentTotal, setCurrentTotal] = useState<string | number>(savingsTotals.ActualSavingsForCurrentYear);
   const chartLabels: string[] = formatChartLabels({chartData: chartData.ActualSavingsForCurrentYear });
-
 
   useEffect(() => {
     if (chartRef.current) {
@@ -140,9 +133,9 @@ const DoughnutChart = ({
   };
   return (
     <div
-      className={`chart-horizontal ${
-        !sidebarOpen ? "chart--sidebar-closed" : ""
-      }`}>
+      className={`chart-horizontal ${!sidebarOpen ? "chart--sidebar-closed" : ""}`}
+      ref={productTotalRef}
+    >
       <div className="chart__selection">
         <button
           className={currentChart === "current year" ? "chart-selected" : ""}
@@ -163,7 +156,7 @@ const DoughnutChart = ({
         </button>
       </div>
       <DownloadChart
-        reference={exportRef}
+        reference={productTotalRef}
         title={`Total Savings for ${currentChart}`}
       />
       <Doughnut ref={chartRef} data={data} options={options} />

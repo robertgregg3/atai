@@ -1,6 +1,6 @@
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, LinearScale, CategoryScale, BarElement, TooltipItem   } from "chart.js";
 import { Bar } from "react-chartjs-2";
-import { useContext } from "react";
+import { useContext, useRef } from "react";
 import { StateContext } from "@context/StateProvider";
 import DownloadChart from "@utils/DownloadChart";
 import "./savingsTotalsBarChart.css";
@@ -9,11 +9,12 @@ ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, BarEle
 
 interface SavingsTotalsBarChartProps {
   chartData: number[];
-  exportRef: HTMLDivElement | null;}
+}
 
-const SavingsTotalsBarChart = ({chartData, exportRef}: SavingsTotalsBarChartProps) => {
+const SavingsTotalsBarChart = ({chartData}: SavingsTotalsBarChartProps) => {
   const { state } = useContext(StateContext);
   const { sidebarOpen } = state;
+  const exportSavingsTotalsRef = useRef<HTMLDivElement>(null);
 
   const options = {
     responsive: true,
@@ -89,10 +90,10 @@ const SavingsTotalsBarChart = ({chartData, exportRef}: SavingsTotalsBarChartProp
   };
   return (
     <div
-      className={`chart-horizontal ${
-        !sidebarOpen ? "chart--sidebar-closed" : ""
-      }`}>
-      <DownloadChart reference={exportRef} title={"Savings totals"} />
+      className={`chart-horizontal ${!sidebarOpen ? "chart--sidebar-closed" : ""}`}
+      ref={exportSavingsTotalsRef}
+    >
+      <DownloadChart reference={exportSavingsTotalsRef} title={"Savings totals"} />
       <Bar data={data} options={options} />
     </div>
   );

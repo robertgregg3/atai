@@ -1,4 +1,5 @@
-import { useEffect, useState, useRef, memo } from "react";
+import { useEffect, useState, memo, useMemo } from "react";
+import { ChartTitlesType, ComplexBarChartDataTypes, SavingsTotalsTypes, SavingsTotalType } from "@components/charts/chart.types";
 import DoughnutChart from "@charts/DoughnutChart"
 import DashboardHeader from "../DashboardHeader/DashboardHeader";
 import DashboardSidebar from "@components/DashboardSidebar/DashboardSidebar";
@@ -9,23 +10,27 @@ import prepareChartTotals from "@utils/prepareChartTotals";
 import getFormattedChartData from "@utils/getFormattedChartData";
 import "./dataVisualisation.css";
 
-const chartTitles = {
-  "savings-total": "Total Savings Bar Chart",
-  "cost-savings": "Cost Savings Bar Chart",
-  "environment-savings": "Environment Savings Bar Chart",
-  "product-savings": "Product Savings Doughnut Chart",
+export enum ChartTypes {
+  SAVINGS = "savings",
+  COST = "cost",
+  ENVIRONMENT =  "environment",
+  PRODUCT =   "product"
+}
+
+const chartTitles: Record<ChartTitlesType, string> = {
+  "savings": "Total Savings Bar Chart",
+  "cost": "Cost Savings Bar Chart",
+  "environment": "Environment Savings Bar Chart",
+  "product": "Product Savings Doughnut Chart",
 };
 
-export type ChartTitlesType = | "savings-total" | "cost-savings" | "environment-savings" | "product-savings";
-export type SavingsTotalTypes = | "ActualSavingsForCurrentYear" | "ActualSavingsForYear" | "ActualSavingsPerMonth";
-
-const savingsTotalLabels:SavingsTotalTypes[] = [
+const savingsTotalLabels:SavingsTotalType[] = [
   "ActualSavingsForCurrentYear",
   "ActualSavingsForYear",
   "ActualSavingsPerMonth",
 ];
 
-export type CsvDataProps = Partial<{
+export interface CsvDataProps {
   ActualSavingsForCurrentYear: string | number
   ActualSavingsForYear: string | number
   ActualSavingsPerMonth: string | number
@@ -33,48 +38,47 @@ export type CsvDataProps = Partial<{
   EnvironmentTag: string | number,
   ProductNameTag: string | number,
   [key: string]: string | number;
-}>;
-
-interface DataVisualisationProps {
-  data: CsvDataProps[];
 }
 
-export interface SavingsTotals {
-  ActualSavingsForCurrentYear: string | number;
-  ActualSavingsForYear: string | number;
-  ActualSavingsPerMonth: string | number;
-}
-
-export interface ComplexBarChartDataProps {
-  ActualSavingsForCurrentYear: { key: string, value: number}[];
-  ActualSavingsForYear: { key: string, value: number}[];
-  ActualSavingsPerMonth: { key: string, value: number}[];
-}
-
-const initialState: ComplexBarChartDataProps = {
+const initialState: ComplexBarChartDataTypes = {
   ActualSavingsForCurrentYear: [],
   ActualSavingsForYear: [],
   ActualSavingsPerMonth: []
 };
+interface DataVisProps {
+  data: CsvDataProps[];
+}
 
-export const DataVisualisation: React.FC<DataVisualisationProps> = memo(({ data } : DataVisualisationProps) => {
+// pulling in the data for the dashboard
+// formatting the data
+// displaying with teh data
+export const DataVisualisation: React.FC<DataVisProps> = memo(({ data } : DataVisProps) => {
+
+  // used for the Savings Bar Chart
+  // formatted with formatSavingsTotalData
   const [barChartData, setBarChartData] = useState<number[]>([]);
-  const [complexChartData, setComplexChartData] = useState<ComplexBarChartDataProps>(initialState);
-  const [chartTitle, setChartTitle] = useState<string>("");
-  const [savingsTotals, setSavingsTotals] = useState<SavingsTotals>({
+
+  // used for the Cost Centre, Environment and Product charts
+  // formatted with formatChartData
+  const [complexChartData, setComplexChartData] = useState<ComplexBarChartDataTypes>({
+    ActualSavingsForCurrentYear: [],
+    ActualSavingsForYear: [],
+    ActualSavingsPerMonth: []
+  });
+
+  // used for the doughnut chart as it has totals displayed
+  const [savingsTotals, setSavingsTotals] = useState<SavingsTotalsTypes>({
     ActualSavingsForCurrentYear: 0,
     ActualSavingsForYear: 0,
     ActualSavingsPerMonth: 0
   });
-
-  const exportSavingsTotalsRef = useRef<HTMLDivElement>(null);
-  const exportCostCenterTotalRef = useRef<HTMLDivElement>(null);
-  const exportEnvironmentTotalRef = useRef<HTMLDivElement>(null);
-  const productTotalRef = useRef<HTMLDivElement>(null);
-
-  const [selectedChart, setSelectedChart] = useState<ChartTitlesType>("savings-total");
+  
+  // used to switch between the different charts, triggered by the sidebar
+  // component which either calls formatSavingsTotalData or formatChartData
+  const [selectedChart, setSelectedChart] = useState<ChartTitlesType>("savings");
   const [triggerAnimation, setTriggerAnimation] = useState<boolean>(false);
-
+  const chartTitle = useMemo(() => chartTitles[selectedChart], [selectedChart]);
+  
   // formats the data
   useEffect(() => {
     if (data) {
@@ -84,6 +88,7 @@ export const DataVisualisation: React.FC<DataVisualisationProps> = memo(({ data 
       const savingsMonth = String(totals.ActualSavingsPerMonth).trim().replace(/[^0-9.-]+/g, "")
 
       formatSavingsTotalData();
+
       setSavingsTotals({
         ActualSavingsForCurrentYear: parseFloat(savingsCurtrentYear),
         ActualSavingsForYear: parseFloat(savingsYear),
@@ -92,8 +97,10 @@ export const DataVisualisation: React.FC<DataVisualisationProps> = memo(({ data 
     }
   }, [data]);
 
+  // TODO: abstract into a hook
   const formatSavingsTotalData = () => {
     const chartTotals = prepareChartTotals(data);
+
     if(chartTotals) {
       setBarChartData([
         chartTotals[0] ?? 0,
@@ -101,20 +108,16 @@ export const DataVisualisation: React.FC<DataVisualisationProps> = memo(({ data 
         chartTotals[2] ?? 0
       ]);
     }
-    setSelectedChart("savings-total");
+    
+    setSelectedChart("savings");
   };
-
-  // Update chart title when the chart is updated
-  useEffect(() => {
-    return setChartTitle(chartTitles[selectedChart]);
-  }, [selectedChart]);
 
   const formatChartData = (
     chartType: ChartTitlesType, 
-    labelKey: string,  
     useOthersPercentage = false
   ) => {
-    const formattedData = getFormattedChartData(labelKey, data, useOthersPercentage, savingsTotalLabels);
+    const formattedData = getFormattedChartData(chartType, data, useOthersPercentage, savingsTotalLabels);
+
     setComplexChartData({
       ActualSavingsForCurrentYear: formattedData.ActualSavingsForCurrentYear ?? [],
       ActualSavingsForYear: formattedData.ActualSavingsForYear ?? [],
@@ -128,54 +131,24 @@ export const DataVisualisation: React.FC<DataVisualisationProps> = memo(({ data 
     <div className="App">
       <DashboardSidebar
         handleSavingsTotals={() => formatSavingsTotalData()}
-        handleCostCentreSavings={() =>
-          formatChartData("cost-savings", "CostCenterTag", false)
-        }
-        handleEnvironmentData={() =>
-          formatChartData("environment-savings", "EnvironmentTag", false)
-        }
-        handleProductSavingsData={() =>
-          formatChartData("product-savings", "ProductNameTag", true)
-        }
+        handleCostCentreSavings={() => formatChartData("cost")}
+        handleEnvironmentData={() => formatChartData("environment")}
+        handleProductSavingsData={() => formatChartData("product", true)}
       />
       <div className="data-area">
         <DashboardHeader chartTitle={chartTitle} />
         <div className="chart-container">
-          <div ref={exportSavingsTotalsRef}>
-            {selectedChart === "savings-total" && (
-              <SavingsTotalsBarChart
-                chartData={barChartData}
-                exportRef={exportSavingsTotalsRef.current}
-              />
-            )}
-          </div>
-          <div ref={exportCostCenterTotalRef}>
-            {selectedChart === "cost-savings" && (
-              <SavingsCostCentreBarChart
-                chartData={complexChartData}
-                exportRef={exportCostCenterTotalRef.current}
-              />
-            )}
-          </div>
-          <div ref={exportEnvironmentTotalRef}>
-            {selectedChart === "environment-savings" && (
-              <SavingsEnvironmentLineChart
-                chartData={complexChartData}
-                exportRef={exportEnvironmentTotalRef.current}
-              />
-            )}
-          </div>
-          <div ref={productTotalRef}>
-            {selectedChart === "product-savings" && (
-              <DoughnutChart
-                chartData={complexChartData}
-                savingsTotals={savingsTotals}
-                exportRef={productTotalRef.current}
-                triggerAnimation={triggerAnimation} // Pass the state
-                setTriggerAnimation={setTriggerAnimation}
-              />
-            )}
-          </div>
+          {selectedChart === "savings" && <SavingsTotalsBarChart chartData={barChartData} />}
+          {selectedChart === "cost" && <SavingsCostCentreBarChart chartData={complexChartData} />}
+          {selectedChart === "environment" && <SavingsEnvironmentLineChart chartData={complexChartData} /> }
+          {selectedChart === "product" && (
+            <DoughnutChart
+              chartData={complexChartData}
+              savingsTotals={savingsTotals}
+              triggerAnimation={triggerAnimation} // Pass the state
+              setTriggerAnimation={setTriggerAnimation}
+            />
+          )}
         </div>
       </div>
     </div>
