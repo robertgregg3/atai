@@ -1,32 +1,24 @@
-import { ChartTitlesType, ComplexChartDataTypes, SavingsTotalType } from "@components/charts/chart.types";
-import { ChartTypes, CsvDataProps } from "@components/dataVisualisation/DataVisualisation";
+import { ChartTitlesType, ChartTypes, ComplexChartDataTypes, CsvDataProps, SavingsTotalType } from "@components/charts/chart.types";
 
-const mapLabelKeys = (chartType: ChartTitlesType) => {
-  if (chartType === ChartTypes.SAVINGS) {
-    return '';
-  }
+const labelKeyMap = new Map<ChartTitlesType, string>([
+  [ChartTypes.SAVINGS, ''],
+  [ChartTypes.COST, 'CostCenterTag'],
+  [ChartTypes.ENVIRONMENT, 'EnvironmentTag'],
+  [ChartTypes.PRODUCT, 'ProductNameTag']
+])
 
-  if (chartType === ChartTypes.COST) {
-    return 'CostCenterTag';
-  }
-
-  if (chartType === ChartTypes.ENVIRONMENT) {
-    return 'EnvironmentTag';
-  }
-
-  if (chartType === ChartTypes.PRODUCT) {
-    return 'ProductNameTag';
-  }
+const mapLabelKeys = (labelKey: ChartTitlesType) => {
+  return labelKeyMap.get(labelKey)
 }
 
 const getFormattedChartData = (
-  chartType: string,
+  chartType: ChartTitlesType,
   data: CsvDataProps[],
   useOthersPercentage = false,
   savingsTotalLabels: SavingsTotalType[] 
 ): Partial<ComplexChartDataTypes>  => {
 
-  const labelKey = mapLabelKeys(chartType as ChartTitlesType) ?? '';
+  const labelKey = mapLabelKeys(chartType) ?? '';
   
   const newChartData: { [key: string]: { key: string; value: number; }[] } = {
     ActualSavingsForCurrentYear: [],

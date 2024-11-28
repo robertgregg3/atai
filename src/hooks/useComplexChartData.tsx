@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import { CsvDataProps } from '@components/dataVisualisation/DataVisualisation';
-import { ChartTitlesType, ComplexChartDataTypes, SavingsTotalType } from '@components/charts/chart.types';
+import { ChartTitlesType, ComplexChartDataTypes, CsvDataProps, SavingsTotalType } from '@components/charts/chart.types';
 import getFormattedChartData from '@utils/getFormattedChartData';
 import useGetSavingsTotals from './useGetSavingsTotals';
 

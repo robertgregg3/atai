@@ -1,20 +1,14 @@
 import { useState, memo, useMemo } from "react";
-import { ChartTitlesType, ComplexChartDataTypes, SavingsTotalType } from "@components/charts/chart.types";
+import { ChartTitlesType, CsvDataProps, SavingsTotalType } from "@components/charts/chart.types";
 import DoughnutChart from "@charts/DoughnutChart"
 import DashboardHeader from "../DashboardHeader/DashboardHeader";
 import DashboardSidebar from "@components/DashboardSidebar/DashboardSidebar";
 import SavingsTotalsBarChart from "@components/charts/SavingsTotalsBarChart";
 import ComplexChart from "@components/charts/ComplexChart";
 import useSimpleBarChartData from "@hooks/useSimpleBarChartData";
-import "./dataVisualisation.css";
 import useComplexChartData from "@hooks/useComplexChartData";
+import "./dataVisualisation.css";
 
-export enum ChartTypes {
-  SAVINGS = "savings",
-  COST = "cost",
-  ENVIRONMENT =  "environment",
-  PRODUCT =   "product"
-}
 
 const chartTitles: Record<ChartTitlesType, string> = {
   "savings": "Total Savings Bar Chart",
@@ -29,21 +23,6 @@ const savingsTotalLabels:SavingsTotalType[] = [
   "ActualSavingsPerMonth",
 ];
 
-export interface CsvDataProps {
-  ActualSavingsForCurrentYear: string | number
-  ActualSavingsForYear: string | number
-  ActualSavingsPerMonth: string | number
-  CostCenterTag: string | number,
-  EnvironmentTag: string | number,
-  ProductNameTag: string | number,
-  [key: string]: string | number;
-}
-
-const initialState: ComplexChartDataTypes = {
-  ActualSavingsForCurrentYear: [],
-  ActualSavingsForYear: [],
-  ActualSavingsPerMonth: []
-};
 interface DataVisProps {
   data: CsvDataProps[];
 }

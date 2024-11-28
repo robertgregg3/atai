@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { CsvDataProps } from '@components/dataVisualisation/DataVisualisation';
+import { CsvDataProps } from '@components/charts/chart.types';
 import prepareChartTotals from '@utils/prepareChartTotals';
 
 const useSimpleBarChartData = (data: CsvDataProps[]) => {
