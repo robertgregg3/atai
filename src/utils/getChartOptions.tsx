@@ -6,6 +6,7 @@ interface GetChartOptionsProps {
   chartType: ChartType;
   isResponsive?: boolean;
   showChartTitle?: boolean;
+  chartTitle?: string;
   legendPosition?: "bottom" | "left" | "right" | "top" | "center" | "chartArea";
   labelPadding?: number;
   scalePadding?: { x: number; y: number };
@@ -17,6 +18,7 @@ interface ChartOptionsType<T extends ChartType> {
   plugins: {
     title: {
       display: boolean;
+      text: string;
     };
     legend: {
       position: | "bottom" | "left" | "right" | "top" | "center" | "chartArea" | _DeepPartialObject<{ [scaleId: string]: number; }> | undefined
@@ -31,7 +33,7 @@ interface ChartOptionsType<T extends ChartType> {
       };
     };
   };
-  scales: {
+  scales?: {
     x: {
       grid: {
         display: boolean;
@@ -54,11 +56,12 @@ interface ChartOptionsType<T extends ChartType> {
 
 const getChartOptions = ({
   chartType,
-  isResponsive = true, // should be default and option to change
-  showChartTitle = false, // should be default and option to change
-  legendPosition = "bottom", // should be default and option to change
-  labelPadding = 20, // should be default and option to change
-  scalePadding = { x: 20, y: 20} // should be default and option to change
+  isResponsive = true, 
+  showChartTitle = false,
+  chartTitle, 
+  legendPosition = "bottom", 
+  labelPadding = 20, 
+  scalePadding = { x: 20, y: 20} 
 }: GetChartOptionsProps) => {
   
   const chartOptions: ChartOptionsType<typeof chartType> = {
@@ -67,6 +70,7 @@ const getChartOptions = ({
     plugins: {
       title: {
         display: showChartTitle,
+        text: chartTitle ?? ''
       },
       legend: {
         position: legendPosition,
@@ -82,14 +86,17 @@ const getChartOptions = ({
             const value = tooltipItem.raw as number;
 
             if (label) {
-              label += `: ${value}`;
+              label += chartType === 'doughnut' 
+                ? ` -- ${tooltipItem.label}: $` +
+                  Math.round(tooltipItem.raw as number).toFixed(2) 
+                : `: ${value}`;
             }
             return label;
           },
         },
       },
     },
-    scales: {
+    scales: chartType === 'doughnut' ? undefined : {
       x: {
         grid: {
           display: false, // Hide the x-axis grid lines

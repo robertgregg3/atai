@@ -9,6 +9,4 @@ const formatChartData = ({chartData} :ChartDataProps) => {
     return [];
 };
 
-
-
 export default formatChartData;

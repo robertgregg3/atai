@@ -6,6 +6,7 @@ import { ComplexChartDataTypes, SavingsTotalsTypes } from "./chart.types";
 import formatChartData from "@utils/formatChartData";
 import formatChartLabels from "@utils/formatChartLabels";
 import DownloadChart from "@utils/DownloadChart";
+import getChartOptions from "@utils/getChartOptions";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -80,38 +81,6 @@ const DoughnutChart = ({
     setCurrentChartData(() => filter);
   };
 
-  const options = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-    title: {
-      display: true,
-      text: `Total Savings for ${currentChart}: $${currentTotal} `,
-    },
-    legend: {
-      position: "bottom" as const,
-      display: true,
-      labels: {
-      usePointStyle: true,
-      padding: 25,
-      },
-    },
-    tooltip: {
-      callbacks: {
-      label: (tooltipItem: TooltipItem<"doughnut">) => {
-        let label = tooltipItem.dataset.label || "";
-        if (label) {
-          label +=
-            ` -- ${tooltipItem.label}: $` +
-            Math.round(tooltipItem.raw as number).toFixed(2);
-        }
-        return label;
-      },
-      },
-    },
-    },
-  };
-
   const data = {
     labels: chartLabels,
     datasets: [
@@ -133,6 +102,10 @@ const DoughnutChart = ({
       },
     ],
   };
+
+  const chartTitle = `Total Savings for ${currentChart}: $${currentTotal} `;
+  const { chartOptions } = getChartOptions({ chartType: "doughnut", chartTitle });
+  
   return (
     <div
       className={`chart-horizontal ${!sidebarOpen ? "chart--sidebar-closed" : ""}`}
@@ -161,7 +134,7 @@ const DoughnutChart = ({
         reference={productTotalRef}
         title={`Total Savings for ${currentChart}`}
       />
-      <Doughnut ref={chartRef} data={data} options={options} />
+      <Doughnut ref={chartRef} data={data} options={chartOptions} />
     </div>
   );
 };
