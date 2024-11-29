@@ -19,6 +19,7 @@ import { ChartDataFilteredProps } from "./DoughnutChart";
 import formatChartData from "@utils/formatChartData";
 import DownloadChart from "@utils/DownloadChart";
 import formatChartLabels from "@utils/formatChartLabels";
+import getChartOptions from "@utils/getChartOptions";
 
 ChartJS.register(
   CategoryScale,
@@ -40,6 +41,7 @@ const ComplexChart = ({ data, type = 'bar' }: ChartProps) => {
   const { state } = useContext(StateContext);
   const { sidebarOpen } = state;
   const chartExportRef = useRef<HTMLDivElement>(null);
+  const { chartOptions } = getChartOptions({ chartType: type })
 
   const dataFormatted: ChartDataFilteredProps = {
     ActualSavingsForCurrentYear: formatChartData({ chartData: data.ActualSavingsForCurrentYear}),
@@ -67,61 +69,6 @@ const ComplexChart = ({ data, type = 'bar' }: ChartProps) => {
     },
   ];
 
-  const options = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      title: {
-        display: false,
-      },
-      legend: {
-        position: "bottom" as const,
-        labels: {
-          usePointStyle: true,
-          padding: 20,
-        },
-      },
-      tooltip: {
-        callbacks: {
-          label: function (tooltipItem: TooltipItem<typeof type>) {
-            let label = tooltipItem.dataset.label || "";
-            const value = tooltipItem.raw as number;
-
-            if (label) {
-              label += label += `: ${value}`;;
-            }
-            return label;
-          },
-        },
-      },
-    },
-    scales: {
-      x: {
-        grid: {
-          display: false, // Hide the x-axis grid lines
-        },
-        ticks: {
-          padding: 5, // Adds padding between x-axis labels and chart content
-        },
-      },
-      y: {
-        grid: {
-          drawBorder: false,
-        },
-        ticks: {
-          padding: 15, // Adds padding between y-axis labels and chart content
-          callback: function (value: string | number) {
-            const formattedValue = value
-              .toString()
-              .split(/(?=(?:...)*$)/)
-              .join(",");
-            return "$" + formattedValue;
-          },
-        },
-      },
-    },
-  };
-
   const preparedChartData = {
     labels: chartLabels,
     datasets: chartData,
@@ -138,8 +85,8 @@ const ComplexChart = ({ data, type = 'bar' }: ChartProps) => {
         reference={chartExportRef}
         title={"Environment Savings"}
       />
-      {type === 'line' && <Line options={options} data={preparedChartData} />}
-      {type === 'bar' && <Bar options={options} data={preparedChartData} />}
+      {type === 'line' && <Line options={chartOptions} data={preparedChartData} />}
+      {type === 'bar' && <Bar options={chartOptions} data={preparedChartData} />}
     </div>
   );
 };

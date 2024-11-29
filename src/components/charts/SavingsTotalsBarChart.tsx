@@ -3,6 +3,7 @@ import { Bar } from "react-chartjs-2";
 import { useContext, useRef } from "react";
 import { StateContext } from "@context/StateProvider";
 import DownloadChart from "@utils/DownloadChart";
+import getChartOptions from "@utils/getChartOptions";
 
 ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, BarElement );
 
@@ -14,58 +15,7 @@ const SavingsTotalsBarChart = ({data}: SavingsTotalsBarChartProps) => {
   const { state } = useContext(StateContext);
   const { sidebarOpen } = state;
   const exportSavingsTotalsRef = useRef<HTMLDivElement>(null);
-
-  const options = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      title: {
-        display: false,
-      },
-      legend: {
-        position: "bottom" as const,
-        labels: {
-          usePointStyle: true,
-          padding: 20,
-        },
-      },
-      tooltip: {
-        callbacks: {
-          label: function (tooltipItem: TooltipItem<"bar">) {
-            let label = tooltipItem.dataset.label || "";
-            const value = tooltipItem.raw as number;
-
-            if (label) {
-              label += `: ${value}`;
-            }
-            return label;
-          },
-        },
-      },
-    },
-    scales: {
-      x: {
-        grid: {
-          display: false, // Hide the x-axis grid lines
-        },
-        ticks: {
-          padding: 0, // Adds padding between x-axis labels and chart content
-        },
-      },
-      y: {
-        grid: {
-          drawBorder: false,
-        },
-        ticks: {
-          padding: 15, // Adds padding between y-axis labels and chart content
-          callback: function (tickValue: string | number) {
-            const value = tickValue.toString().split(/(?=(?:...)*$)/).join(",");
-            return "$" + value;
-          },
-        },
-      },
-    },
-  };
+  const { chartOptions } = getChartOptions({ chartType: "bar" })
 
   const preparedChartData = {
     labels: [""],
@@ -93,7 +43,7 @@ const SavingsTotalsBarChart = ({data}: SavingsTotalsBarChartProps) => {
       ref={exportSavingsTotalsRef}
     >
       <DownloadChart reference={exportSavingsTotalsRef} title={"Savings totals"} />
-      <Bar data={preparedChartData} options={options} />
+      <Bar data={preparedChartData} options={chartOptions} />
     </div>
   );
 };
