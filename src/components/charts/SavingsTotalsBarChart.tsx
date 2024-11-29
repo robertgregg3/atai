@@ -4,7 +4,7 @@ import { useContext, useRef } from "react";
 import { StateContext } from "@context/StateProvider";
 import DownloadChart from "@utils/DownloadChart";
 import getChartOptions from "@utils/getChartOptions";
-import getChartDatasets from "@utils/getChartDatasets";
+import getchartDatasets from "@utils/getchartDatasets";
 
 ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, BarElement );
 
@@ -16,12 +16,12 @@ const SavingsTotalsBarChart = ({data}: SavingsTotalsBarChartProps) => {
   const { state } = useContext(StateContext);
   const { sidebarOpen } = state;
   const { chartOptions } = getChartOptions({ chartType: "bar" })
-  const [ chartDataSets ] = getChartDatasets({ dataFormatted: data, isComplex: false });
+  const [ chartDatasets ] = getchartDatasets({ dataFormatted: data, isComplex: false });
   const chartExportRef = useRef<HTMLDivElement>(null);
 
   const preparedChartData = {
     labels: [""],
-    datasets: chartDataSets,
+    datasets: chartDatasets,
   };
   return (
     <div

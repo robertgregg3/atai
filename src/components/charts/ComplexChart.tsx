@@ -18,7 +18,7 @@ import formatChartData from "@utils/formatChartData";
 import DownloadChart from "@utils/DownloadChart";
 import formatChartLabels from "@utils/formatChartLabels";
 import getChartOptions from "@utils/getChartOptions";
-import getChartData from "@utils/getChartDatasets";
+import getChartData from "@utils/getchartDatasets";
 
 ChartJS.register(
   CategoryScale,
@@ -49,11 +49,11 @@ const ComplexChart = ({ data, type = 'bar' }: ChartProps) => {
   ];
   
   const chartLabels = formatChartLabels({ chartData: data.ActualSavingsForCurrentYear });
-  const [ chartDataSets ] = getChartData({ dataFormatted, isComplex: true });
+  const [ chartDatasets ] = getChartData({ dataFormatted, isComplex: true });
 
   const preparedChartData = {
     labels: chartLabels,
-    datasets: chartDataSets,
+    datasets: chartDatasets,
   };
 
   if (!data) return; // Check if data is not null or undefined

@@ -18,7 +18,7 @@ interface ChartOptionsType<T extends ChartType> {
   plugins: {
     title: {
       display: boolean;
-      text: string;
+      text?: string;
     };
     legend: {
       position: | "bottom" | "left" | "right" | "top" | "center" | "chartArea" | _DeepPartialObject<{ [scaleId: string]: number; }> | undefined
@@ -70,7 +70,7 @@ const getChartOptions = ({
     plugins: {
       title: {
         display: showChartTitle,
-        text: chartTitle ?? ''
+        text: chartTitle ?? '',
       },
       legend: {
         position: legendPosition,

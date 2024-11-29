@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend, TooltipItem } from "chart.js";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import { StateContext } from "@context/StateProvider";
 import { ComplexChartDataTypes, SavingsTotalsTypes } from "./chart.types";
@@ -7,6 +7,7 @@ import formatChartData from "@utils/formatChartData";
 import formatChartLabels from "@utils/formatChartLabels";
 import DownloadChart from "@utils/DownloadChart";
 import getChartOptions from "@utils/getChartOptions";
+import getchartDatasets from "@utils/getchartDatasets";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -81,30 +82,15 @@ const DoughnutChart = ({
     setCurrentChartData(() => filter);
   };
 
+  
+  const chartTitle = `Total Savings for ${currentChart}: $${currentTotal} `;
+  const { chartOptions } = getChartOptions({ chartType: "doughnut", chartTitle, showChartTitle: true });
+  const [ chartDatasets ] = getchartDatasets({ dataFormatted: currentChartData, isDoughnutChart: true });
+ 
   const data = {
     labels: chartLabels,
-    datasets: [
-      {
-        label: "Product Savings",
-        data: currentChartData,
-        backgroundColor: [
-          "#10a8a9",
-          "#000038",
-          "#cccccc",
-          "#f9da7b",
-          "#d1da8d",
-          "#9dcece",
-          "#8989a0",
-          "#0b7083",
-        ],
-        borderColor: ["#ffffff"],
-        borderWidth: 0,
-      },
-    ],
+    datasets: chartDatasets
   };
-
-  const chartTitle = `Total Savings for ${currentChart}: $${currentTotal} `;
-  const { chartOptions } = getChartOptions({ chartType: "doughnut", chartTitle });
   
   return (
     <div
