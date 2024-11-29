@@ -37,7 +37,7 @@ export const DataVisualisation: React.FC<DataVisProps> = memo(({ data } : DataVi
   const { complexChartData: productData, savingsTotals } = useComplexChartData(data, 'product', true, savingsTotalLabels);
 
   // used to switch between the different charts, triggered by the sidebar
-  const [selectedChart, setSelectedChart] = useState<ChartTitlesType>("savings");
+  const [selectedChart, setSelectedChart] = useState<ChartTitlesType>(() => "cost");
   const chartTitle = useMemo(() => chartTitles[selectedChart], [selectedChart]);
 
   return (
