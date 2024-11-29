@@ -1,4 +1,4 @@
-import { Chart as ChartJS, ArcElement, Tooltip, Legend, LinearScale, CategoryScale, BarElement, TooltipItem   } from "chart.js";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, LinearScale, CategoryScale, BarElement   } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import { useContext, useRef } from "react";
 import { StateContext } from "@context/StateProvider";

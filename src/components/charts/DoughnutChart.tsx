@@ -37,7 +37,7 @@ const DoughnutChart = ({
   };
   
   const [currentChartData, setCurrentChartData] = useState<number[]>(chartDataFormatted.ActualSavingsForCurrentYear);
-  const [currentChart, setCurrentChart] = useState<string>("current year");
+  const [currentChart, setCurrentChart] = useState<string>(() => "current year");
   const [currentTotal, setCurrentTotal] = useState<string | number>(savingsTotals.ActualSavingsForCurrentYear);
   const chartLabels: string[] = formatChartLabels({chartData: chartData.ActualSavingsForCurrentYear });
 
@@ -53,7 +53,12 @@ const DoughnutChart = ({
       chartInstance.config.data.datasets[0].data = [...currentChartData];
       chartInstance.update(); // Trigger chart update and animation
     }
-  }, [triggerAnimation]);
+  }, [triggerAnimation, chartData, savingsTotals]);
+
+  useEffect(() => {
+    setCurrentTotal(savingsTotals.ActualSavingsForCurrentYear);
+    setCurrentChartData(() => chartDataFormatted.ActualSavingsForCurrentYear);
+  }, [chartData])
 
   interface HandleChartSelectionClickProps {
     filter: number[];
