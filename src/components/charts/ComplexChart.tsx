@@ -9,17 +9,16 @@ import {
   Title,
   Tooltip,
   Legend,
-  TooltipItem,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import { Bar } from "react-chartjs-2";
 import { ChartType, ComplexChartDataTypes } from "./chart.types";
 import { StateContext } from "@context/StateProvider";
-import { ChartDataFilteredProps } from "./DoughnutChart";
 import formatChartData from "@utils/formatChartData";
 import DownloadChart from "@utils/DownloadChart";
 import formatChartLabels from "@utils/formatChartLabels";
 import getChartOptions from "@utils/getChartOptions";
+import getChartData from "@utils/getChartDatasets";
 
 ChartJS.register(
   CategoryScale,
@@ -40,38 +39,21 @@ interface ChartProps {
 const ComplexChart = ({ data, type = 'bar' }: ChartProps) => {
   const { state } = useContext(StateContext);
   const { sidebarOpen } = state;
-  const chartExportRef = useRef<HTMLDivElement>(null);
   const { chartOptions } = getChartOptions({ chartType: type })
+  const chartExportRef = useRef<HTMLDivElement>(null);
 
-  const dataFormatted: ChartDataFilteredProps = {
-    ActualSavingsForCurrentYear: formatChartData({ chartData: data.ActualSavingsForCurrentYear}),
-    ActualSavingsForYear: formatChartData({ chartData: data.ActualSavingsForYear }),
-    ActualSavingsPerMonth: formatChartData({ chartData: data.ActualSavingsPerMonth }),
-  };
-
-  const chartLabels = formatChartLabels({ chartData: data.ActualSavingsForCurrentYear });
-
-  const chartData = [
-    {
-      label: "Current Year Savings",
-      data: dataFormatted.ActualSavingsForCurrentYear,
-      backgroundColor: "#10a8a9",
-    },
-    {
-      label: "Yearly Savings",
-      data: dataFormatted.ActualSavingsForYear,
-      backgroundColor: "#000038",
-    },
-    {
-      label: "Monthly Savings",
-      data: dataFormatted.ActualSavingsPerMonth,
-      backgroundColor: "#cccccc",
-    },
+  const dataFormatted: number[][] = [
+    formatChartData({ chartData: data.ActualSavingsForCurrentYear}),
+    formatChartData({ chartData: data.ActualSavingsForYear }),
+    formatChartData({ chartData: data.ActualSavingsPerMonth }),
   ];
+  
+  const chartLabels = formatChartLabels({ chartData: data.ActualSavingsForCurrentYear });
+  const [ chartDataSets ] = getChartData({ dataFormatted, isComplex: true });
 
   const preparedChartData = {
     labels: chartLabels,
-    datasets: chartData,
+    datasets: chartDataSets,
   };
 
   if (!data) return; // Check if data is not null or undefined

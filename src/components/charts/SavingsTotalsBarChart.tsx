@@ -4,6 +4,7 @@ import { useContext, useRef } from "react";
 import { StateContext } from "@context/StateProvider";
 import DownloadChart from "@utils/DownloadChart";
 import getChartOptions from "@utils/getChartOptions";
+import getChartDatasets from "@utils/getChartDatasets";
 
 ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, BarElement );
 
@@ -14,35 +15,20 @@ interface SavingsTotalsBarChartProps {
 const SavingsTotalsBarChart = ({data}: SavingsTotalsBarChartProps) => {
   const { state } = useContext(StateContext);
   const { sidebarOpen } = state;
-  const exportSavingsTotalsRef = useRef<HTMLDivElement>(null);
   const { chartOptions } = getChartOptions({ chartType: "bar" })
+  const [ chartDataSets ] = getChartDatasets({ dataFormatted: data, isComplex: false });
+  const chartExportRef = useRef<HTMLDivElement>(null);
 
   const preparedChartData = {
     labels: [""],
-    datasets: [
-      {
-        label: "Current Year Savings",
-        data: [data[0]],
-        backgroundColor: ["#10a8a9"],
-      },
-      {
-        label: "Yearly Savings",
-        data: [data[1]],
-        backgroundColor: ["#000038"],
-      },
-      {
-        label: "Monthly Savings",
-        data: [data[2]],
-        backgroundColor: ["#cccccc"],
-      },
-    ],
+    datasets: chartDataSets,
   };
   return (
     <div
       className={`chart-horizontal ${!sidebarOpen ? "chart--sidebar-closed" : ""}`}
-      ref={exportSavingsTotalsRef}
+      ref={chartExportRef}
     >
-      <DownloadChart reference={exportSavingsTotalsRef} title={"Savings totals"} />
+      <DownloadChart reference={chartExportRef} title={"Savings totals"} />
       <Bar data={preparedChartData} options={chartOptions} />
     </div>
   );
