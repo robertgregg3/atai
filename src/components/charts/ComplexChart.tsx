@@ -56,7 +56,7 @@ const ComplexChart = ({ data, type = 'bar' }: ChartProps) => {
     datasets: chartDatasets,
   };
 
-  if (!data) return; // Check if data is not null or undefined
+  if (!data) return; 
 
   return (
     <div
