@@ -100,11 +100,6 @@ input {
     border-right: 1px solid #cccccc;
 }
 
-.login__container-header {
-    display: flex;
-    flex-direction: column;
-}
-
 .login__container img {
     width: 200px;
     height: 200px;

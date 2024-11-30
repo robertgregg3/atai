@@ -14,7 +14,7 @@ interface ChartDatasetsProps {
 }
 
 const getchartDatasets = ({ dataFormatted, isComplex = false, isDoughnutChart = false}: GetChartDataProps) => {
-    const chartDatasets: ChartDatasetsProps[] = isDoughnutChart ? 
+    const chartDatasets: ChartDatasetsProps[] | any = isDoughnutChart ? 
       [{
         label: "Product Savings",
         data: dataFormatted,

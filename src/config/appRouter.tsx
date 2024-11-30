@@ -1,8 +1,8 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import { DataVisualisation } from "@components/dataVisualisation/DataVisualisation";
-import Login from "@components/login/Login";
 import { CsvDataProps } from "@components/charts/chart.types";
 import firebase from 'firebase/compat/app';
+import LoginPage from "@components/login/Login/LoginPage";
 
 interface CreateAppRouterProps {
   isAuthUser: firebase.User | null;
@@ -12,7 +12,7 @@ interface CreateAppRouterProps {
 const createAppRouter = ({ isAuthUser, appData }: CreateAppRouterProps) =>
   createBrowserRouter(
     [
-      { path: "/", element: isAuthUser ? <Navigate to="/dashboard" /> : <Login /> },
+      { path: "/", element: isAuthUser ? <Navigate to="/dashboard" /> : <LoginPage /> },
       {
         path: "/dashboard",
         element: isAuthUser ? (

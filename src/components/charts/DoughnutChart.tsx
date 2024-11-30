@@ -26,7 +26,6 @@ const DoughnutChart = ({
   chartData,
   savingsTotals, 
 }: DoughnutChartProps) => {
-  const [ triggerAnimation, setTriggerAnimation ] = useState<boolean>();
   const { state } = useContext(StateContext);
   const { sidebarOpen } = state;
   const chartRef = useRef<ChartJS<"doughnut"> | null>(null); // chart rerender when totals change
@@ -55,7 +54,7 @@ const DoughnutChart = ({
       chartInstance.config.data.datasets[0].data = [...currentChartData];
       chartInstance.update(); // Trigger chart update and animation
     }
-  }, [triggerAnimation, chartData, savingsTotals]);
+  }, [currentTotal]);
 
   useEffect(() => {
     setCurrentTotal(savingsTotals.ActualSavingsForCurrentYear);
@@ -78,7 +77,6 @@ const DoughnutChart = ({
         : timeFrame === 'year' 
         ? 'ActualSavingsForYear' 
         : 'ActualSavingsPerMonth']);
-    setTriggerAnimation((prev) => !prev);
     setCurrentChartData(() => filter);
   };
 
@@ -105,6 +103,10 @@ const DoughnutChart = ({
           }>
           Current Year
         </button>
+        {/* <ChartFilterButton
+          text='Current Year'
+          onClick={() => handleChartSelectionClick({ filter: chartDataFormatted.ActualSavingsForCurrentYear, timeFrame: "current year" })}
+        /> */}
         <button
           className={currentChart === "year" ? "chart-selected" : ""}
           onClick={() => handleChartSelectionClick({ filter: chartDataFormatted.ActualSavingsForYear, timeFrame: "year" })}>
