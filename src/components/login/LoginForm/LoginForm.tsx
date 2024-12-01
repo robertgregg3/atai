@@ -1,9 +1,5 @@
-import { stateEnums } from "@context/reducer";
-import { StateContext } from "@context/StateProvider";
-import { useContext, useState } from "react";
-import { auth } from "../../../firebaseConfig";
-import { useNavigate } from "react-router-dom";
-import firebase from 'firebase/compat/app';
+import useAuth from "@hooks/useAuth";
+import { useState } from "react";
 
 interface LoginFormProps {
     login: boolean;
@@ -12,70 +8,18 @@ interface LoginFormProps {
 const LoginForm = ({ login}: LoginFormProps) => {
     const [name, setName] = useState<string>("");
     const [email, setEmail] = useState<string>("");
-    const [error, setError] = useState<string>("");
     const [password, setPassword] = useState<string>("");
-    const { dispatch } = useContext(StateContext);
-    const navigate = useNavigate();
-
+    const { error, signIn, register } = useAuth({email, password, name})
 
     const handleSigninClick = (e: React.FormEvent<HTMLButtonElement>) => {
-        setError("");
         e.preventDefault();
-        auth.signInWithEmailAndPassword(email, password)
-          .then((userCredential: firebase.auth.UserCredential) => {
-            let loggedInUser = userCredential.user;
-            console.log("user: ", loggedInUser);
-            if (loggedInUser && loggedInUser.displayName) {
-              dispatch({
-                type: stateEnums.SET_USER,
-                payload: {
-                  user: loggedInUser,
-                  displayName: loggedInUser.displayName,
-                },
-                });        
-                navigate("/dashboard");
-              }
-            })
-          .catch((err: { message: string }) => {
-            const formattedError = err.message.replace("Firebase: ", "");
-            setError(formattedError);
-            console.log(err);
-          });
+        signIn();
       };
     
-      const handleRegisterClick = (e: { preventDefault: () => void; }) => {
-        setError("");
-        e.preventDefault();
-    
-        auth
-          .createUserWithEmailAndPassword(email, password)
-          .then((userCredential: firebase.auth.UserCredential) => {
-            const user = userCredential.user;
-            if (user) {
-              console.log("user: ", user);
-              user.updateProfile({
-                displayName: name,
-              });
-              dispatch({
-                type: stateEnums.SET_USER,
-                payload: {
-                  user: user,
-                  displayName: name,
-                },
-              });
-              navigate("/dashboard");
-            }
-          })
-          .catch((err: { message: string; }) => {
-            const formattedError = err.message.replace("Firebase: ", "");
-            setError(formattedError);
-            console.log(err);
-          });
-      };
-
-
-
-
+    const handleRegisterClick = (e: { preventDefault: () => void; }) => {
+      e.preventDefault();
+      register();      
+    };
 
     return (
         <form>
