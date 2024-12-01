@@ -9,11 +9,11 @@ interface DashboardHeaderProps {
 
 const DashboardHeader = ({ chartTitle }: DashboardHeaderProps) => {
   const { state } = useContext(StateContext);
-  const { displayName } = state;
+  const { displayName, sidebarOpen } = state;
 
   return (
     <header>
-      <h6>{chartTitle}</h6>
+      <h6 className={`${sidebarOpen ? 'dashboard-title--sidebar-open' : ''}`}>{chartTitle}</h6>
       <div className="user-info">
         <span>
           Hi, {displayName} <RiAccountCircleFill />
