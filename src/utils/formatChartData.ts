@@ -1,6 +1,6 @@
 interface ChartDataProps {
-  chartData:  { key: string; value: number; }[];
-}
+  [key: string] : { key: string, value: number}[];
+};
 
 const formatChartData = ({chartData} :ChartDataProps) => {
     if (Array.isArray(chartData)) {

@@ -8,6 +8,7 @@ import formatChartLabels from "@utils/formatChartLabels";
 import DownloadChart from "@utils/DownloadChart";
 import getChartOptions from "@utils/getChartOptions";
 import getchartDatasets from "@utils/getchartDatasets";
+import ChartSettings from "@components/ChartSettings/ChartSettings";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -17,10 +18,13 @@ export interface DoughnutChartProps {
 }
 
 export interface ChartDataFilteredProps {
-  ActualSavingsForCurrentYear: number[];
-  ActualSavingsForYear: number[];
-  ActualSavingsPerMonth: number[];
+  currentYear: number[];
+  year: number[];
+  month: number[];
 }
+
+export type chartFilters = 'currentYear' | 'year' | 'month';
+type currentTotals = Record<chartFilters, string | number>;
 
 const DoughnutChart = ({
   chartData,
@@ -28,18 +32,24 @@ const DoughnutChart = ({
 }: DoughnutChartProps) => {
   const { state } = useContext(StateContext);
   const { sidebarOpen } = state;
-  const chartRef = useRef<ChartJS<"doughnut"> | null>(null); // chart rerender when totals change
+  const chartRef = useRef<ChartJS<"doughnut"> | null>(null); // to use to make the chart animation work when buttons are pressed. 
   const productTotalRef = useRef<HTMLDivElement>(null);
 
-  const chartDataFormatted: ChartDataFilteredProps = {
-    ActualSavingsForCurrentYear: formatChartData({ chartData: chartData.ActualSavingsForCurrentYear}),
-    ActualSavingsPerMonth: formatChartData({ chartData: chartData.ActualSavingsPerMonth}),
-    ActualSavingsForYear: formatChartData({ chartData: chartData.ActualSavingsForYear}),
-  };
-  
-  const [currentChartData, setCurrentChartData] = useState<number[]>(chartDataFormatted.ActualSavingsForCurrentYear);
-  const [currentChart, setCurrentChart] = useState<string>(() => "current year");
-  const [currentTotal, setCurrentTotal] = useState<string | number>(savingsTotals.ActualSavingsForCurrentYear);
+  const formattedData = {
+    'currentYear': formatChartData({ chartData: chartData.ActualSavingsForCurrentYear }),
+    'year': formatChartData({ chartData: chartData.ActualSavingsForYear }),
+    'month': formatChartData({ chartData: chartData.ActualSavingsPerMonth }),
+  }
+
+  const currentTotals: currentTotals = {
+    'currentYear': savingsTotals.ActualSavingsForCurrentYear,
+    'year': savingsTotals.ActualSavingsForYear,
+    'month': savingsTotals.ActualSavingsPerMonth,
+  }
+
+  const [currentChartData, setCurrentChartData] = useState<number[]>(formattedData['currentYear']);
+  const [currentChart, setCurrentChart] = useState<chartFilters>(() => "currentYear");
+  const [currentTotal, setCurrentTotal] = useState<string | number>(currentTotals['currentYear']);
   const chartLabels: string[] = formatChartLabels({chartData: chartData.ActualSavingsForCurrentYear });
 
   useEffect(() => {
@@ -56,30 +66,19 @@ const DoughnutChart = ({
     }
   }, [currentTotal]);
 
+  // render the chart on first load with the currentYear data
   useEffect(() => {
     setCurrentTotal(savingsTotals.ActualSavingsForCurrentYear);
-    setCurrentChartData(() => chartDataFormatted.ActualSavingsForCurrentYear);
-  }, [chartData])
+    setCurrentChartData(() => formattedData['currentYear']);
+  }, [chartData]);
 
-  interface HandleChartSelectionClickProps {
-    filter: number[];
-    timeFrame: string;
-  }
 
-  const handleChartSelectionClick = ({
-    filter,
-    timeFrame,
-  }: HandleChartSelectionClickProps) => {
+  const handleChartSelectionClick = (timeFrame: chartFilters) => {
+    setCurrentChartData(formattedData[timeFrame]);
     setCurrentChart(timeFrame);
-    setCurrentTotal(
-      savingsTotals[timeFrame === 'current year' 
-        ? 'ActualSavingsForCurrentYear' 
-        : timeFrame === 'year' 
-        ? 'ActualSavingsForYear' 
-        : 'ActualSavingsPerMonth']);
-    setCurrentChartData(() => filter);
-  };
-
+    setCurrentTotal(currentTotals[timeFrame]);
+    // Updating these triggers a rerender as the getchartDatasets function is called again
+  }
   
   const chartTitle = `Total Savings for ${currentChart}: $${currentTotal} `;
   const { chartOptions } = getChartOptions({ chartType: "doughnut", chartTitle, showChartTitle: true });
@@ -95,29 +94,7 @@ const DoughnutChart = ({
       className={`chart-horizontal ${!sidebarOpen ? "chart--sidebar-closed" : ""}`}
       ref={productTotalRef}
     >
-      <div className="chart__selection">
-        <button
-          className={currentChart === "current year" ? "chart-selected" : ""}
-          onClick={() =>
-            handleChartSelectionClick({ filter: chartDataFormatted.ActualSavingsForCurrentYear, timeFrame: "current year" })
-          }>
-          Current Year
-        </button>
-        {/* <ChartFilterButton
-          text='Current Year'
-          onClick={() => handleChartSelectionClick({ filter: chartDataFormatted.ActualSavingsForCurrentYear, timeFrame: "current year" })}
-        /> */}
-        <button
-          className={currentChart === "year" ? "chart-selected" : ""}
-          onClick={() => handleChartSelectionClick({ filter: chartDataFormatted.ActualSavingsForYear, timeFrame: "year" })}>
-          Year
-        </button>
-        <button
-          className={currentChart === "month" ? "chart-selected" : ""}
-          onClick={() => handleChartSelectionClick({ filter: chartDataFormatted.ActualSavingsPerMonth, timeFrame: "month" })}>
-          Monthly
-        </button>
-      </div>
+      <ChartSettings currentChart={currentChart} handleChartSelectionClick={handleChartSelectionClick} />
       <DownloadChart
         reference={productTotalRef}
         title={`Total Savings for ${currentChart}`}
