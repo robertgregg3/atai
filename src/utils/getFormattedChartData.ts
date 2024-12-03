@@ -1,4 +1,4 @@
-import { ChartTitlesType, ChartTypes, ComplexChartDataTypes, CsvDataProps, SavingsTotalType } from "@components/charts/chart.types";
+import { ChartTitlesType, ChartTypes, CsvDataProps, SavingsTotalType } from "@components/charts/chart.types";
 
 const labelKeyMap = new Map<ChartTitlesType, string>([
   [ChartTypes.SAVINGS, ''],
@@ -11,12 +11,20 @@ const mapLabelKeys = (labelKey: ChartTitlesType) => {
   return labelKeyMap.get(labelKey)
 }
 
-const getFormattedChartData = (
-  chartType: ChartTitlesType,
-  data: CsvDataProps[],
+interface GetFormattedChartDataProps {
+  chartType: ChartTitlesType;
+  data: CsvDataProps[];
+  useOthersPercentage?: boolean;
+  othersPercentage?: number;
+  savingsTotalLabels: SavingsTotalType[];
+}
+const getFormattedChartData = ({
+  chartType,
+  data,
   useOthersPercentage = false,
-  savingsTotalLabels: SavingsTotalType[] 
-): Partial<ComplexChartDataTypes>  => {
+  othersPercentage = 1,
+  savingsTotalLabels,
+}: GetFormattedChartDataProps) => {
 
   const labelKey = mapLabelKeys(chartType) ?? '';
   
@@ -53,7 +61,7 @@ const getFormattedChartData = (
     });
 
     if (useOthersPercentage) {
-      const maxAmountToOther = (overallTotal / 100) * 2;
+      const maxAmountToOther = (overallTotal / 100) * (othersPercentage / 2);
       let othersTotal = 0;
 
       formattedArray = formattedArray.filter(({ key, value }) => {
