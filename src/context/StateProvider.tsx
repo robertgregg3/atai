@@ -3,14 +3,14 @@ import stateReducer, { ActionProps, initialState, InitialStateProps } from './re
 
 export const StateContext = createContext<{
     state: InitialStateProps,
-    dispatch: Dispatch <ActionProps>
+    dispatch: Dispatch<ActionProps>
 }>({
     state: initialState,
     dispatch: () => null
 });
 
 export const StateProvider = ({ children }: { children: React.ReactNode}) => {
-    const [state, dispatch] = useReducer(stateReducer, initialState);
+    const [state, dispatch] = useReducer<React.Reducer<InitialStateProps, ActionProps>>(stateReducer, initialState);
 
     useEffect(() => {
         console.log('state', state)
