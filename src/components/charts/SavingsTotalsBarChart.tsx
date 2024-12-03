@@ -1,10 +1,10 @@
-import { Chart as ChartJS, ArcElement, Tooltip, Legend, LinearScale, CategoryScale, BarElement   } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import { useContext, useRef } from "react";
 import { StateContext } from "@context/StateProvider";
-import DownloadChart from "@utils/DownloadChart";
 import getChartOptions from "@utils/getChartOptions";
 import getchartDatasets from "@utils/getchartDatasets";
+import ChartSettings from "@components/ChartSettings/ChartSettings";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, LinearScale, CategoryScale, BarElement   } from "chart.js";
 
 ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, BarElement );
 
@@ -28,7 +28,7 @@ const SavingsTotalsBarChart = ({data}: SavingsTotalsBarChartProps) => {
       className={`chart-horizontal ${!sidebarOpen ? "chart--sidebar-closed" : ""}`}
       ref={chartExportRef}
     >
-      <DownloadChart reference={chartExportRef} title={"Savings totals"} />
+      <ChartSettings productTotalRef={chartExportRef} title={"Savings totals"} />
       <Bar data={preparedChartData} options={chartOptions} />
     </div>
   );

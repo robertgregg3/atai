@@ -15,10 +15,10 @@ import { Bar } from "react-chartjs-2";
 import { ChartType, ComplexChartDataTypes } from "./chart.types";
 import { StateContext } from "@context/StateProvider";
 import formatChartData from "@utils/formatChartData";
-import DownloadChart from "@utils/DownloadChart";
 import formatChartLabels from "@utils/formatChartLabels";
 import getChartOptions from "@utils/getChartOptions";
 import getChartData from "@utils/getchartDatasets";
+import ChartSettings from "@components/ChartSettings/ChartSettings";
 
 ChartJS.register(
   CategoryScale,
@@ -63,8 +63,8 @@ const ComplexChart = ({ data, type = 'bar' }: ChartProps) => {
       className={`chart-horizontal ${!sidebarOpen ? "chart--sidebar-closed" : ""}`}
       ref={chartExportRef}
     >
-      <DownloadChart
-        reference={chartExportRef}
+      <ChartSettings 
+        productTotalRef={chartExportRef} 
         title={"Environment Savings"}
       />
       {type === 'line' && <Line options={chartOptions} data={preparedChartData} />}
