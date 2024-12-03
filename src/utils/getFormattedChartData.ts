@@ -45,10 +45,12 @@ const getFormattedChartData = (
     });
 
     // Convert totalsByTag into an array
-    let formattedArray = Object.entries(totalsByTag).map(([tag, total]) => ({
-      key: tag,
-      value: parseFloat(total.toFixed(2)),
-    }));
+    let formattedArray = Object.entries(totalsByTag).map(([tag, total]) => {
+      return {
+        key: tag,
+        value: parseFloat(total.toFixed(2)),
+      }
+    });
 
     if (useOthersPercentage) {
       const maxAmountToOther = (overallTotal / 100) * 2;
@@ -68,7 +70,8 @@ const getFormattedChartData = (
       }
     }
 
-    newChartData[label] = formattedArray;
+    // one item has an empty key which is the total, remove it
+    newChartData[label] = formattedArray.filter(( item ) => item.key !== '');
   });
 
   return newChartData;
