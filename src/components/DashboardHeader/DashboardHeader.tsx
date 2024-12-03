@@ -15,9 +15,8 @@ const DashboardHeader = ({ chartTitle }: DashboardHeaderProps) => {
     <header>
       <h6 className={`${sidebarOpen ? 'dashboard-title--sidebar-open' : ''}`}>{chartTitle}</h6>
       <div className="user-info">
-        <span>
-          Hi, {displayName} <RiAccountCircleFill />
-        </span>
+        <span>Hi, {displayName}</span>
+        <RiAccountCircleFill />
       </div>
     </header>
   );
