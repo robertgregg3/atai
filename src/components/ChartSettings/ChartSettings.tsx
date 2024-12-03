@@ -68,11 +68,11 @@ interface ChartSettingsProps {
               </div>
             </div>
             <div className="chart-selection">
-              <span className="chart-selection__btn-header">Others % settings</span>
+              <span className="chart-selection__btn-header">Product filters</span>
               <div className="chart-selection__buttons">
                 <div className="chart-settings__others-chk-bx">
                   <label htmlFor="showOthers">
-                    Show Others % in chart:
+                    Show top savings products only:
                   </label>
                   <input
                     id="showOthers"
