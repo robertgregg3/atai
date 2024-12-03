@@ -1,23 +1,16 @@
-/* .chart-container {
-  place-content: center;
-  display: grid;
-  min-height: calc(100svh - 60px);
-  justify-items: center;
-}
-   */
-
 .data-area {
   display: grid;
   grid-auto-columns: 1fr;
   justify-items: center;
   height: 100svh;
-  justify-content: space-between;
-  padding-bottom: 2rem;
+  padding-bottom: 1rem;
+  align-content: center;
+  position: relative;
 }
 
 .chart-horizontal{
   align-self: flex-end;
-  height: 75vh;
+  height: 80vh;
   width: 80vw;
   padding-bottom: 1rem;
   transition: width 0.3s ease;
@@ -60,7 +53,6 @@ select.form-select {
 @media(max-width: 550px) {
   .form-select {
     top: 125px;
-    z-index: 1;
   }
 }
 
@@ -131,41 +123,3 @@ select.form-select {
 .data-area__chart {
   position: relative;
 }
-
-.chart__selection {
-  display: grid;
-  justify-items: center;
-  margin: auto auto 1rem;
-  grid-auto-flow: column;  
-  align-items: center;
-  grid-gap: 0.5rem;
-  max-width: fit-content;
-  margin-top: -5rem;
-}
-
-
-@media(max-width:575px) {
-  .chart__selection {
-    margin: -2rem auto 0rem;;
-    display: flex;
-  }
-}
-
-.chart__selection button:not(.percentage-button) {
-  background: #ffffff;
-  border: none;
-  padding: 1rem;
-  cursor: pointer;
-}
-
-@media(max-width:575px) {
-  .chart__selection button:not(.percentage-button) {
-    padding: 0.5rem;
-  }
-}
-
-.chart-selected {
-  background: #cccccc50 !important;
-  border-radius: 38px;
-}
-

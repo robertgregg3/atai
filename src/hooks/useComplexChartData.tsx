@@ -11,7 +11,7 @@ const useComplexChartData = (
     ) => {
     const { savingsTotals } = useGetSavingsTotals(data);
 
-    const [complexChartData, setComplexChartData] = useState<ComplexChartDataTypes>({
+    const [chartData, setChartData] = useState<ComplexChartDataTypes>({
         ActualSavingsForCurrentYear: [],
         ActualSavingsForYear: [],
         ActualSavingsPerMonth: []
@@ -19,14 +19,14 @@ const useComplexChartData = (
 
       useEffect(() => {
           const formattedData = getFormattedChartData(chartType, data, useOthersPercentage, savingsTotalLabels);
-          setComplexChartData({
+          setChartData({
               ActualSavingsForCurrentYear: formattedData.ActualSavingsForCurrentYear ?? [],
               ActualSavingsForYear: formattedData.ActualSavingsForYear ?? [],
               ActualSavingsPerMonth: formattedData.ActualSavingsPerMonth ?? []
           });
       }, [data, chartType, useOthersPercentage, savingsTotalLabels]);
 
-    return { complexChartData, savingsTotals };
+    return { chartData, savingsTotals };
 }
 
 export default useComplexChartData;
