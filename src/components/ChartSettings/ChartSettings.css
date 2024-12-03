@@ -1,0 +1,77 @@
+.chart-settings {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.chart-settings__icon {
+    position: absolute;
+    right: 1.2rem;
+    top: 1rem;
+    cursor: pointer;
+    background: #10a8a9;
+    color: #ffffff;
+    padding: 0.2rem;
+    border-radius: 8px;
+    font-size: 2.5rem;
+}
+
+.chart-settings__options {
+    position: fixed;
+    width: 350px;
+    display: grid;
+    margin-left: -370px;
+    transition: margin-left 0.3s ease;
+    margin-top: 5rem;
+    background-color: #ffffff;
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+    border-radius: 8px;
+}
+
+.chart-settings__options.options-visible {
+    margin-left: 0px;
+}
+
+.chart-selection {
+    display: grid;
+    grid-gap: 1rem;
+    padding: 0.5rem 1.5rem 1.5rem;
+    border-top: 1px solid #eeeeee;
+}
+
+.chart-selection__btn-header {
+    font-size: 1rem;
+    padding-top: 0.5rem;
+    width: max-content;
+}  
+
+
+.chart-selection__buttons {
+    overflow: hidden;
+    width: auto;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.chart-selection__buttons button {
+    border: none;
+    padding: 0.5rem;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.chart-selection__buttons button:not(.percentage-button).chart-selected {
+    background-color: #10a8a9;
+    color: #ffffff;
+}
+
+.chart-settings__others-chk-bx {
+    display: grid;
+    align-items: center;
+    grid-template-columns: auto auto;
+}
+
+label {
+    font-size: 0.8rem;
+}
+  
