@@ -1,5 +1,6 @@
-import { useState, memo, useMemo } from "react";
+import { useState, memo, useMemo, useContext } from "react";
 import { ChartTitlesType, CsvDataProps, SavingsTotalType } from "@components/charts/chart.types";
+import { StateContext } from "@context/StateProvider";
 import DoughnutChart from "@charts/DoughnutChart"
 import DashboardHeader from "../DashboardHeader/DashboardHeader";
 import DashboardSidebar from "@components/DashboardSidebar/DashboardSidebar";
@@ -29,12 +30,13 @@ interface DataVisProps {
 
 // pulling in the data for the dashboard, formatting the data, displaying with the data
 export const DataVisualisation: React.FC<DataVisProps> = memo(({ data } : DataVisProps) => {
+  const { state } = useContext(StateContext);
 
   // hooks to format the various chart data
   const { barChartData } = useSimpleBarChartData(data);
-  const { complexChartData: costData } = useComplexChartData( data, 'cost', false, savingsTotalLabels);
-  const { complexChartData: environmentData } = useComplexChartData(data, 'environment', false, savingsTotalLabels);
-  const { complexChartData: productData, savingsTotals } = useComplexChartData(data, 'product', true, savingsTotalLabels);
+  const { chartData: costData } = useComplexChartData( data, 'cost', false, savingsTotalLabels);
+  const { chartData: environmentData } = useComplexChartData(data, 'environment', false, savingsTotalLabels);
+  const { chartData: productData, savingsTotals } = useComplexChartData(data, 'product', state.useOthersPercentage, savingsTotalLabels);
 
   // used to switch between the different charts, triggered by the sidebar
   const [selectedChart, setSelectedChart] = useState<ChartTitlesType>(() => "product");
@@ -48,12 +50,12 @@ export const DataVisualisation: React.FC<DataVisProps> = memo(({ data } : DataVi
         handleEnvironmentData={() => setSelectedChart("environment")}
         handleProductSavingsData={() => setSelectedChart("product")}
       />
+      <DashboardHeader chartTitle={chartTitle} />
       <div className="data-area">
-        <DashboardHeader chartTitle={chartTitle} />
-          {selectedChart === "savings" && <SavingsTotalsBarChart data={barChartData} />}
-          {selectedChart === "cost" && <ComplexChart data={costData} type="bar" />}
-          {selectedChart === "environment" && <ComplexChart data={environmentData} type="line" /> } 
-          {selectedChart === "product" && <DoughnutChart chartData={productData} savingsTotals={savingsTotals} />}
+        {selectedChart === "savings" && <SavingsTotalsBarChart data={barChartData} />}
+        {selectedChart === "cost" && <ComplexChart data={costData} type="bar" />}
+        {selectedChart === "environment" && <ComplexChart data={environmentData} type="line" /> } 
+        {selectedChart === "product" && <DoughnutChart chartData={productData} savingsTotals={savingsTotals} />}
         </div>
     </div>
   );
