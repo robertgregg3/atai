@@ -30,8 +30,8 @@ export const initialState: InitialStateProps = {
   data: [],
   displayName: "",
   sidebarOpen: false,
-  useOthersPercentage: true,
-  othersPercentage: 2,
+  useOthersPercentage: false,
+  othersPercentage: 1,
 };
 
 const stateReducer = (state: InitialStateProps, action: ActionProps) => {
