@@ -31,12 +31,17 @@ interface DataVisProps {
 // pulling in the data for the dashboard, formatting the data, displaying with the data
 export const DataVisualisation: React.FC<DataVisProps> = memo(({ data } : DataVisProps) => {
   const { state } = useContext(StateContext);
+  const { useOthersPercentage } = state;
 
   // hooks to format the various chart data
   const { barChartData } = useSimpleBarChartData(data);
   const { chartData: costData } = useComplexChartData( data, 'cost', false, savingsTotalLabels);
   const { chartData: environmentData } = useComplexChartData(data, 'environment', false, savingsTotalLabels);
-  const { chartData: productData, savingsTotals } = useComplexChartData(data, 'product', state.useOthersPercentage, savingsTotalLabels);
+  const { chartData: productData, savingsTotals } = useComplexChartData(
+    data, 
+    'product', 
+    useOthersPercentage ?? false, 
+    savingsTotalLabels);
 
   // used to switch between the different charts, triggered by the sidebar
   const [selectedChart, setSelectedChart] = useState<ChartTitlesType>(() => "product");
