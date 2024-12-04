@@ -1,5 +1,5 @@
 import { chartFilters } from "@components/charts/DoughnutChart";
-import { ChangeEvent, useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { StateContext } from "@context/StateProvider";
 import { stateEnums } from "@context/reducer";
 import { FaGear } from "react-icons/fa6";
@@ -54,10 +54,7 @@ interface ChartSettingsProps {
       }
     }
 
-    const handleDownload = async (
-      type: string
-    ) => {
-    
+    const handleDownload = async (type: string) => {
       if (!chartExportRef.current) {
         console.error("Reference is null. Cannot download the chart.");
         return;
@@ -78,19 +75,19 @@ interface ChartSettingsProps {
           className={`chart-settings__icon ${showSettings ? 'settings-visible' : ''}`} 
         />
         <div className={`chart-settings__options  ${showSettings ? 'options-visible' : ''}`}>
-           <div className="chart-selection">
-              <span className="chart-selection__btn-header">Download Chart:</span>
-              <div className="download-options">
-                <button className='download-option' onClick={() => handleDownload('jpeg')}>
-                  <span>JPEG</span>
-                  <TbFileDownload />
-                </button>
-                <button className='download-option' onClick={() => handleDownload('png')}>
-                  <span>PNG</span>
-                  <TbFileDownload />
-                </button>
-              </div>
+          <div className="chart-selection">
+            <span className="chart-selection__btn-header">Download Chart:</span>
+            <div className="download-options">
+              <button className='download-option' onClick={() => handleDownload('jpeg')}>
+                <span>JPEG</span>
+                <TbFileDownload />
+              </button>
+              <button className='download-option' onClick={() => handleDownload('png')}>
+                <span>PNG</span>
+                <TbFileDownload />
+              </button>
             </div>
+          </div>
           {isDougnutChart && (
             <>
             <div className="chart-selection">

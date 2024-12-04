@@ -328,9 +328,5 @@ label {
 .download-option svg {
     font-size: 1.25rem;
     color: #000038;
-}
 
-.download-option:first-child {
-    /* border-right: 1px solid #cccccc;
-    padding-right: 2rem; */
 }
