@@ -91,27 +91,29 @@ interface ChartSettingsProps {
               <span className="chart-selection__btn-header">Product filters</span>
               <div className="chart-selection__buttons">
                 <div className="chart-settings__section-container">
-                  <label htmlFor="showOthers">
-                    Show top savings products only:
-                  </label>
-                  <input
-                    id="showOthers"
-                    type='checkbox'
-                    checked={state.useOthersPercentage}
-                    onChange={() => handleCheckboxClick()}
-                  />
+                  <label htmlFor="showOthers" className='check-container'>
+                    <span className='checkbox-label'>Show top savings products only:</span>
+                    <input
+                      id="showOthers"
+                      type='checkbox'
+                      className='checkbox'
+                      checked={state.useOthersPercentage}
+                      onChange={() => handleCheckboxClick()}
+                    />
+                    <span className="checkmark"></span>
+                </label>
                 </div>
               </div>
-              <div className="chart-selection__buttons">
+              <div className="chart-selection__buttons slider-container">
                 <div className="chart-settings__section-container slider">
-                  <label htmlFor="showOthers" style={{ color: `${useOthersPercentage ? '#000000' : '#aaaaaa'}` }}>
+                  <label htmlFor="range" style={{ color: `${useOthersPercentage ? '#000000' : '#aaaaaa'}` }}>
                     {getOthersPercentageMapping()} of products:
                   </label>
                   <input 
                     type='range' 
                     min='1'
                     max='5'
-
+                    id='range'
                     value={state.othersPercentage} 
                     onChange={(e) => handleOthersUpdate(e)} 
                     disabled={!state.useOthersPercentage}
