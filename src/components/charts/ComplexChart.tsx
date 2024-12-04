@@ -64,7 +64,7 @@ const ComplexChart = ({ data, type = 'bar' }: ChartProps) => {
       ref={chartExportRef}
     >
       <ChartSettings 
-        productTotalRef={chartExportRef} 
+        chartExportRef={chartExportRef} 
         title={"Environment Savings"}
       />
       {type === 'line' && <Line options={chartOptions} data={preparedChartData} />}

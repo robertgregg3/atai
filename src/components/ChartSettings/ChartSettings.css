@@ -294,3 +294,43 @@ label {
   }
 
 /*  END chart slider styling */
+
+.download-options {
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 1rem;
+    max-width: fit-content;
+    font-size: 0.8rem;
+}
+
+.download-option {
+    display: grid;
+    align-items: center;
+    grid-template-columns: auto 1fr;
+    gap: 1rem;
+    border: 2px solid rgb(0, 0, 56, 0.5);
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    background-color: #ffffff;
+    cursor: pointer;
+}
+.download-option:hover {
+    background-color: #000038;
+    color: #ffffff;
+    transition: background-color 0.3s ease;
+}
+
+.download-option:hover svg {
+    color: #ffffff;
+    transition: color 0.3s ease;
+}
+
+.download-option svg {
+    font-size: 1.25rem;
+    color: #000038;
+}
+
+.download-option:first-child {
+    /* border-right: 1px solid #cccccc;
+    padding-right: 2rem; */
+}

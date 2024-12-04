@@ -32,7 +32,7 @@ const DoughnutChart = ({
   const { state } = useContext(StateContext);
   const { sidebarOpen } = state;
   const chartRef = useRef<ChartJS<"doughnut"> | null>(null); // trigger chart animation on button press. 
-  const productTotalRef = useRef<HTMLDivElement>(null);
+  const chartExportRef = useRef<HTMLDivElement>(null);
   const [currentChart, setCurrentChart] = useState<chartFilters>(() => "currentYear");
 
   const formattedData = {
@@ -93,12 +93,12 @@ const DoughnutChart = ({
   return (
     <div
       className={`chart-horizontal ${!sidebarOpen ? "chart--sidebar-closed" : ""}`}
-      ref={productTotalRef}
+      ref={chartExportRef}
     >
       <ChartSettings 
         currentChart={currentChart} 
         handleChartSelectionClick={handleChartSelectionClick} 
-        productTotalRef={productTotalRef}
+        chartExportRef={chartExportRef}
         isDougnutChart={true}
         title={`Total Savings for ${currentChart}`}
       />

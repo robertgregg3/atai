@@ -28,7 +28,7 @@ const SavingsTotalsBarChart = ({data}: SavingsTotalsBarChartProps) => {
       className={`chart-horizontal ${!sidebarOpen ? "chart--sidebar-closed" : ""}`}
       ref={chartExportRef}
     >
-      <ChartSettings productTotalRef={chartExportRef} title={"Savings totals"} />
+      <ChartSettings chartExportRef={chartExportRef} title={"Savings totals"} />
       <Bar data={preparedChartData} options={chartOptions} />
     </div>
   );

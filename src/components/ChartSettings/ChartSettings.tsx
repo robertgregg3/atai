@@ -1,10 +1,10 @@
 import { chartFilters } from "@components/charts/DoughnutChart";
-import { IoMdOptions } from "react-icons/io";
-import { useContext, useState } from "react";
+import { ChangeEvent, useContext, useState } from "react";
 import { StateContext } from "@context/StateProvider";
 import { stateEnums } from "@context/reducer";
 import { FaGear } from "react-icons/fa6";
-import DownloadChart from "@utils/DownloadChart";
+import { TbFileDownload } from "react-icons/tb";
+import exportAsImage from "@utils/exportAsImage";
 import './ChartSettings.css'
 
 
@@ -12,20 +12,21 @@ interface ChartSettingsProps {
     title: string;
     currentChart?: chartFilters;
     handleChartSelectionClick?: (timeFrame: chartFilters) => void;
-    productTotalRef: React.RefObject<HTMLDivElement>;
+    chartExportRef: React.RefObject<HTMLDivElement>;
     isDougnutChart?: boolean;
   }
   
-  const ChartSettings = ({ currentChart, handleChartSelectionClick, productTotalRef, isDougnutChart = false, title }: ChartSettingsProps) => {
+  const ChartSettings = ({ currentChart, handleChartSelectionClick, chartExportRef, isDougnutChart = false, title }: ChartSettingsProps) => {
     const [ showSettings, setShowSettings ] = useState<boolean>(false);
     const { state, dispatch } = useContext(StateContext);
     const { othersPercentage, useOthersPercentage } = state;
 
+    // open the settings menu
     const handleSettingsClick = () => {
       setShowSettings(!showSettings);
     };
 
-    const handleClick = (timeFrame: chartFilters) => {
+    const handleUpdateChartTimeFrame = (timeFrame: chartFilters) => {
       handleChartSelectionClick && handleChartSelectionClick(timeFrame);
       setShowSettings(false);
     }
@@ -34,7 +35,7 @@ interface ChartSettingsProps {
       dispatch({ type: stateEnums.TOGGLE_USE_OTHERS_PERCENTAGE, payload: !useOthersPercentage });
     }
 
-    const handleOthersUpdate = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleRangeSliderUpdate = (e: React.ChangeEvent<HTMLInputElement>) => {
       dispatch({ type: stateEnums.OTHERS_PERCENTAGE, payload: parseInt(e.target.value)});
     }
 
@@ -53,6 +54,22 @@ interface ChartSettingsProps {
       }
     }
 
+    const handleDownload = async (
+      type: string
+    ) => {
+    
+      if (!chartExportRef.current) {
+        console.error("Reference is null. Cannot download the chart.");
+        return;
+      }
+  
+      await exportAsImage({
+        element: chartExportRef.current, 
+        imageFileName: title, 
+        type: type
+      });
+    };
+
     return (
       <div className='chart-settings'>
         <FaGear 
@@ -61,10 +78,19 @@ interface ChartSettingsProps {
           className={`chart-settings__icon ${showSettings ? 'settings-visible' : ''}`} 
         />
         <div className={`chart-settings__options  ${showSettings ? 'options-visible' : ''}`}>
-          <DownloadChart
-            reference={productTotalRef}
-            title={title}
-          />
+           <div className="chart-selection">
+              <span className="chart-selection__btn-header">Download Chart:</span>
+              <div className="download-options">
+                <button className='download-option' onClick={() => handleDownload('jpeg')}>
+                  <span>JPEG</span>
+                  <TbFileDownload />
+                </button>
+                <button className='download-option' onClick={() => handleDownload('png')}>
+                  <span>PNG</span>
+                  <TbFileDownload />
+                </button>
+              </div>
+            </div>
           {isDougnutChart && (
             <>
             <div className="chart-selection">
@@ -72,17 +98,17 @@ interface ChartSettingsProps {
               <div className="chart-selection__buttons">
                 <button
                   className={currentChart === "currentYear" ? "chart-selected" : ""}
-                  onClick={() => handleClick('currentYear')}>
+                  onClick={() => handleUpdateChartTimeFrame('currentYear')}>
                   Current Year
                 </button>
                 <button
                   className={currentChart === "year" ? "chart-selected" : ""}
-                  onClick={() => handleClick('year')}>
+                  onClick={() => handleUpdateChartTimeFrame('year')}>
                   Year
                 </button>
                 <button
                   className={currentChart === "month" ? "chart-selected" : ""}
-                  onClick={() => handleClick('month')}>
+                  onClick={() => handleUpdateChartTimeFrame('month')}>
                   Monthly
                 </button>
               </div>
@@ -101,7 +127,7 @@ interface ChartSettingsProps {
                       onChange={() => handleCheckboxClick()}
                     />
                     <span className="checkmark"></span>
-                </label>
+                  </label>
                 </div>
               </div>
               <div className="chart-selection__buttons slider-container">
@@ -115,7 +141,7 @@ interface ChartSettingsProps {
                     max='5'
                     id='range'
                     value={state.othersPercentage} 
-                    onChange={(e) => handleOthersUpdate(e)} 
+                    onChange={(e) => handleRangeSliderUpdate(e)} 
                     disabled={!state.useOthersPercentage}
                   />
                 </div>
