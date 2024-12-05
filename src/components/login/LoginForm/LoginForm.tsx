@@ -1,5 +1,7 @@
-import useAuth from "@hooks/useAuth";
 import { useState } from "react";
+import { SlLogin } from "react-icons/sl";
+import Button from "@components/ui/buttons/Button/Button";
+import useAuth from "@hooks/useAuth";
 
 interface LoginFormProps {
     login: boolean;
@@ -11,14 +13,14 @@ const LoginForm = ({ login}: LoginFormProps) => {
     const [password, setPassword] = useState<string>("");
     const { error, signIn, register } = useAuth({email, password, name})
 
-    const handleSigninClick = (e: React.FormEvent<HTMLButtonElement>) => {
+    const handleClick = (e: React.FormEvent<HTMLButtonElement>) => {
         e.preventDefault();
         signIn();
-      };
+    };
     
-    const handleRegisterClick = (e: { preventDefault: () => void; }) => {
-      e.preventDefault();
-      register();      
+    const handleRegisterClick = (e: React.FormEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        register();      
     };
 
     return (
@@ -49,20 +51,23 @@ const LoginForm = ({ login}: LoginFormProps) => {
                 required
             />
 
-            <div className="login__button-container">
-                {login ? (
-                <button type="submit" onClick={(e) => handleSigninClick(e)}>
-                    Sign in
-                </button>
-                ) : (
-                <button
-                    onClick={(e) => handleRegisterClick(e)}
-                    className="login__registerAccount">
-                    Create ATAINR Account
-                </button>
-                )}
+            {login ? (
+                <Button 
+                    handleClick={(e) => handleClick(e)}
+                    icon={<SlLogin />}
+                    text="Login"
+                    textCenter
+                />
+            ) : (
+                <Button 
+                    handleClick={(e) => handleRegisterClick(e)}
+                    icon={<SlLogin />}
+                    text="Create ATAINR Account"
+                    textCenter
+                />
+            )}
+           
                 <span className="error-message">{error}</span>
-            </div>
         </form>
     )
 }
