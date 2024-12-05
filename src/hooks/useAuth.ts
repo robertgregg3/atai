@@ -16,7 +16,6 @@ const useAuth = ({email, password, name}: UseAuthProps) => {
   const { dispatch } = useContext(StateContext);
   const navigate = useNavigate();
 
-
   const signIn = () => {
     auth.signInWithEmailAndPassword(email, password)
     .then((userCredential: firebase.auth.UserCredential) => {
