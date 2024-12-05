@@ -18,3 +18,9 @@ header > h6 {
   margin: 0 0 0 300px;
   transition: margin 0.3s ease;
 }
+
+@media(max-width: 750px) {
+  .dashboard-title--sidebar-open {
+    margin: 0 0 0 0;
+  }
+}

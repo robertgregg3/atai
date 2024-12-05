@@ -66,37 +66,6 @@ select.form-select {
   }
 }
 
-.percentage-container input {
-  width: 40px;
-  border: 2px solid #cccccc80;
-  border-radius: 5px;
-  height: 34px;
-  text-align: center;
-}
-
-.percentage-container {
-  justify-content: center;
-  align-items: center;
-  display: flex;
-  gap: 0.5rem;
-}
-  
-.update-others button {
-  border-radius: 5px;
-  background: #cccccc50;
-  position: absolute;
-  right: -1rem;
-  top: -4px;
-  font-size: 0.8rem;
-  padding: 0.5rem 1rem;
-  color: #333333;
-}
-
-.update-others button:hover {
-  background-color: #000038;
-  color: #ffffff;
-}
-
 .options-container {
   max-width: 400px;
   justify-self: flex-end;

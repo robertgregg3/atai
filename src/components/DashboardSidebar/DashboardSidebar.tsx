@@ -1,13 +1,14 @@
 import { RiMenuFold4Fill, RiMenuFold3Fill } from "react-icons/ri";
 import { StateContext } from "../../context/StateProvider";
-import { getAuth, signOut } from 'firebase/auth';
-import { useNavigate } from "react-router-dom";
 import { MdBarChart } from "react-icons/md";
 import { BiSolidDoughnutChart } from "react-icons/bi";
 import { SlLogout } from "react-icons/sl";
 import { useContext } from "react";
 import { stateEnums } from "../../context/reducer";
 import ataiLogo from "../../images/atai1.svg";
+import useLogout from "@hooks/logout";
+import Button from "@components/ui/buttons/Button/Button";
+import IconOnlyButton from "@components/ui/buttons/IconOnlyButton/IconOnlyButton";
 import "./DashboardSidebar.css";
 
 interface DashboardSidebarProps {
@@ -25,7 +26,7 @@ const DashboardSidebar = ({
 }: DashboardSidebarProps) => {
   const { state, dispatch } = useContext(StateContext);
   const { sidebarOpen } = state;
-  const navigate = useNavigate();
+  const logout = useLogout();
 
   const handleSideBarToggle = () => {
     dispatch({ type: stateEnums.TOGGLE_SIDEBAR, payload: !sidebarOpen });
@@ -51,59 +52,46 @@ const DashboardSidebar = ({
     handleSideBarToggle();
   };
 
-  const handleLogoutClick = (e: { preventDefault: () => void; } | undefined) => {
-    e?.preventDefault();
-    console.log(e);
-    const auth = getAuth();
-    signOut(auth).then(() => {
-      dispatch({
-        type: stateEnums.SET_USER,
-        payload: {
-          user: null,
-          displayName: "",
-        },
-      });
-    });
-    navigate("/");
-  };
-
   return (
     <div
-      className={`${
-        sidebarOpen ? "sidebar--open" : "sidebar--closed"
-      } sidebar`}>
-      {sidebarOpen ? (
-        <RiMenuFold3Fill onClick={handleSideBarToggle} />
-      ) : (
-        <RiMenuFold4Fill onClick={handleSideBarToggle} />
-      )}
+      className={`${sidebarOpen ? "sidebar--open" : "sidebar--closed"} sidebar`}
+      tabIndex={0}
+    >
+      <IconOnlyButton 
+        handleClick={handleSideBarToggle}
+        icon={sidebarOpen ? <RiMenuFold3Fill /> : <RiMenuFold4Fill />}
+        className="sidebar__menu-toggle"
+      />
       <img alt="Atainr Logo" src={ataiLogo} />
       <div className="nav-container">
         <div className="nav-items">
-          <button onClick={() => handleSavingsTotalClick()}>
-            <MdBarChart className="sidebar__icon" />
-            Savings Totals
-          </button>
-          <button onClick={() => handleCostCentreSavingsClick()}>
-            <MdBarChart className="sidebar__icon" />
-            Cost Centre Savings
-          </button>
-          <button onClick={() => handleEnvironmentDataClick()}>
-            <MdBarChart className="sidebar__icon" />
-            Environment Savings
-          </button>
-          <button onClick={() => handleProductSavingsDataClick()}>
-            <BiSolidDoughnutChart className="sidebar__icon" />
-            Product Savings
-          </button>
-        </div>
-        <div className="logout">
+          <Button 
+            handleClick={handleSavingsTotalClick}
+            icon={<MdBarChart />}
+            text="Savings Totals"
+          />
+          <Button
+            handleClick={handleCostCentreSavingsClick}
+            icon={<MdBarChart />}
+            text="Cost Centre Savings"
+          />
+          <Button
+            handleClick={handleEnvironmentDataClick}
+            icon={<MdBarChart />}
+            text="Environment Savings"
+          />
+          <Button
+            handleClick={handleProductSavingsDataClick}
+            icon={<BiSolidDoughnutChart />}
+            text="Product Savings"
+          />
           <span className="separator"></span>
-          <button onClick={(e) => handleLogoutClick(e)}>
-            <SlLogout className="sidebar__icon" />
-            Logout
-          </button>
-        </div>
+          <Button
+            handleClick={logout}
+            icon={<SlLogout />}
+            text="Logout"
+          />
+          </div>
       </div>
       <div className="logo__and__copyright">
         <span>Copyright © 2021. All Rights Reserved.</span> <br />
