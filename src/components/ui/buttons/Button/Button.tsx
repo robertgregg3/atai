@@ -7,6 +7,7 @@ interface ButtonProps {
     className?: string;
     textCenter?: boolean;
     iconOnRight?: boolean;
+    tabIndex?: number;
 }
 
 const Button = ({ 
@@ -15,7 +16,8 @@ const Button = ({
     text, 
     className = '', 
     textCenter = false, 
-    iconOnRight = false}: ButtonProps) => {
+    iconOnRight = false,
+    tabIndex}: ButtonProps) => {
     
     const getClassNames = () => {
         const centerText = textCenter ? 'button--text-center' : '';
@@ -31,6 +33,7 @@ const Button = ({
             onClick={handleClick} 
             className={getClassNames()}
             aria-label={text}
+            tabIndex={tabIndex}
         >
             {icon && icon} {text}
         </button>

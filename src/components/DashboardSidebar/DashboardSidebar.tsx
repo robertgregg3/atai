@@ -69,27 +69,32 @@ const DashboardSidebar = ({
             handleClick={handleSavingsTotalClick}
             icon={<MdBarChart />}
             text="Savings Totals"
+            tabIndex={sidebarOpen ? 0 : -1}
           />
           <Button
             handleClick={handleCostCentreSavingsClick}
             icon={<MdBarChart />}
             text="Cost Centre Savings"
+            tabIndex={sidebarOpen ? 0 : -1}
           />
           <Button
             handleClick={handleEnvironmentDataClick}
             icon={<MdBarChart />}
             text="Environment Savings"
+            tabIndex={sidebarOpen ? 0 : -1}
           />
           <Button
             handleClick={handleProductSavingsDataClick}
             icon={<BiSolidDoughnutChart />}
             text="Product Savings"
+            tabIndex={sidebarOpen ? 0 : -1}
           />
           <span className="separator"></span>
           <Button
             handleClick={logout}
             icon={<SlLogout />}
             text="Logout"
+            tabIndex={sidebarOpen ? 0 : -1}
           />
           </div>
       </div>
