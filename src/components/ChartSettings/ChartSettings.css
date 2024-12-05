@@ -36,8 +36,8 @@ button.chart-settings__icon.settings-visible {
 
 .chart-settings__options {
     position: fixed;
-    width: 350px;
-    right: -370px;
+    width: 385px;
+    right: -400px;
     display: grid;
     transition: right 0.3s ease;
     margin-top: 5rem;
@@ -67,14 +67,22 @@ button.chart-settings__icon.settings-visible {
     overflow: hidden;
     width: auto;
     display: flex;
-    gap: 0.5rem;
+    gap: 0.75rem;
+    padding: 0.25rem;
+    margin-left: -0.25rem;
 }
-
+  
 .chart-selection__buttons button {
+    font-size: 0.8rem;
     border: none;
-    padding: 0.5rem;
+    padding: 0.75rem 0.25rem;
     cursor: pointer;
     border-radius: 8px;
+}
+
+.button__with-icon:focus-visible {
+  outline: none; /* Remove the default outline */
+  box-shadow: 0 0 0 4px #10a8a9; /* Custom focus ring with border radius */
 }
 
 .chart-selection__buttons button:not(.percentage-button).chart-selected {
@@ -101,76 +109,79 @@ label {
 }
 
 .check-container {
-    display: block;
-    position: relative;
-    padding-left: 35px;
-    margin-bottom: 12px;
-    cursor: pointer;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    
-  }
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
   
   /* Hide the browser's default checkbox */
-  .check-container input {
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
-    height: 0;
-    width: 0;
-  }
+.check-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
   
   /* Create a custom checkbox */
-  .checkmark {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 25px;
-    width: 25px;
-    background-color: #cccccc;
-    
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #cccccc;    
   border-radius: 15px;
-  }
+}
   
-  /* On mouse-over, add a grey background color */
-  .check-container:hover input ~ .checkmark {
-    background-color: #aaaaa;
-  }
+/* On mouse-over, add a grey background color */
+.check-container:hover input ~ .checkmark {
+  background-color: #aaaaaa;
+}
+
+/* When the checkbox is checked, add a blue background */
+.check-container input:checked ~ .checkmark {
+  background-color: #10a8a9;
+}
+.check-container input:focus-visible ~ .checkmark {
+  outline: none; /* Remove the default outline */
+  box-shadow: 0 0 0 4px #10a8a9; /* Custom focus ring with border radius */
+}
+
+.check-container input:disabled ~ .checkmark {
+  background-color: #cccccc;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
   
-  /* When the checkbox is checked, add a blue background */
-  .check-container input:checked ~ .checkmark {
-    background-color: #10a8a9;
-  }
-  .check-container input:disabled ~ .checkmark {
-    background-color: #cccccc;
-  }
-  
-  /* Create the checkmark/indicator (hidden when not checked) */
-  .checkmark:after {
-    content: "";
-    position: absolute;
-    display: none;
-  }
-  
-  /* Show the checkmark when checked */
-  .check-container input:checked ~ .checkmark:after {
-    display: block;
-  }
-  
-  /* Style the checkmark/indicator */
-  .check-container .checkmark:after {
-    left: 9px;
-    top: 5px;
-    width: 5px;
-    height: 10px;
-    border: solid white;
-    border-width: 0 3px 3px 0;
-    -webkit-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    transform: rotate(45deg);
-  }
+/* Show the checkmark when checked */
+.check-container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.check-container .checkmark:after {
+  left: 9px;
+  top: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
 
 /*  END checkbox styling */
 
@@ -182,164 +193,174 @@ label {
 }
 
 .slider {
-    padding: 1rem 0;
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 1rem;
+  padding: 1rem 0;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1rem;
 }
 
 .chart-settings__section-container > input[type=range] {
-    -webkit-appearance: none; /* Remove default styling */
-    appearance: none;
-    width: 100%;
-    height: 10px;
-    background: #000038;
-    outline: none;
-    border: none;
-    border-radius: 5px;
-    transition: background 0.3s ease;
-  }
+  -webkit-appearance: none; /* Remove default styling */
+  appearance: none;
+  width: 100%;
+  height: 10px;
+  background: #000038;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  transition: background 0.3s ease;
+}
   
   /* Range Track */
-  input[type=range]::-webkit-slider-runnable-track {
-    background: #000038;
-    height: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  input[type=range]::-moz-range-track {
-    background: #000038;
-    height: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  input[type=range]::-ms-track {
-    background: transparent;
-    border-color: transparent;
-    color: transparent;
-    height: 10px;
-    cursor: pointer;
-  }
+input[type=range]::-webkit-slider-runnable-track {
+  background: #000038;
+  height: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+input[type=range]::-moz-range-track {
+  background: #000038;
+  height: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+input[type=range]::-ms-track {
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+  height: 10px;
+  cursor: pointer;
+}
   
-  /* Range Thumb (Handle) */
-  input[type=range]::-webkit-slider-thumb {
-    -webkit-appearance: none; /* Remove default styling */
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    margin-top: -5px;
-    background: #10a8a9;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-  }
-  input[type=range]::-moz-range-thumb {
-    width: 20px;
-    height: 20px;
-    margin-top: -5px;
-    background: #10a8a9;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
-  }
-  input[type=range]::-ms-thumb {
-    width: 20px;
-    height: 20px;
-    margin-top: -5px;
-    background: #10a8a9;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
-  }
+/* Range Thumb (Handle) */
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Remove default styling */
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  margin-top: -5px;
+  background: #10a8a9;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+input[type=range]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  margin-top: -5px;
+  background: #10a8a9;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+}
+
+input[type=range]::-ms-thumb {
+  width: 20px;
+  height: 20px;
+  margin-top: -5px;
+  background: #10a8a9;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+}
   
   /* Hover Effect for Thumb */
-  input[type=range]:hover::-webkit-slider-thumb {
-    background: #10a8a9;
-  }
-  input[type=range]:hover::-moz-range-thumb {
-    background: #10a8a9;
-  }
-  input[type=range]:hover::-ms-thumb {
-    background: #10a8a9;
-  }
+input[type=range]:hover::-webkit-slider-thumb {
+  background: #10a8a9;
+}
+
+input[type=range]:hover::-moz-range-thumb {
+  background: #10a8a9;
+}
+
+input[type=range]:hover::-ms-thumb {
+  background: #10a8a9;
+}
   
-  /* Active Effect for Thumb */
-  input[type=range]:active::-webkit-slider-thumb {
-    background: #10a8a9;
-  }
-  input[type=range]:active::-moz-range-thumb {
-    background: #10a8a9;
-  }
-  input[type=range]:active::-ms-thumb {
-    background: #10a8a9;
-  }
+/* Active Effect for Thumb */
+input[type=range]:active::-webkit-slider-thumb {
+  background: #10a8a9;
+}
 
-  /* Disabled Effect for Thumb */
-  input[type=range]:disabled::-webkit-slider-thumb {
-    background: #cccccc;
-  }
-  input[type=range]:disabled::-moz-range-thumb {
-    background: #cccccc;
-  }
-  input[type=range]:disabled::-ms-thumb {
-    background: #cccccc;
-  }
+input[type=range]:active::-moz-range-thumb {
+  background: #10a8a9;
+}
 
-    /* Range Track */
-    input[type=range]:-webkit-slider-runnable-track:disabled {
-        background: #aaaaaa;
-    }
+input[type=range]:active::-ms-thumb {
+  background: #10a8a9;
+}
+
+/* Disabled Effect for Thumb */
+input[type=range]:disabled::-webkit-slider-thumb {
+  background: #cccccc;
+}
+
+input[type=range]:disabled::-moz-range-thumb {
+  background: #cccccc;
+}
+
+input[type=range]:disabled::-ms-thumb {
+  background: #cccccc;
+}
+
+/* Range Track */
+input[type=range]:-webkit-slider-runnable-track:disabled {
+  background: #aaaaaa;
+}
     
-    input[type=range]::-moz-range-track:disabled {
-        background: #aaaaaa;
-    }
+input[type=range]::-moz-range-track:disabled {
+  background: #aaaaaa;
+}
     
-    input[type=range]::-ms-track:disabled {
-        background: transparent;
-    }
+input[type=range]::-ms-track:disabled {
+  background: transparent;
+}
 
-  input[type=range]:focus::-webkit-slider-thumb {
-    box-shadow: 0 0 0 3px #ffffff,
-                  0 0 0 6px #10a8a9;
-  }
+input[type=range]:focus::-webkit-slider-thumb {
+  box-shadow: 0 0 0 3px #ffffff,
+              0 0 0 6px #10a8a9;
+}
 
 /*  END chart slider styling */
 
 .download-options {
-    display: grid;
-    grid-template-columns: auto auto;
-    gap: 1rem;
-    max-width: fit-content;
-    font-size: 0.8rem;
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 1rem;
+  max-width: fit-content;
+  font-size: 0.8rem;
 }
 
-.download-option {
-    display: grid;
-    align-items: center;
-    grid-template-columns: auto 1fr;
-    gap: 1rem;
-    border: 2px solid rgb(0, 0, 56, 0.5);
-    border-radius: 8px;
-    padding: 0.5rem 1rem;
-    background-color: #ffffff;
-    cursor: pointer;
+button.download-option {
+  border: 2px solid rgb(0, 0, 56, 0.5);
+  padding: 0.5rem 0.5rem;
+  background-color: #ffffff;
+  color: #000000;
+  font-size: 0.8rem;
 }
+
+button.download-option svg {
+  font-size: 1.25rem;
+}
+
 .download-option:hover {
-    background-color: #000038;
-    color: #ffffff;
-    transition: background-color 0.3s ease;
+  background-color: #000038;
+  color: #ffffff;
+  transition: background-color 0.3s ease;
 }
 
 .download-option:hover svg {
-    color: #ffffff;
-    transition: color 0.3s ease;
+  color: #ffffff;
+  transition: color 0.3s ease;
 }
 
 .download-option svg {
-    font-size: 1.25rem;
-    color: #000038;
-
+  font-size: 1.25rem;
+  color: #000038;
 }

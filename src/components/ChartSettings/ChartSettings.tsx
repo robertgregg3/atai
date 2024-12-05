@@ -6,6 +6,7 @@ import { FaGear } from "react-icons/fa6";
 import { TbFileDownload } from "react-icons/tb";
 import exportAsImage from "@utils/exportAsImage";
 import IconOnlyButton from "@components/ui/buttons/IconOnlyButton/IconOnlyButton";
+import Button from "@components/ui/buttons/Button/Button";
 import './ChartSettings.css'
 
 
@@ -82,14 +83,20 @@ interface ChartSettingsProps {
           <div className="chart-selection">
             <span className="chart-selection__btn-header">Download Chart:</span>
             <div className="download-options">
-              <button className='download-option' onClick={() => handleDownload('jpeg')}>
-                <span>JPEG</span>
-                <TbFileDownload />
-              </button>
-              <button className='download-option' onClick={() => handleDownload('png')}>
-                <span>PNG</span>
-                <TbFileDownload />
-              </button>
+              <Button 
+                handleClick={() => handleDownload('jpeg')}
+                icon={<TbFileDownload />}
+                text="JPEG"
+                className="download-option"
+                iconOnRight
+              />
+              <Button 
+                handleClick={() => handleDownload('png')}
+                icon={<TbFileDownload />}
+                text="PNG"
+                className="download-option"
+                iconOnRight
+              />
             </div>
           </div>
           {isDougnutChart && (
@@ -97,21 +104,24 @@ interface ChartSettingsProps {
             <div className="chart-selection">
               <span className="chart-selection__btn-header">Choose time frame:</span>
               <div className="chart-selection__buttons">
-                <button
+                <Button 
+                  handleClick={() => handleUpdateChartTimeFrame('currentYear') }
+                  text="Current Year"
                   className={currentChart === "currentYear" ? "chart-selected" : ""}
-                  onClick={() => handleUpdateChartTimeFrame('currentYear')}>
-                  Current Year
-                </button>
-                <button
+                  textCenter
+                />
+                <Button 
+                  handleClick={() => handleUpdateChartTimeFrame('year')}
+                  text="Year"
                   className={currentChart === "year" ? "chart-selected" : ""}
-                  onClick={() => handleUpdateChartTimeFrame('year')}>
-                  Year
-                </button>
-                <button
+                  textCenter
+                />
+                <Button 
+                  handleClick={() => handleUpdateChartTimeFrame('month')}
+                  text="Month"
                   className={currentChart === "month" ? "chart-selected" : ""}
-                  onClick={() => handleUpdateChartTimeFrame('month')}>
-                  Monthly
-                </button>
+                  textCenter
+                />
               </div>
             </div>
             <div className="chart-selection" style={{ backgroundColor: '#f7f7f7'}}>
