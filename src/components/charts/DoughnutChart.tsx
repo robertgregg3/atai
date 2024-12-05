@@ -6,7 +6,7 @@ import { ComplexChartDataTypes, SavingsTotalsTypes } from "./chart.types";
 import formatChartData from "@utils/formatChartData";
 import formatChartLabels from "@utils/formatChartLabels";
 import getChartOptions from "@utils/getChartOptions";
-import getchartDatasets from "@utils/getchartDatasets";
+import getchartDatasets from "@utils/getChartDatasets";
 import ChartSettings from "@components/ChartSettings/ChartSettings";
 
 ChartJS.register(ArcElement, Tooltip, Legend);

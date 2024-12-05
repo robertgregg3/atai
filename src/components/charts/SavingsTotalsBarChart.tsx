@@ -2,7 +2,7 @@ import { Bar } from "react-chartjs-2";
 import { useContext, useRef } from "react";
 import { StateContext } from "@context/StateProvider";
 import getChartOptions from "@utils/getChartOptions";
-import getchartDatasets from "@utils/getchartDatasets";
+import getchartDatasets from "@utils/getChartDatasets";
 import ChartSettings from "@components/ChartSettings/ChartSettings";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, LinearScale, CategoryScale, BarElement   } from "chart.js";
 

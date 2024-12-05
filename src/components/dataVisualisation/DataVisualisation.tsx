@@ -1,4 +1,4 @@
-import { useState, memo, useMemo, useContext } from "react";
+import { useState, memo, useMemo, useContext, useEffect } from "react";
 import { ChartTitlesType, CsvDataProps, SavingsTotalType } from "@components/charts/chart.types";
 import { StateContext } from "@context/StateProvider";
 import DoughnutChart from "@charts/DoughnutChart"
@@ -46,6 +46,10 @@ export const DataVisualisation: React.FC<DataVisProps> = memo(({ data } : DataVi
   // used to switch between the different charts, triggered by the sidebar
   const [selectedChart, setSelectedChart] = useState<ChartTitlesType>(() => "product");
   const chartTitle = useMemo(() => chartTitles[selectedChart], [selectedChart]);
+
+  useEffect(() => {
+    console.log(selectedChart, 'selectedChart')
+  }, [selectedChart])
 
   return (
     <div className="App">

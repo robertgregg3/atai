@@ -17,7 +17,7 @@ import { StateContext } from "@context/StateProvider";
 import formatChartData from "@utils/formatChartData";
 import formatChartLabels from "@utils/formatChartLabels";
 import getChartOptions from "@utils/getChartOptions";
-import getChartData from "@utils/getchartDatasets";
+import getChartData from "@utils/getChartDatasets";
 import ChartSettings from "@components/ChartSettings/ChartSettings";
 
 ChartJS.register(
