@@ -89,6 +89,7 @@ interface ChartSettingsProps {
                 text="JPEG"
                 className="download-option"
                 iconOnRight
+                tabIndex={showSettings ? 0 : -1}
               />
               <Button 
                 handleClick={() => handleDownload('png')}
@@ -96,6 +97,7 @@ interface ChartSettingsProps {
                 text="PNG"
                 className="download-option"
                 iconOnRight
+                tabIndex={showSettings ? 0 : -1}
               />
             </div>
           </div>
@@ -109,18 +111,21 @@ interface ChartSettingsProps {
                   text="Current Year"
                   className={currentChart === "currentYear" ? "chart-selected" : ""}
                   textCenter
+                  tabIndex={showSettings ? 0 : -1}
                 />
                 <Button 
                   handleClick={() => handleUpdateChartTimeFrame('year')}
                   text="Year"
                   className={currentChart === "year" ? "chart-selected" : ""}
                   textCenter
+                  tabIndex={showSettings ? 0 : -1}
                 />
                 <Button 
                   handleClick={() => handleUpdateChartTimeFrame('month')}
                   text="Month"
                   className={currentChart === "month" ? "chart-selected" : ""}
                   textCenter
+                  tabIndex={showSettings ? 0 : -1}
                 />
               </div>
             </div>
@@ -136,6 +141,7 @@ interface ChartSettingsProps {
                       className='checkbox'
                       checked={state.useOthersPercentage}
                       onChange={() => handleCheckboxClick()}
+                      tabIndex={showSettings ? 0 : -1}
                     />
                     <span className="checkmark"></span>
                   </label>
@@ -154,6 +160,7 @@ interface ChartSettingsProps {
                     value={state.othersPercentage} 
                     onChange={(e) => handleRangeSliderUpdate(e)} 
                     disabled={!state.useOthersPercentage}
+                    tabIndex={showSettings ? 0 : -1}
                   />
                 </div>
               </div>
