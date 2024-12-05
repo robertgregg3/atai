@@ -18,7 +18,7 @@ button:hover {
     color: #ffffff;
 }
 
-.button:focus-visible,
+button:focus-visible,
 .button__with-icon:focus-visible {
     outline: none; /* Remove the default outline */
     box-shadow: 0 0 0 4px #10a8a9; /* Custom focus ring with border radius */
@@ -35,8 +35,15 @@ button:hover {
 .button__with-icon svg {
     font-size: 2rem;
 }
+
 .button--text-center {
     display: grid;
     grid-template-columns: auto auto;
     justify-content: center;
+    text-align: center;
+}
+
+.icon-on-right {
+    display: flex;
+    flex-direction: row-reverse;
 }
