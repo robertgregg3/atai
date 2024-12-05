@@ -3,6 +3,7 @@ import { ChartTitlesType, ComplexChartDataTypes, CsvDataProps, SavingsTotalType 
 import getFormattedChartData from '@utils/getFormattedChartData';
 import useGetSavingsTotals from './useGetSavingsTotals';
 import { StateContext } from '@context/StateProvider';
+import { useMemo } from 'react';
 
 const useComplexChartData = (
     data: CsvDataProps[],
@@ -20,8 +21,11 @@ const useComplexChartData = (
         ActualSavingsPerMonth: []
       });
 
+      const formattedData = useMemo(() => 
+        getFormattedChartData({chartType, data, useOthersPercentage, othersPercentage, savingsTotalLabels}), 
+      [data, chartType, useOthersPercentage, savingsTotalLabels, othersPercentage]);
+      
       useEffect(() => {
-          const formattedData = getFormattedChartData({chartType, data, useOthersPercentage, othersPercentage, savingsTotalLabels});
           setChartData({
               ActualSavingsForCurrentYear: formattedData.ActualSavingsForCurrentYear ?? [],
               ActualSavingsForYear: formattedData.ActualSavingsForYear ?? [],
