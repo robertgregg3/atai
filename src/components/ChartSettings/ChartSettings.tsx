@@ -5,6 +5,7 @@ import { stateEnums } from "@context/reducer";
 import { FaGear } from "react-icons/fa6";
 import { TbFileDownload } from "react-icons/tb";
 import exportAsImage from "@utils/exportAsImage";
+import IconOnlyButton from "@components/ui/buttons/IconOnlyButton/IconOnlyButton";
 import './ChartSettings.css'
 
 
@@ -69,12 +70,15 @@ interface ChartSettingsProps {
 
     return (
       <div className='chart-settings'>
-        <FaGear 
-          onClick={() => 
-          handleSettingsClick()} 
-          className={`chart-settings__icon ${showSettings ? 'settings-visible' : ''}`} 
+        <IconOnlyButton 
+          handleClick={handleSettingsClick}
+          icon={<FaGear />}
+          className={`chart-settings__icon ${showSettings ? 'settings-visible' : ''}`}
         />
-        <div className={`chart-settings__options  ${showSettings ? 'options-visible' : ''}`}>
+        <div 
+          className={`chart-settings__options  ${showSettings ? 'options-visible' : ''}`}
+          tabIndex={-1}
+        >
           <div className="chart-selection">
             <span className="chart-selection__btn-header">Download Chart:</span>
             <div className="download-options">

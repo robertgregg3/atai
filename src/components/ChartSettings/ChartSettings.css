@@ -4,12 +4,12 @@
     right: 0;
 }
 
-.chart-settings__icon {
+button.chart-settings__icon {
     position: absolute;
     right: 1.2rem;
-    top: 1rem;
+    top: 1.5rem;
     cursor: pointer;
-    color: #000038;
+    background-color: transparent;
     padding: 0.2rem;
     border-radius: 8px;
     font-size: 2.5rem;
@@ -17,7 +17,20 @@
     transition: transform 0.3s ease;
 }
 
-.settings-visible {
+button.chart-settings__icon:hover {
+  background-color: transparent;
+}
+
+button.chart-settings__icon:hover svg {
+    color: #10a8a9;
+    transition: color 0.3s ease;
+}
+
+button.chart-settings__icon svg {
+  color: #000038;
+}
+
+button.chart-settings__icon.settings-visible {
     transform: rotate(450deg);
 }
 
