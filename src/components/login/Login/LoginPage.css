@@ -28,18 +28,21 @@
 }
 
 form {
-    display: flex;
-    flex-direction: column;
+    display: grid;
     width: 100%;
-    min-width: 400px;
-    gap: 0.8rem
+    min-width: 350px;
+    gap: 0.8rem;
 }
 
 input {
     border: 2px solid #cccccc80;
     border-radius: 5px;
     height: 34px;
-  }
+}
+
+form > button {
+    margin-top: 0.5rem;
+}
 
 .login__left-side {
     background-color: #10a8a9;
@@ -57,34 +60,14 @@ input {
     transform: skewX(-5deg);
 }
 
-.login__button-container {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-gap: 1rem;
-    margin-top: 2rem;
-}
-
-.login__button-container > button {
-    color: #fff;
-    background-color: #000038;
-    padding: 1.3rem 1rem;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 1.1rem;
-    border: none;
-}
-
-.login__button-container > button:hover {
-    background: #10a8a9;
-}
-
 .login__options{
-    display: flex;
-    gap: 2rem;
+    display: grid;
+    grid-gap: 2rem;
     min-width: 350px;
     justify-content: flex-start;
     position: absolute;
     top: 2rem;
+    grid-template-columns: auto auto;
 }
 
 .login__options button{
@@ -94,6 +77,9 @@ input {
     margin-bottom: 2rem;
     padding-right: 2rem;
     cursor: pointer;
+    color: #000000;
+    border-radius: 0;
+    font-size: 0.8rem;
 }
 
 .login__options button:first-child{
