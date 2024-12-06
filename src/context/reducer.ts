@@ -7,6 +7,7 @@ export enum stateEnums {
   TOGGLE_SIDEBAR='TOGGLE_SIDEBAR',
   TOGGLE_USE_OTHERS_PERCENTAGE='TOGGLE_USE_OTHERS_PERCENTAGE',
   OTHERS_PERCENTAGE='OTHERS_PERCENTAGE',
+  SET_LOADING='SET_LOADING',
 }
 
 export interface InitialStateProps {
@@ -16,6 +17,7 @@ export interface InitialStateProps {
   sidebarOpen: boolean;
   showTopProducts?: boolean;
   topProductsPercentage?: number;
+  isLoading: boolean;
 }
 
 export type ActionProps = 
@@ -23,7 +25,8 @@ export type ActionProps =
   | { type: stateEnums.SET_DATA, payload: any }
   | { type: stateEnums.TOGGLE_SIDEBAR, payload: boolean }
   | { type: stateEnums.TOGGLE_USE_OTHERS_PERCENTAGE, payload: boolean }
-  | { type: stateEnums.OTHERS_PERCENTAGE, payload: number };
+  | { type: stateEnums.OTHERS_PERCENTAGE, payload: number }
+  | { type: stateEnums.SET_LOADING, payload: boolean };
 
 export const initialState: InitialStateProps = {
   user: null,
@@ -32,36 +35,42 @@ export const initialState: InitialStateProps = {
   sidebarOpen: false,
   showTopProducts: true,
   topProductsPercentage: 1,
+  isLoading: true
 };
 
 const stateReducer = (state: InitialStateProps, action: ActionProps) => {
   switch (action.type) {
-    case "SET_USER":
+    case stateEnums.SET_USER:
       return {
         ...state,
         user: action.payload.user,
         displayName: action.payload.displayName,
       };
-    case "SET_DATA":
+    case stateEnums.SET_DATA:
       return {
         ...state,
         data: action.payload,
       };
-    case "TOGGLE_SIDEBAR":
+    case stateEnums.TOGGLE_SIDEBAR:
       return {
         ...state,
         sidebarOpen: action.payload,
       };
-    case "TOGGLE_USE_OTHERS_PERCENTAGE":
+    case stateEnums.TOGGLE_USE_OTHERS_PERCENTAGE:
       return {
         ...state,
         showTopProducts: !state.showTopProducts,
       }
-    case "OTHERS_PERCENTAGE":
+    case stateEnums.OTHERS_PERCENTAGE:
       return {
         ...state,
         topProductsPercentage: action.payload,
       }
+    case stateEnums.SET_LOADING: 
+      return {
+        ...state,
+        isLoading: action.payload,
+      };
     default:
     return state;
   }

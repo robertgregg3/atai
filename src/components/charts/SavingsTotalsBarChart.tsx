@@ -22,6 +22,7 @@ const SavingsTotalsBarChart = ({data}: SavingsTotalsBarChartProps) => {
     labels: [""],
     datasets: chartDatasets,
   };
+  
   return (
     <div
       className={`chart-horizontal ${!sidebarOpen ? "chart--sidebar-closed" : ""}`}

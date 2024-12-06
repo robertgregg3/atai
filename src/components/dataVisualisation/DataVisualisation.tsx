@@ -17,13 +17,9 @@ const chartTitles: Record<ChartTitlesType, string> = {
   "product": "Product Savings Doughnut Chart",
 };
 
-interface DataVisProps {
-  data: CsvDataProps[];
-}
-
 // pulling in the data for the dashboard, formatting the data, displaying with the data
-export const DataVisualisation: React.FC<DataVisProps> = memo(({ data } : DataVisProps) => {
-  const showTopProducts = useContext(StateContext).state.showTopProducts;
+export const DataVisualisation = memo(() => {
+  const { showTopProducts, data } = useContext(StateContext).state;
 
   // hooks to format the various chart data
   const simpleBarChartData = useMemo(() => prepareChartTotals(data), [data]) ?? [0,0,0];
