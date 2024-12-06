@@ -21,7 +21,7 @@ interface ChartSettingsProps {
   const ChartSettings = ({ currentChart, handleChartSelectionClick, chartExportRef, isDougnutChart = false, title }: ChartSettingsProps) => {
     const [ showSettings, setShowSettings ] = useState<boolean>(false);
     const { state, dispatch } = useContext(StateContext);
-    const { othersPercentage, useOthersPercentage } = state;
+    const { topProductsPercentage, showTopProducts } = state;
 
     // open the settings menu
     const handleSettingsClick = () => {
@@ -34,7 +34,7 @@ interface ChartSettingsProps {
     }
 
     const handleCheckboxClick = () => {
-      dispatch({ type: stateEnums.TOGGLE_USE_OTHERS_PERCENTAGE, payload: !useOthersPercentage });
+      dispatch({ type: stateEnums.TOGGLE_USE_OTHERS_PERCENTAGE, payload: !showTopProducts });
     }
 
     const handleRangeSliderUpdate = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,7 +42,7 @@ interface ChartSettingsProps {
     }
 
     const getOthersPercentageMapping = () => {
-      switch(othersPercentage) {
+      switch(topProductsPercentage) {
         case 1:
           return 'Top 5%';
         case 2:
@@ -139,7 +139,7 @@ interface ChartSettingsProps {
                       id="showOthers"
                       type='checkbox'
                       className='checkbox'
-                      checked={state.useOthersPercentage}
+                      checked={state.showTopProducts}
                       onChange={() => handleCheckboxClick()}
                       tabIndex={showSettings ? 0 : -1}
                     />
@@ -149,7 +149,7 @@ interface ChartSettingsProps {
               </div>
               <div className="chart-selection__buttons slider-container">
                 <div className="chart-settings__section-container slider">
-                  <label htmlFor="range" style={{ color: `${useOthersPercentage ? '#000000' : '#aaaaaa'}` }}>
+                  <label htmlFor="range" style={{ color: `${showTopProducts ? '#000000' : '#aaaaaa'}` }}>
                     {getOthersPercentageMapping()} of products:
                   </label>
                   <input 
@@ -157,9 +157,9 @@ interface ChartSettingsProps {
                     min='1'
                     max='5'
                     id='range'
-                    value={state.othersPercentage} 
+                    value={state.topProductsPercentage} 
                     onChange={(e) => handleRangeSliderUpdate(e)} 
-                    disabled={!state.useOthersPercentage}
+                    disabled={!state.showTopProducts}
                     tabIndex={showSettings ? 0 : -1}
                   />
                 </div>

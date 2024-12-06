@@ -1,5 +1,5 @@
-import { useState, memo, useMemo, useContext, useEffect } from "react";
-import { ChartTitlesType, CsvDataProps, SavingsTotalType } from "@components/charts/chart.types";
+import { useState, memo, useMemo, useContext, } from "react";
+import { ChartTitlesType, CsvDataProps } from "@components/charts/chart.types";
 import { StateContext } from "@context/StateProvider";
 import DoughnutChart from "@charts/DoughnutChart"
 import DashboardHeader from "../DashboardHeader/DashboardHeader";
@@ -9,6 +9,7 @@ import ComplexChart from "@components/charts/ComplexChart";
 import useSimpleBarChartData from "@hooks/useSimpleBarChartData";
 import useComplexChartData from "@hooks/useComplexChartData";
 import "./dataVisualisation.css";
+import prepareChartTotals from "@utils/prepareChartTotals";
 
 const chartTitles: Record<ChartTitlesType, string> = {
   "savings": "Total Savings Bar Chart",
@@ -24,21 +25,17 @@ interface DataVisProps {
 // pulling in the data for the dashboard, formatting the data, displaying with the data
 export const DataVisualisation: React.FC<DataVisProps> = memo(({ data } : DataVisProps) => {
   const { state } = useContext(StateContext);
-  const { useOthersPercentage } = state;
+  const { showTopProducts } = state;
 
   // hooks to format the various chart data
-  const { barChartData } = useSimpleBarChartData(data);
+  const simpleBarChartData = useMemo(() => prepareChartTotals(data), [data]) ?? [0,0,0];
   const { chartData: costData } = useComplexChartData( data, 'cost', false);
   const { chartData: environmentData } = useComplexChartData(data, 'environment', false);
-  const { chartData: productData, savingsTotals } = useComplexChartData(data, 'product', useOthersPercentage);
+  const { chartData: productData, savingsTotals } = useComplexChartData(data, 'product', showTopProducts);
 
   // used to switch between the different charts, triggered by the sidebar
   const [selectedChart, setSelectedChart] = useState<ChartTitlesType>(() => "product");
   const chartTitle = useMemo(() => chartTitles[selectedChart], [selectedChart]);
-
-  useEffect(() => {
-    console.log(selectedChart, 'selectedChart')
-  }, [selectedChart])
 
   return (
     <div className="App">
@@ -50,7 +47,7 @@ export const DataVisualisation: React.FC<DataVisProps> = memo(({ data } : DataVi
       />
       <DashboardHeader title={chartTitle} />
       <div className="data-area">
-        {selectedChart === "savings" && <SavingsTotalsBarChart data={barChartData} />}
+        {selectedChart === "savings" && <SavingsTotalsBarChart data={simpleBarChartData} />}
         {selectedChart === "cost" && <ComplexChart data={costData} type="bar" />}
         {selectedChart === "environment" && <ComplexChart data={environmentData} type="line" /> } 
         {selectedChart === "product" && <DoughnutChart chartData={productData} savingsTotals={savingsTotals} />}

@@ -14,8 +14,8 @@ export interface InitialStateProps {
   data: CsvDataProps[];
   displayName: string;
   sidebarOpen: boolean;
-  useOthersPercentage?: boolean;
-  othersPercentage?: number;
+  showTopProducts?: boolean;
+  topProductsPercentage?: number;
 }
 
 export type ActionProps = 
@@ -30,8 +30,8 @@ export const initialState: InitialStateProps = {
   data: [],
   displayName: "",
   sidebarOpen: false,
-  useOthersPercentage: true,
-  othersPercentage: 1,
+  showTopProducts: true,
+  topProductsPercentage: 1,
 };
 
 const stateReducer = (state: InitialStateProps, action: ActionProps) => {
@@ -55,12 +55,12 @@ const stateReducer = (state: InitialStateProps, action: ActionProps) => {
     case "TOGGLE_USE_OTHERS_PERCENTAGE":
       return {
         ...state,
-        useOthersPercentage: !state.useOthersPercentage,
+        showTopProducts: !state.showTopProducts,
       }
     case "OTHERS_PERCENTAGE":
       return {
         ...state,
-        othersPercentage: action.payload,
+        topProductsPercentage: action.payload,
       }
     default:
     return state;

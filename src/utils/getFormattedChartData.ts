@@ -14,15 +14,15 @@ const mapLabelKeys = (labelKey: ChartTitlesType) => {
 interface GetFormattedChartDataProps {
   chartType: ChartTitlesType;
   data: CsvDataProps[];
-  useOthersPercentage?: boolean;
-  othersPercentage?: number;
+  showTopProducts?: boolean;
+  topProductsPercentage?: number;
   savingsTotalLabels: SavingsTotalType[];
 }
 const getFormattedChartData = ({
   chartType,
   data,
-  useOthersPercentage = false,
-  othersPercentage = 1,
+  showTopProducts = false,
+  topProductsPercentage = 1,
   savingsTotalLabels,
 }: GetFormattedChartDataProps) => {
 
@@ -45,7 +45,7 @@ const getFormattedChartData = ({
         item[labelKey] = item[labelKey].trim();
         const cleanedValue = item[label] && typeof item[label] === 'string' ? 
         parseFloat(item[label].replace(/[^0-9.-]+/g, "")) || 0 : 0;
-        if (useOthersPercentage) overallTotal += cleanedValue;
+        if (showTopProducts) overallTotal += cleanedValue;
 
         totalsByTag[item[labelKey]] =
           (totalsByTag[item[labelKey]] || 0) + cleanedValue;
@@ -60,8 +60,8 @@ const getFormattedChartData = ({
       }
     });
 
-    if (useOthersPercentage) {
-      const maxAmountToOther = (overallTotal / 100) * (othersPercentage / 2);
+    if (showTopProducts) {
+      const maxAmountToOther = (overallTotal / 100) * (topProductsPercentage / 2);
       let othersTotal = 0;
 
       formattedArray = formattedArray.filter(({ key, value }) => {
