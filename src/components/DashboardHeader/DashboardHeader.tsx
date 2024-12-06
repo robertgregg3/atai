@@ -1,15 +1,20 @@
 import { RiAccountCircleFill } from "react-icons/ri";
 import { StateContext } from "@context/StateProvider";
-import { useContext } from "react";
+import { memo, useContext, useEffect, useState } from "react";
 import "./DashboardHeader.css";
 
 interface DashboardHeaderProps {
-  chartTitle: string;
+  title: string;
 }
 
-const DashboardHeader = ({ chartTitle }: DashboardHeaderProps) => {
+const DashboardHeader = ({ title }: DashboardHeaderProps) => {
+  const [ chartTitle, setChartTitle ] = useState<string>('Savings Chart');
   const { state } = useContext(StateContext);
   const { displayName, sidebarOpen } = state;
+
+  useEffect(() => {
+    setChartTitle(title);
+  }, [title]);
 
   return (
     <header>
@@ -22,4 +27,4 @@ const DashboardHeader = ({ chartTitle }: DashboardHeaderProps) => {
   );
 };
 
-export default DashboardHeader;
+export default memo(DashboardHeader);

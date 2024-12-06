@@ -5,11 +5,16 @@ import useGetSavingsTotals from './useGetSavingsTotals';
 import { StateContext } from '@context/StateProvider';
 import { useMemo } from 'react';
 
+const savingsTotalLabels:SavingsTotalType[] = [
+  "ActualSavingsForCurrentYear",
+  "ActualSavingsForYear",
+  "ActualSavingsPerMonth",
+];
+
 const useComplexChartData = (
     data: CsvDataProps[],
     chartType: ChartTitlesType,
-    useOthersPercentage: boolean,
-    savingsTotalLabels: SavingsTotalType[]
+    useOthersPercentage: boolean = true,
     ) => {
     const { savingsTotals } = useGetSavingsTotals(data);
     const { state } = useContext(StateContext);

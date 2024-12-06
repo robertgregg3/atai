@@ -10,19 +10,12 @@ import useSimpleBarChartData from "@hooks/useSimpleBarChartData";
 import useComplexChartData from "@hooks/useComplexChartData";
 import "./dataVisualisation.css";
 
-
 const chartTitles: Record<ChartTitlesType, string> = {
   "savings": "Total Savings Bar Chart",
   "cost": "Cost Savings Bar Chart",
   "environment": "Environment Savings Bar Chart",
   "product": "Product Savings Doughnut Chart",
 };
-
-const savingsTotalLabels:SavingsTotalType[] = [
-  "ActualSavingsForCurrentYear",
-  "ActualSavingsForYear",
-  "ActualSavingsPerMonth",
-];
 
 interface DataVisProps {
   data: CsvDataProps[];
@@ -35,13 +28,9 @@ export const DataVisualisation: React.FC<DataVisProps> = memo(({ data } : DataVi
 
   // hooks to format the various chart data
   const { barChartData } = useSimpleBarChartData(data);
-  const { chartData: costData } = useComplexChartData( data, 'cost', false, savingsTotalLabels);
-  const { chartData: environmentData } = useComplexChartData(data, 'environment', false, savingsTotalLabels);
-  const { chartData: productData, savingsTotals } = useComplexChartData(
-    data, 
-    'product', 
-    useOthersPercentage ?? false, 
-    savingsTotalLabels);
+  const { chartData: costData } = useComplexChartData( data, 'cost', false);
+  const { chartData: environmentData } = useComplexChartData(data, 'environment', false);
+  const { chartData: productData, savingsTotals } = useComplexChartData(data, 'product', useOthersPercentage);
 
   // used to switch between the different charts, triggered by the sidebar
   const [selectedChart, setSelectedChart] = useState<ChartTitlesType>(() => "product");
@@ -59,7 +48,7 @@ export const DataVisualisation: React.FC<DataVisProps> = memo(({ data } : DataVi
         handleEnvironmentData={() => setSelectedChart("environment")}
         handleProductSavingsData={() => setSelectedChart("product")}
       />
-      <DashboardHeader chartTitle={chartTitle} />
+      <DashboardHeader title={chartTitle} />
       <div className="data-area">
         {selectedChart === "savings" && <SavingsTotalsBarChart data={barChartData} />}
         {selectedChart === "cost" && <ComplexChart data={costData} type="bar" />}

@@ -38,7 +38,6 @@ interface ChartProps {
 
 const ComplexChart = ({ data, type = 'bar' }: ChartProps) => {
   const { state } = useContext(StateContext);
-  const { sidebarOpen } = state;
   const { chartOptions } = getChartOptions({ chartType: type })
   const chartExportRef = useRef<HTMLDivElement>(null);
 
@@ -60,7 +59,7 @@ const ComplexChart = ({ data, type = 'bar' }: ChartProps) => {
 
   return (
     <div
-      className={`chart-horizontal ${!sidebarOpen ? "chart--sidebar-closed" : ""}`}
+      className={`chart-horizontal ${!state.sidebarOpen ? "chart--sidebar-closed" : ""}`}
       ref={chartExportRef}
     >
       <ChartSettings 

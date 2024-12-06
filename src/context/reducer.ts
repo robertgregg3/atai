@@ -30,7 +30,7 @@ export const initialState: InitialStateProps = {
   data: [],
   displayName: "",
   sidebarOpen: false,
-  useOthersPercentage: false,
+  useOthersPercentage: true,
   othersPercentage: 1,
 };
 
