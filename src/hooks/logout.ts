@@ -5,7 +5,7 @@ import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const useLogout = () => {
-    const { dispatch } = useContext(StateContext);
+    const dispatch = useContext(StateContext).dispatch;
     const navigate = useNavigate();
 
     const logout = () => {

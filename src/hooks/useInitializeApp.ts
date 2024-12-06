@@ -7,7 +7,7 @@ import { CsvDataProps } from "@components/charts/chart.types";
 
 
 const useInitializeApp = (data: CsvDataProps[]) => {
-    const { dispatch} = useContext(StateContext);
+    const dispatch = useContext(StateContext).dispatch;
     const [isLoading, setisLoading] = useState(true); 
     const [appData, setAppData] = useState<CsvDataProps[]>();
 

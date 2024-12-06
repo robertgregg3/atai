@@ -9,8 +9,7 @@ interface DashboardHeaderProps {
 
 const DashboardHeader = ({ title }: DashboardHeaderProps) => {
   const [ chartTitle, setChartTitle ] = useState<string>('Savings Chart');
-  const { state } = useContext(StateContext);
-  const { displayName, sidebarOpen } = state;
+  const { displayName, sidebarOpen } = useContext(StateContext).state;
 
   useEffect(() => {
     setChartTitle(title);

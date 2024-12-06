@@ -8,9 +8,8 @@ import createAppRouter from "./config/appRouter";
 import useInitializeApp from "@hooks/useInitializeApp";
 
 const App = () => {
-  const { state } = useContext(StateContext);
+  const user = useContext(StateContext).state.user;
   const [ rawData, setRawData ] = useState<any>();
-  const { user } = state;
   const { appData, isLoading } = useInitializeApp(rawData);
 
   useEffect(() => {

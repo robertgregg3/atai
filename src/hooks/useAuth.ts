@@ -13,7 +13,7 @@ interface UseAuthProps {
 
 const useAuth = ({email, password, name}: UseAuthProps) => {
   const [error, setError] = useState<string>("");
-  const { dispatch } = useContext(StateContext);
+  const dispatch = useContext(StateContext).dispatch;
   const navigate = useNavigate();
 
   const signIn = () => {

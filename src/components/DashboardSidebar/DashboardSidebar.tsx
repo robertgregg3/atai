@@ -3,7 +3,7 @@ import { StateContext } from "../../context/StateProvider";
 import { MdBarChart } from "react-icons/md";
 import { BiSolidDoughnutChart } from "react-icons/bi";
 import { SlLogout } from "react-icons/sl";
-import { useCallback, useContext } from "react";
+import { memo, useCallback, useContext } from "react";
 import { stateEnums } from "../../context/reducer";
 import ataiLogo from "../../images/atai1.svg";
 import useLogout from "@hooks/logout";
@@ -18,7 +18,7 @@ interface DashboardSidebarProps {
   handleProductSavingsData: () => void;
 }
 
-const DashboardSidebar = ({
+const DashboardSidebar = memo(({
   handleSavingsTotals,
   handleCostCentreSavings,
   handleEnvironmentData,
@@ -53,16 +53,13 @@ const DashboardSidebar = ({
   }, [handleEnvironmentData, handleSideBarToggle]);
 
   return (
-    <div
-      className={`${sidebarOpen ? "sidebar--open" : "sidebar--closed"} sidebar`}
-      tabIndex={0}
-    >
+    <div className={`${sidebarOpen ? "sidebar--open" : "sidebar--closed"} sidebar`}>
       <IconOnlyButton 
         handleClick={handleSideBarToggle}
         icon={sidebarOpen ? <RiMenuFold3Fill /> : <RiMenuFold4Fill />}
         className="sidebar__menu-toggle"
       />
-      <img alt="Atainr Logo" src={ataiLogo} />
+      <img alt="Atainr Logo" src={ataiLogo} width='100px' height='100px' loading='lazy' />
       <div className="nav-container">
         <div className="nav-items">
           <Button 
@@ -104,6 +101,6 @@ const DashboardSidebar = ({
       </div>
     </div>
   );
-};
+});
 
 export default DashboardSidebar;

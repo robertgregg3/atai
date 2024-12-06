@@ -29,8 +29,7 @@ const DoughnutChart = ({
   chartData,
   savingsTotals, 
 }: DoughnutChartProps) => {
-  const { state } = useContext(StateContext);
-  const { sidebarOpen } = state;
+  const sidebarOpen = useContext(StateContext).state.sidebarOpen;
   const chartRef = useRef<ChartJS<"doughnut"> | null>(null); // trigger chart animation on button press. 
   const chartExportRef = useRef<HTMLDivElement>(null);
   const [currentChart, setCurrentChart] = useState<chartFilters>(() => "currentYear");

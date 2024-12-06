@@ -37,17 +37,10 @@
     }
 }
   
-.sidebar img {
-    height: 100px;
-    margin-top: 1rem;
-    margin-bottom: 2rem
-}
-  
 .logo__and__copyright {
     color: #ffffff99;
     font-size: 10px;
-    display: grid;
-    align-content: center;
+    align-content: center; 
     text-align: center;
     padding: 0.5rem;
 }

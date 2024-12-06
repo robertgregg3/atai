@@ -6,10 +6,9 @@ import DashboardHeader from "../DashboardHeader/DashboardHeader";
 import DashboardSidebar from "@components/DashboardSidebar/DashboardSidebar";
 import SavingsTotalsBarChart from "@components/charts/SavingsTotalsBarChart";
 import ComplexChart from "@components/charts/ComplexChart";
-import useSimpleBarChartData from "@hooks/useSimpleBarChartData";
 import useComplexChartData from "@hooks/useComplexChartData";
-import "./dataVisualisation.css";
 import prepareChartTotals from "@utils/prepareChartTotals";
+import "./dataVisualisation.css";
 
 const chartTitles: Record<ChartTitlesType, string> = {
   "savings": "Total Savings Bar Chart",
@@ -24,8 +23,7 @@ interface DataVisProps {
 
 // pulling in the data for the dashboard, formatting the data, displaying with the data
 export const DataVisualisation: React.FC<DataVisProps> = memo(({ data } : DataVisProps) => {
-  const { state } = useContext(StateContext);
-  const { showTopProducts } = state;
+  const showTopProducts = useContext(StateContext).state.showTopProducts;
 
   // hooks to format the various chart data
   const simpleBarChartData = useMemo(() => prepareChartTotals(data), [data]) ?? [0,0,0];

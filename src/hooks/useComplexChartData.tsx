@@ -17,8 +17,7 @@ const useComplexChartData = (
     showTopProducts: boolean = true,
     ) => {
     const { savingsTotals } = useGetSavingsTotals(data);
-    const { state } = useContext(StateContext);
-    const { topProductsPercentage } = state;
+    const topProductsPercentage = useContext(StateContext).state.topProductsPercentage;
 
     // initialise chart data variables
     const [chartData, setChartData] = useState<ComplexChartDataTypes>({
