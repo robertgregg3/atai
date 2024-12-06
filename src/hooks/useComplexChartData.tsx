@@ -1,11 +1,11 @@
 import { useState, useEffect, useContext } from 'react';
+import { StateContext } from '@context/StateProvider';
+import { useMemo } from 'react';
 import { ChartTitlesType, ComplexChartDataTypes, CsvDataProps, SavingsTotalType } from '@components/charts/chart.types';
 import getFormattedChartData from '@utils/getFormattedChartData';
 import useGetSavingsTotals from './useGetSavingsTotals';
-import { StateContext } from '@context/StateProvider';
-import { useMemo } from 'react';
 
-const savingsTotalLabels:SavingsTotalType[] = [
+const savingsTotalLabels: SavingsTotalType[] = [
   "ActualSavingsForCurrentYear",
   "ActualSavingsForYear",
   "ActualSavingsPerMonth",
@@ -14,29 +14,32 @@ const savingsTotalLabels:SavingsTotalType[] = [
 const useComplexChartData = (
     data: CsvDataProps[],
     chartType: ChartTitlesType,
-    useOthersPercentage: boolean = true,
+    showTopProducts: boolean = true,
     ) => {
     const { savingsTotals } = useGetSavingsTotals(data);
     const { state } = useContext(StateContext);
-    const { othersPercentage } = state;
+    const { topProductsPercentage } = state;
 
+    // initialise chart data variables
     const [chartData, setChartData] = useState<ComplexChartDataTypes>({
-        ActualSavingsForCurrentYear: [],
-        ActualSavingsForYear: [],
-        ActualSavingsPerMonth: []
-      });
+      ActualSavingsForCurrentYear: [],
+      ActualSavingsForYear: [],
+      ActualSavingsPerMonth: []
+    });
 
-      const formattedData = useMemo(() => 
-        getFormattedChartData({chartType, data, useOthersPercentage, othersPercentage, savingsTotalLabels}), 
-      [data, chartType, useOthersPercentage, savingsTotalLabels, othersPercentage]);
+    // format the data when any of the dependencies change
+    const formattedData = useMemo(() => 
+      getFormattedChartData({chartType, data, showTopProducts, topProductsPercentage, savingsTotalLabels}), 
+    [data, chartType, showTopProducts, savingsTotalLabels, topProductsPercentage]);
       
-      useEffect(() => {
-          setChartData({
-              ActualSavingsForCurrentYear: formattedData.ActualSavingsForCurrentYear ?? [],
-              ActualSavingsForYear: formattedData.ActualSavingsForYear ?? [],
-              ActualSavingsPerMonth: formattedData.ActualSavingsPerMonth ?? []
-          });
-      }, [data, chartType, useOthersPercentage, savingsTotalLabels, othersPercentage]);
+    // update the chart data when the formatted data changes
+    useEffect(() => {
+      setChartData({
+        ActualSavingsForCurrentYear: formattedData.ActualSavingsForCurrentYear ?? [],
+        ActualSavingsForYear: formattedData.ActualSavingsForYear ?? [],
+        ActualSavingsPerMonth: formattedData.ActualSavingsPerMonth ?? []
+      });
+    }, [formattedData]);
 
     return { chartData, savingsTotals };
 }
