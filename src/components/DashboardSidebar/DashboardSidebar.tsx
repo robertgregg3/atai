@@ -3,7 +3,7 @@ import { StateContext } from "../../context/StateProvider";
 import { MdBarChart } from "react-icons/md";
 import { BiSolidDoughnutChart } from "react-icons/bi";
 import { SlLogout } from "react-icons/sl";
-import { useContext } from "react";
+import { useCallback, useContext } from "react";
 import { stateEnums } from "../../context/reducer";
 import ataiLogo from "../../images/atai1.svg";
 import useLogout from "@hooks/logout";
@@ -28,29 +28,29 @@ const DashboardSidebar = ({
   const { sidebarOpen } = state;
   const logout = useLogout();
 
-  const handleSideBarToggle = () => {
+  const handleSideBarToggle = useCallback(() => {
     dispatch({ type: stateEnums.TOGGLE_SIDEBAR, payload: !sidebarOpen });
-  };
+  }, [sidebarOpen])
 
-  const handleSavingsTotalClick = () => {
+  const handleSavingsTotalClick = useCallback(() => {
     handleSavingsTotals();
     handleSideBarToggle();
-  };
+  }, [handleSavingsTotals, handleSideBarToggle]);
 
-  const handleCostCentreSavingsClick = () => {
+  const handleCostCentreSavingsClick = useCallback(() => {
     handleCostCentreSavings();
     handleSideBarToggle();
-  };
+  }, [handleCostCentreSavings, handleSideBarToggle]);
 
-  const handleEnvironmentDataClick = () => {
+  const handleEnvironmentDataClick = useCallback(() => {
     handleEnvironmentData();
     handleSideBarToggle();
-  };
+  }, [, handleSideBarToggle]);
 
-  const handleProductSavingsDataClick = () => {
+  const handleProductSavingsDataClick = useCallback(() => {
     handleProductSavingsData();
     handleSideBarToggle();
-  };
+  }, [handleEnvironmentData, handleSideBarToggle]);
 
   return (
     <div
