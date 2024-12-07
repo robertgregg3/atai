@@ -6,6 +6,13 @@ import path from 'path';
 
 export default defineConfig({
   plugins: [react(), dsv()],
+  build: {
+    rollupOptions: {
+      output: {
+        inlineDynamicImports: false,
+      },
+    },
+  },
   resolve: {
     alias: {
       '@components': path.resolve(__dirname, './src/components'),
