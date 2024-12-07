@@ -3,46 +3,33 @@
     background: #000038;
     display: grid;
     justify-items: center;
-    padding: 3rem 0rem;
+    padding: 3rem 0.5rem;
     position: fixed;
-    margin-left: 0;
-    transition: margin 0.3s ease;
+    transform: translateX(0px);
+    transition: transform 0.3s ease;
     z-index: 1;
 }
 
 .sidebar__menu-toggle {
     cursor: pointer;
     position: absolute;
-    left: 315px;
+    left: 325px;
     top: 80px
 }
 
-.sidebar--open > .sidebar__menu-toggle {
-    left: 300px;
+.sidebar--open .sidebar__menu-toggle {
+    left: 315px;
 }
 
 .sidebar--closed {
-    margin-left: -290px;
+    transform: translateX(-300px)
 }
 
-@media(max-width: 750px) {
-    .sidebar {
-        padding: 1rem 0;
-        position: fixed;
-        z-index: 2;
-    }
-
-    .sidebar--closed svg {
-        right: -5.3rem;
-    }
-}
-  
 .logo__and__copyright {
-    color: #ffffff99;
+    color: #8f8c8f;
     font-size: 10px;
-    align-content: center; 
     text-align: center;
-    padding: 0.5rem;
+    max-width: 200px;
 }
 
 .nav-container {
