@@ -58,6 +58,7 @@ const DashboardSidebar = memo(({
         handleClick={handleSideBarToggle}
         icon={sidebarOpen ? <RiMenuFold3Fill /> : <RiMenuFold4Fill />}
         className="sidebar__menu-toggle"
+        ariaLabel={sidebarOpen ? "Close Sidebar" : "Open Sidebar"}
       />
       <img alt="Atainr Logo" src={ataiLogo} width='100px' height='100px' loading='lazy' />
       <div className="nav-container">

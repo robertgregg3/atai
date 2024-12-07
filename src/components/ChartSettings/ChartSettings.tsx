@@ -75,6 +75,7 @@ interface ChartSettingsProps {
           handleClick={handleSettingsClick}
           icon={<FaGear />}
           className={`chart-settings__icon ${showSettings ? 'settings-visible' : ''}`}
+          ariaLabel={showSettings ? "Close Settings menu" : "Open Settings menu"}
         />
         <div 
           className={`chart-settings__options  ${showSettings ? 'options-visible' : ''}`}
