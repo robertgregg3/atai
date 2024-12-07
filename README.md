@@ -62,3 +62,4 @@ The app scores highly across performance metrics. Some areas for improvement ste
 - Dynamically change the chart without navigating (or as well as) to another page.
 - Include more user settings for example updating name, email, avatar,
 - More customisable options with the data, for example being able to modify which parameters are used to show the savings.
+- URL Based state. Add url params to manage and update the state. For example with the chart settings: `/dashboard?timeframe=year&show-top-savings-only=true etc`
