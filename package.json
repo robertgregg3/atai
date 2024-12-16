@@ -15,7 +15,6 @@
   "dependencies": {
     "-": "^0.0.1",
     "@rollup/plugin-dsv": "^3.0.5",
-    "D": "^1.0.0",
     "chart.js": "^4.4.7",
     "firebase": "^11.0.2",
     "html2canvas": "^1.4.1",
