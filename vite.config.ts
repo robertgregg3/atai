@@ -6,6 +6,10 @@ import path from 'path';
 
 export default defineConfig({
   plugins: [react(), dsv()],
+  test: {
+    globals: true,
+    environment: 'happy-dom',
+  },
   build: {
     rollupOptions: {
       output: {
