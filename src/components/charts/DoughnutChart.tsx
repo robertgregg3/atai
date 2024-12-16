@@ -79,7 +79,7 @@ const DoughnutChart = ({
   }
   
   const chartTitle = `Total Savings for ${currentChart}: $${currentTotal} `;
-  const { chartOptions } = getChartOptions({ chartType: "doughnut", chartTitle, showChartTitle: true });
+  const chartOptions = getChartOptions({ chartType: "doughnut", chartTitle, showChartTitle: true });
 
   const [ chartDatasets ] = getchartDatasets({ dataFormatted: currentChartData, isDoughnutChart: true });
   const chartLabels: string[] = formatChartLabels({chartData: chartData.ActualSavingsForCurrentYear });

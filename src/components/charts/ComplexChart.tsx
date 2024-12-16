@@ -38,7 +38,7 @@ interface ChartProps {
 
 const ComplexChart = ({ data, type = 'bar' }: ChartProps) => {
   const sidebarOpen = useContext(StateContext).state.sidebarOpen;
-  const { chartOptions } = getChartOptions({ chartType: type })
+  const chartOptions = getChartOptions({ chartType: type })
   const chartExportRef = useRef<HTMLDivElement>(null);
 
   const dataFormatted: number[][] = [

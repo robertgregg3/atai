@@ -14,7 +14,7 @@ interface SavingsTotalsBarChartProps {
 
 const SavingsTotalsBarChart = ({data}: SavingsTotalsBarChartProps) => {
   const sidebarOpen = useContext(StateContext).state.sidebarOpen;
-  const { chartOptions } = getChartOptions({ chartType: "bar" })
+  const chartOptions = getChartOptions({ chartType: "bar" })
   const [ chartDatasets ] = getchartDatasets({ dataFormatted: data, isComplex: false });
   const chartExportRef = useRef<HTMLDivElement>(null);
 

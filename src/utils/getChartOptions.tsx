@@ -1,6 +1,5 @@
 import { ChartType } from "@components/charts/chart.types";
 import { TooltipItem } from "chart.js";
-import { _DeepPartialObject } from "chart.js/types/utils";
 
 interface GetChartOptionsProps {
   chartType: ChartType;
@@ -21,7 +20,7 @@ interface ChartOptionsType<T extends ChartType> {
       text?: string;
     };
     legend: {
-      position: | "bottom" | "left" | "right" | "top" | "center" | "chartArea" | _DeepPartialObject<{ [scaleId: string]: number; }> | undefined
+      position: "bottom" | "left" | "right" | "top" | "center" | "chartArea";
       labels: {
         usePointStyle: boolean;
         padding: number;
@@ -34,21 +33,13 @@ interface ChartOptionsType<T extends ChartType> {
     };
   };
   scales?: {
-    x: {
+    [key: string]: {
       grid: {
         display: boolean;
       };
       ticks: {
         padding: number;
-      };
-    };
-    y: {
-      grid: {
-        drawBorder: boolean;
-      };
-      ticks: {
-        padding: number;
-        callback: (tickValue: string | number) => string;
+        callback?: (tickValue: string | number) => string;
       };
     };
   };
@@ -61,16 +52,15 @@ const getChartOptions = ({
   chartTitle, 
   legendPosition = "bottom", 
   labelPadding = 20, 
-  scalePadding = { x: 20, y: 20} 
-}: GetChartOptionsProps) => {
-  
-  const chartOptions: ChartOptionsType<typeof chartType> = {
+  scalePadding = { x: 20, y: 20 }
+}: GetChartOptionsProps): ChartOptionsType<ChartType> => {
+  return {
     responsive: isResponsive,
     maintainAspectRatio: false,
     plugins: {
       title: {
         display: showChartTitle,
-        text: chartTitle ?? '',
+        text: chartTitle,
       },
       legend: {
         position: legendPosition,
@@ -81,46 +71,30 @@ const getChartOptions = ({
       },
       tooltip: {
         callbacks: {
-          label: function (tooltipItem: TooltipItem<typeof chartType>) {
-            let label = tooltipItem.dataset.label || "";
-            const value = tooltipItem.raw as number;
-
-            if (label) {
-              label += chartType === 'doughnut' 
-                ? ` -- ${tooltipItem.label}: $` +
-                  Math.round(tooltipItem.raw as number).toFixed(2) 
-                : `: ${value}`;
-            }
-            return label;
-          },
+          label: (tooltipItem: TooltipItem<ChartType>) => `Value: ${tooltipItem.raw}`,
         },
       },
     },
     scales: chartType === 'doughnut' ? undefined : {
       x: {
         grid: {
-          display: false, // Hide the x-axis grid lines
+          display: true,
         },
         ticks: {
-          padding: scalePadding.x, // Adds padding between x-axis labels and chart content
+          padding: scalePadding.x,
         },
       },
       y: {
         grid: {
-          drawBorder: false,
+          display: false,
         },
         ticks: {
-          padding: scalePadding.y, // Adds padding between y-axis labels and chart content
-          callback: function (tickValue: string | number) {
-            const value = tickValue.toString().split(/(?=(?:...)*$)/).join(",");
-            return "$" + value;
-          },
+          padding: scalePadding.y,
+          callback: (tickValue: string | number) => tickValue.toString(),
         },
       },
     },
   };
-    
-  return { chartOptions}
-}
+};
 
-export default getChartOptions
+export default getChartOptions;
