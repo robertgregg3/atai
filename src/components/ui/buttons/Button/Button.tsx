@@ -17,7 +17,8 @@ const Button = ({
     className = '', 
     textCenter = false, 
     iconOnRight = false,
-    tabIndex}: ButtonProps) => {
+    tabIndex
+}: ButtonProps) => {
     
     const getClassNames = () => {
         const centerText = textCenter ? 'button--text-center' : '';

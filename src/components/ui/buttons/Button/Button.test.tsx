@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, afterEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom'; 
 import Button from './Button';
@@ -9,15 +9,22 @@ const buttonDefaultProps = {
     className: 'custom-class',
     textCenter: false,
     icon: null,
+    tabIndex: 0,
 };
+
+afterEach(() => {
+    vi.resetAllMocks();
+});
 
 describe('Button', () => {
     it('renders the button with default props', () => {
         render(<Button {...buttonDefaultProps} />);
-        
+
         const button = screen.getByRole('button', { name: buttonDefaultProps.text });
+
         expect(button).toBeInTheDocument();
         expect(button).toHaveClass(buttonDefaultProps.className);
+        expect(button).toHaveAttribute('tabIndex', buttonDefaultProps.tabIndex.toString())
     });
    
     it('renders the button with centred text', () => {
