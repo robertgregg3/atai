@@ -1,13 +1,14 @@
 import './Button.css';
 
 interface ButtonProps {
-    handleClick: (e: React.FormEvent<HTMLButtonElement>) => void;
+    handleClick?: (e: React.FormEvent<HTMLButtonElement>) => void;
     icon?: JSX.Element | null;
     text: string;
     className?: string;
     textCenter?: boolean;
     iconOnRight?: boolean;
     tabIndex?: number;
+    type?: | "submit" | "reset" | "button" | undefined;
 }
 
 const Button = ({ 
@@ -17,7 +18,8 @@ const Button = ({
     className = '', 
     textCenter = false, 
     iconOnRight = false,
-    tabIndex
+    tabIndex,
+    type = 'button'
 }: ButtonProps) => {
     
     const getClassNames = () => {
@@ -35,6 +37,7 @@ const Button = ({
             className={getClassNames()}
             aria-label={text}
             tabIndex={tabIndex}
+            type={type}
         >
             {icon && icon} {text}
         </button>
