@@ -5,10 +5,11 @@ import { BiSolidDoughnutChart } from "react-icons/bi";
 import { SlLogout } from "react-icons/sl";
 import { memo, useCallback, useContext } from "react";
 import { stateEnums } from "../../context/reducer";
+import { useNavigate } from "react-router-dom";
 import ataiLogo from "../../images/atai1.svg";
-import useLogout from "@hooks/logout";
 import Button from "@components/ui/buttons/Button/Button";
 import IconOnlyButton from "@components/ui/buttons/IconOnlyButton/IconOnlyButton";
+import logoutUser from "@utils/logoutUser";
 import "./DashboardSidebar.css";
 
 interface DashboardSidebarProps {
@@ -26,7 +27,7 @@ const DashboardSidebar = memo(({
 }: DashboardSidebarProps) => {
   const { state, dispatch } = useContext(StateContext);
   const { sidebarOpen } = state;
-  const logout = useLogout();
+  const navigate = useNavigate();
 
   const handleSideBarToggle = useCallback(() => {
     dispatch({ type: stateEnums.TOGGLE_SIDEBAR, payload: !sidebarOpen });
@@ -52,8 +53,16 @@ const DashboardSidebar = memo(({
     handleSideBarToggle();
   }, [handleEnvironmentData, handleSideBarToggle]);
 
+  const handleLogout = () => {
+    logoutUser({dispatch});
+    navigate('/');
+  }
+
   return (
-    <div className={`${sidebarOpen ? "sidebar--open" : "sidebar--closed"} sidebar`}>
+    <nav 
+      className={`${sidebarOpen ? "sidebar--open" : "sidebar--closed"} sidebar`}
+      aria-label='sidebar'
+    >
       <IconOnlyButton 
         handleClick={handleSideBarToggle}
         icon={sidebarOpen ? <RiMenuFold3Fill /> : <RiMenuFold4Fill />}
@@ -89,7 +98,7 @@ const DashboardSidebar = memo(({
           />
           <span className="separator"></span>
           <Button
-            handleClick={logout}
+            handleClick={handleLogout}
             icon={<SlLogout />}
             text="Logout"
             tabIndex={sidebarOpen ? 0 : -1}
@@ -100,7 +109,7 @@ const DashboardSidebar = memo(({
         <span>Copyright © 2021. All Rights Reserved.</span> <br />
         <span>ATAINR™ are registered trademarks owned by ATAINR Ltd.</span>
       </div>
-    </div>
+    </nav>
   );
 });
 
