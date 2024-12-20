@@ -1,5 +1,5 @@
 import react from '@vitejs/plugin-react'
-import { defineConfig } from "vite";
+import { defineConfig } from 'vitest/config'; // Use vitest's defineConfig
 import dsv from "@rollup/plugin-dsv";
 import path from 'path';
 
