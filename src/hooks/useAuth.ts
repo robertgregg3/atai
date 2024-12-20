@@ -3,7 +3,7 @@ import { auth } from "../firebaseConfig";
 import { StateContext } from '@context/StateProvider';
 import { useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import firebase from 'firebase/compat/app';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 
 interface UseAuthProps {
     email: string;
@@ -17,8 +17,8 @@ const useAuth = ({email, password, name}: UseAuthProps) => {
   const navigate = useNavigate();
 
   const signIn = () => {
-    auth.signInWithEmailAndPassword(email, password)
-    .then((userCredential: firebase.auth.UserCredential) => {
+    signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
       let loggedInUser = userCredential.user;
       console.log("user: ", loggedInUser);
       if (loggedInUser && loggedInUser.displayName) {
@@ -40,13 +40,12 @@ const useAuth = ({email, password, name}: UseAuthProps) => {
   }
 
   const register = () => {
-    auth
-      .createUserWithEmailAndPassword(email, password)
-      .then((userCredential: firebase.auth.UserCredential) => {
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
         const user = userCredential.user;
         if (user) {
           console.log("user: ", user);
-          user.updateProfile({
+          updateProfile(user, {
             displayName: name,
           });
           dispatch({
