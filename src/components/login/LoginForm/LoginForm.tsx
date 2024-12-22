@@ -2,6 +2,7 @@ import { useState } from "react";
 import { SlLogin } from "react-icons/sl";
 import Button from "@components/ui/buttons/Button/Button";
 import useAuth from "@hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 interface LoginFormProps {
     login: boolean;
@@ -12,19 +13,16 @@ const LoginForm = ({ login}: LoginFormProps) => {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const { error, signIn, register } = useAuth({email, password, name})
+    const navigate = useNavigate();
 
-    const handleClick = (e: React.FormEvent<HTMLButtonElement>) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        signIn();
-    };
-    
-    const handleRegisterClick = (e: React.FormEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-        register();      
+        login ? signIn() : register();
+        return navigate("/dashboard")
     };
 
     return (
-        <form>
+        <form onSubmit={handleSubmit}>
             {!login && (
                 <>
                     <label>Full Name</label>
@@ -53,17 +51,17 @@ const LoginForm = ({ login}: LoginFormProps) => {
 
             {login ? (
                 <Button 
-                    handleClick={(e) => handleClick(e)}
                     icon={<SlLogin />}
                     text="Login"
                     textCenter
+                    type='submit'
                 />
             ) : (
                 <Button 
-                    handleClick={(e) => handleRegisterClick(e)}
                     icon={<SlLogin />}
                     text="Create ATAINR Account"
                     textCenter
+                    type='submit'
                 />
             )}
            
