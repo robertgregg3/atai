@@ -19,7 +19,7 @@ const chartTitles: Record<ChartTitlesType, string> = {
 
 // pulling in the data for the dashboard, formatting the data, displaying with the data
 export const DataVisualisation = memo(() => {
-  const { showTopProducts, data } = useContext(StateContext).state;
+  const { showTopProducts, data, displayName } = useContext(StateContext).state;
 
   // hooks to format the various chart data
   const simpleBarChartData = useMemo(() => prepareChartTotals(data), [data]) ?? [0,0,0];
@@ -39,7 +39,7 @@ export const DataVisualisation = memo(() => {
         handleEnvironmentData={() => setSelectedChart("environment")}
         handleProductSavingsData={() => setSelectedChart("product")}
       />
-      <DashboardHeader title={chartTitle} />
+      <DashboardHeader title={chartTitle} displayName={displayName} />
       <div className="data-area">
         {selectedChart === "savings" && <SavingsTotalsBarChart data={simpleBarChartData} />}
         {selectedChart === "cost" && <ComplexChart data={costData} type="bar" />}

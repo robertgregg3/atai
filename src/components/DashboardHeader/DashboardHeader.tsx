@@ -5,11 +5,12 @@ import "./DashboardHeader.css";
 
 interface DashboardHeaderProps {
   title: string;
+  displayName?: string;
 }
 
-const DashboardHeader = ({ title }: DashboardHeaderProps) => {
+const DashboardHeader = ({ title, displayName }: DashboardHeaderProps) => {
   const [ chartTitle, setChartTitle ] = useState<string>('Savings Chart');
-  const { displayName, sidebarOpen } = useContext(StateContext).state;
+  const { sidebarOpen } = useContext(StateContext).state;
 
   useEffect(() => {
     setChartTitle(title);
@@ -19,7 +20,7 @@ const DashboardHeader = ({ title }: DashboardHeaderProps) => {
     <header>
       <h6 className={`${sidebarOpen ? 'dashboard-title--sidebar-open' : ''}`}>{chartTitle}</h6>
       <div className="user-info">
-        <span>Hi, {displayName}</span>
+        {displayName && <span data-testid='user-info'>Hi, {displayName}</span>}
         <RiAccountCircleFill />
       </div>
     </header>
