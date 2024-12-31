@@ -1,9 +1,11 @@
 import { render, screen, fireEvent, waitFor, cleanup } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { act } from "react";
 import DashboardSidebar from './DashboardSidebar';
 import { StateContext } from "../../context/StateProvider";
 import { afterEach, describe, expect, it, vi } from 'vitest'; 
 import logoutUser from '@utils/logoutUser';
+import { stateEnums } from '@context/reducer';
 
 afterEach(cleanup)
 
@@ -19,6 +21,8 @@ vi.mock('@firebase/auth', () => ({
 // Mock `useNavigate` to return a mock function
 vi.mock('react-router-dom', () => ({  useNavigate: vi.fn(() => vi.fn())}));
 
+const mockDispatch = vi.fn();
+
 describe('DashboardSidebar', () => {
   const mockHandleSavingsTotals = vi.fn();
   const mockHandleCostCentreSavings = vi.fn();
@@ -26,13 +30,17 @@ describe('DashboardSidebar', () => {
   const mockHandleProductSavingsData = vi.fn();
   
   // Default state for the context provider
-  const defaultState = {
+  const defaultState = { 
     sidebarOpen: true,
+    user: null,
+    data: [],
+    displayName: '',
+    isLoading: false
   };
 
   const renderWithState = (state: any) => {
     return render(
-      <StateContext.Provider value={{ state, dispatch: vi.fn() }}>
+      <StateContext.Provider value={{ state, dispatch: mockDispatch }}>
         <DashboardSidebar
           handleSavingsTotals={mockHandleSavingsTotals}
           handleCostCentreSavings={mockHandleCostCentreSavings}
@@ -121,35 +129,32 @@ describe('DashboardSidebar', () => {
     });
   });
   
-  it('Toggles the sidebar when the menu button is clicked', async () => {
-    const mockDispatch = vi.fn();
-    const state = { 
-      sidebarOpen: false,
-      user: null,
-      data: [],
-      displayName: '',
-      isLoading: false
-    };
-    
-    render(
-      <StateContext.Provider value={{ state: state, dispatch: mockDispatch }}>
-        <DashboardSidebar
-          handleSavingsTotals={vi.fn()}
-          handleCostCentreSavings={vi.fn()}
-          handleEnvironmentData={vi.fn()}
-          handleProductSavingsData={vi.fn()}
-        />
-      </StateContext.Provider>
-    );
+  it('Opens the sidebar when its closed and the menu button is clicked', async () => {
+    renderWithState({ ...defaultState, sidebarOpen: false });
   
     const button = screen.getByLabelText("Open Sidebar");
     expect(button).toBeInTheDocument();
   
-    button.click();
+    await userEvent.click(button);
 
     expect(mockDispatch).toHaveBeenCalledWith({
-      type: "TOGGLE_SIDEBAR",
+      type: stateEnums.TOGGLE_SIDEBAR,
       payload: true,
     });
+  });
+
+  it('Closes the sidebar when the side bar is open and the menu button is clicked', async () => {
+    renderWithState(defaultState);
+
+    const button = screen.getByLabelText("Close Sidebar");
+
+    expect(button).toBeInTheDocument();
+
+    await userEvent.click(button);
+
+    expect(mockDispatch).toHaveBeenCalledWith({
+      type: stateEnums.TOGGLE_SIDEBAR,
+      payload: false
+    })
   });
 });
