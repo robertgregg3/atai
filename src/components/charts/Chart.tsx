@@ -12,10 +12,9 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import { Bar } from "react-chartjs-2";
-import { ChartType, ComplexChartDataTypes } from "./chart.types";
+import { ChartType } from "./chart.types";
 import { StateContext } from "@context/StateProvider";
-import formatChartData from "@utils/formatChartData";
-import formatChartLabels from "@utils/formatChartLabels";
+import { isComplexChartData } from "@utils/isComplexChartData";
 import getChartOptions from "@utils/getChartOptions";
 import getChartData from "@utils/getChartDatasets";
 import ChartSettings from "@components/ChartSettings/ChartSettings";
@@ -32,26 +31,20 @@ ChartJS.register(
 );
 
 interface ChartProps {
-  data: ComplexChartDataTypes;
+  data: number[][] | number[];
   type: ChartType;
+  labels: string[];
 }
 
-const ComplexChart = ({ data, type = 'bar' }: ChartProps) => {
+const Chart = ({ data, type = 'bar', labels }: ChartProps) => {
   const sidebarOpen = useContext(StateContext).state.sidebarOpen;
   const chartOptions = getChartOptions({ chartType: type })
   const chartExportRef = useRef<HTMLDivElement>(null);
-
-  const dataFormatted: number[][] = [
-    formatChartData({ chartData: data.ActualSavingsForCurrentYear}),
-    formatChartData({ chartData: data.ActualSavingsForYear }),
-    formatChartData({ chartData: data.ActualSavingsPerMonth }),
-  ];
   
-  const chartLabels = formatChartLabels({ chartData: data.ActualSavingsForCurrentYear });
-  const [ chartDatasets ] = getChartData({ dataFormatted, isComplex: true });
+  const [ chartDatasets ] = getChartData({ dataFormatted: data, isComplex: isComplexChartData(data) });
 
   const preparedChartData = {
-    labels: chartLabels,
+    labels: labels,
     datasets: chartDatasets,
   };
 
@@ -72,4 +65,5 @@ const ComplexChart = ({ data, type = 'bar' }: ChartProps) => {
   );
 };
 
-export default ComplexChart;
+export default Chart;
+

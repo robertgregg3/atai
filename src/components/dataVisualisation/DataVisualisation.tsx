@@ -1,14 +1,14 @@
 import { useState, memo, useMemo, useContext, } from "react";
-import { ChartTitlesType, CsvDataProps } from "@components/charts/chart.types";
+import { ChartTitlesType } from "@components/charts/chart.types";
 import { StateContext } from "@context/StateProvider";
-import DoughnutChart from "@charts/DoughnutChart"
+import { Chart, DoughnutChart} from "@components/charts";
 import DashboardHeader from "../DashboardHeader/DashboardHeader";
 import DashboardSidebar from "@components/DashboardSidebar/DashboardSidebar";
-import SavingsTotalsBarChart from "@components/charts/SavingsTotalsBarChart";
-import ComplexChart from "@components/charts/ComplexChart";
-import useComplexChartData from "@hooks/useComplexChartData";
+import usePrepareChartData from "@hooks/usePrepareChartData";
 import prepareChartTotals from "@utils/prepareChartTotals";
 import "./dataVisualisation.css";
+import formatChartLabels from "@utils/formatChartLabels";
+import formatChartData from "@utils/formatChartData";
 
 const chartTitles: Record<ChartTitlesType, string> = {
   "savings": "Total Savings Bar Chart",
@@ -19,13 +19,29 @@ const chartTitles: Record<ChartTitlesType, string> = {
 
 // pulling in the data for the dashboard, formatting the data, displaying with the data
 export const DataVisualisation = memo(() => {
-  const { showTopProducts, data, displayName } = useContext(StateContext).state;
+  const { showTopProducts, data, displayName, sidebarOpen } = useContext(StateContext).state;
 
   // hooks to format the various chart data
   const simpleBarChartData = useMemo(() => prepareChartTotals(data), [data]) ?? [0,0,0];
-  const { chartData: costData } = useComplexChartData( data, 'cost', false);
-  const { chartData: environmentData } = useComplexChartData(data, 'environment', false);
-  const { chartData: productData, savingsTotals } = useComplexChartData(data, 'product', showTopProducts);
+  const { chartData: costData } = usePrepareChartData( data, 'cost', false);
+  const { chartData: environmentData } = usePrepareChartData(data, 'environment', false);
+  const { chartData: productData, savingsTotals } = usePrepareChartData(data, 'product', showTopProducts);
+
+  // formatting the labels for the charts
+  const costChartLabels = formatChartLabels({ chartData: costData.ActualSavingsForCurrentYear });
+  const environmentChartLabels = formatChartLabels({ chartData: environmentData.ActualSavingsForCurrentYear });
+
+  const formattedCostData: number[][] = [
+    formatChartData({ chartData: costData.ActualSavingsForCurrentYear}),
+    formatChartData({ chartData: costData.ActualSavingsForYear }),
+    formatChartData({ chartData: costData.ActualSavingsPerMonth }),
+  ];
+
+  const formattedEnvironmentData: number[][] = [
+    formatChartData({ chartData: environmentData.ActualSavingsForCurrentYear}),
+    formatChartData({ chartData: environmentData.ActualSavingsForYear }),
+    formatChartData({ chartData: environmentData.ActualSavingsPerMonth }),
+  ];
 
   // used to switch between the different charts, triggered by the sidebar
   const [selectedChart, setSelectedChart] = useState<ChartTitlesType>(() => "product");
@@ -41,9 +57,10 @@ export const DataVisualisation = memo(() => {
       />
       <DashboardHeader title={chartTitle} displayName={displayName} />
       <div className="data-area">
-        {selectedChart === "savings" && <SavingsTotalsBarChart data={simpleBarChartData} />}
-        {selectedChart === "cost" && <ComplexChart data={costData} type="bar" />}
-        {selectedChart === "environment" && <ComplexChart data={environmentData} type="line" /> } 
+        {/* {selectedChart === "savings" && <SavingsTotalsBarChart data={simpleBarChartData} />} */}
+        {selectedChart === "savings" && <Chart data={simpleBarChartData} type='bar' labels={[""]} />}
+        {selectedChart === "cost" && <Chart data={formattedCostData} type="bar" labels={costChartLabels}  />}
+        {selectedChart === "environment" && <Chart data={formattedEnvironmentData} type="line" labels={environmentChartLabels} /> } 
         {selectedChart === "product" && <DoughnutChart chartData={productData} savingsTotals={savingsTotals} />}
         </div>
     </div>
