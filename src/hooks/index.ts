@@ -1,2 +1,2 @@
-export * from './useComplexChartData';
+export * from './usePrepareChartData';
 export * from './useGetSavingsTotals';
