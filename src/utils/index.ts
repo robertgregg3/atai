@@ -6,6 +6,5 @@ export * from './formatChartLabels';
 export * from './getChartDatasets';
 export * from './getChartOptions';
 export * from './getFormattedChartData';
-export * from './isComplexChartData';
 export * from './logoutUser'
 export * from './prepareChartTotals';
