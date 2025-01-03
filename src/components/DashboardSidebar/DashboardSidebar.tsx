@@ -19,7 +19,7 @@ interface DashboardSidebarProps {
   handleProductSavingsData: () => void;
 }
 
-const DashboardSidebar = memo(({
+export const DashboardSidebar = memo(({
   handleSavingsTotals,
   handleCostCentreSavings,
   handleEnvironmentData,
@@ -112,5 +112,3 @@ const DashboardSidebar = memo(({
     </nav>
   );
 });
-
-export default DashboardSidebar;

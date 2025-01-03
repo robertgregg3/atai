@@ -8,7 +8,7 @@ interface DashboardHeaderProps {
   displayName?: string;
 }
 
-const DashboardHeader = ({ title, displayName }: DashboardHeaderProps) => {
+export const DashboardHeader = ({ title, displayName }: DashboardHeaderProps) => {
   const [ chartTitle, setChartTitle ] = useState<string>('Savings Chart');
   const { sidebarOpen } = useContext(StateContext).state;
 
@@ -26,5 +26,3 @@ const DashboardHeader = ({ title, displayName }: DashboardHeaderProps) => {
     </header>
   );
 };
-
-export default memo(DashboardHeader);

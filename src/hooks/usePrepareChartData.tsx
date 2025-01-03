@@ -11,7 +11,7 @@ const savingsTotalLabels: SavingsTotalType[] = [
   "ActualSavingsPerMonth",
 ];
 
-const usePrepareChartData = (
+export const usePrepareChartData = (
     data: CsvDataProps[],
     chartType: ChartTitlesType,
     showTopProducts: boolean = true,
@@ -42,5 +42,3 @@ const usePrepareChartData = (
 
     return { chartData, savingsTotals };
 }
-
-export default usePrepareChartData;
