@@ -13,8 +13,7 @@ import {
 import { Line } from "react-chartjs-2";
 import { Bar } from "react-chartjs-2";
 import { ChartProps } from "./chart.types";
-import getChartOptions from "@utils/getChartOptions";
-import getChartData from "@utils/getChartDatasets";
+import { getChartOptions, getChartDatasets } from "@utils";
 import ChartSettings from "@components/ChartSettings/ChartSettings";
 
 ChartJS.register(
@@ -28,11 +27,11 @@ ChartJS.register(
   Legend
 );
 
-const Chart = ({ data, type = 'bar', labels = [""], isComplex = true, sidebarOpen }: ChartProps) => {
+const Chart = ({ data, type = 'bar', labels = [""], isComplex = true }: ChartProps) => {
   const chartOptions = getChartOptions({ chartType: type })
   const chartExportRef = useRef<HTMLDivElement>(null);
   
-  const [ chartDatasets ] = getChartData({ dataFormatted: data ?? [], isComplex: isComplex });
+  const [ chartDatasets ] = getChartDatasets({ dataFormatted: data ?? [], isComplex: isComplex });
 
   const preparedChartData = {
     labels: labels,
@@ -43,7 +42,7 @@ const Chart = ({ data, type = 'bar', labels = [""], isComplex = true, sidebarOpe
 
   return (
     <div
-      className={`chart-horizontal ${!sidebarOpen ? "chart--sidebar-closed" : ""}`}
+      className='chart-horizontal'
       ref={chartExportRef}
     >
       <ChartSettings 

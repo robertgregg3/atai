@@ -2,8 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import { chartFilters, FormattedChartProps, SavingsTotalsTypes } from "./chart.types";
-import { getChartOptions, getchartDatasets } from "@utils";
-import getchartDatasets from "@utils/getChartDatasets";
+import { getChartOptions, getChartDatasets } from "@utils";
 import ChartSettings from "@components/ChartSettings/ChartSettings";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -67,13 +66,13 @@ const AdvancedChart = ({
     setCurrentChartData(chartData[timeFrame]);
     setCurrentChart(timeFrame);
     setCurrentTotal(currentTotals[timeFrame]);
-    // Updating these triggers a rerender as the getchartDatasets function is called again
+    // Updating these triggers a rerender as the getChartDataAsets function is called again
   }
   
   const chartTitle = `Total Savings for ${currentChart}: $${currentTotal} `;
   const chartOptions = getChartOptions({ chartType: "doughnut", chartTitle, showChartTitle: true });
 
-  const [ chartDatasets ] = getchartDatasets({ dataFormatted: currentChartData, isDoughnutChart: true });
+  const [ chartDatasets ] = getChartDatasets({ dataFormatted: currentChartData, isDoughnutChart: true });
   
   const data = {
     labels: labels,
