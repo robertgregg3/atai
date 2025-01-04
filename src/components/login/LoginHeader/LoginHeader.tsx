@@ -1,4 +1,4 @@
-import Button from "@components/ui/buttons/Button/Button";
+import { Button } from "@components";
 
 interface LoginHeaderProps {
     activeButton: string;

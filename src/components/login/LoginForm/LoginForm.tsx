@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { SlLogin } from "react-icons/sl";
-import Button from "@components/ui/buttons/Button/Button";
+import { Button } from "@components";
 import useAuth from "@hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 

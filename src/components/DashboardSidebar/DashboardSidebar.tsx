@@ -7,8 +7,7 @@ import { memo, useCallback, useContext } from "react";
 import { stateEnums } from "../../context/reducer";
 import { useNavigate } from "react-router-dom";
 import ataiLogo from "../../images/atai1.svg";
-import Button from "@components/ui/buttons/Button/Button";
-import IconOnlyButton from "@components/ui/buttons/IconOnlyButton/IconOnlyButton";
+import { IconOnlyButton, Button }  from "@components";
 import logoutUser from "@utils/logoutUser";
 import "./DashboardSidebar.css";
 

@@ -13,7 +13,7 @@ interface ChartDatasetsProps {
     borderWidth?: number;
 }
 
-const getChartDatasets = ({ dataFormatted, isComplex = false, isDoughnutChart = false}: GetChartDataProps) => {
+export const getChartDatasets = ({ dataFormatted, isComplex = false, isDoughnutChart = false}: GetChartDataProps) => {
     const chartDatasets: ChartDatasetsProps[] | any = isDoughnutChart ? 
       [{
         label: "Product Savings",
@@ -50,5 +50,3 @@ const getChartDatasets = ({ dataFormatted, isComplex = false, isDoughnutChart = 
       ]
   return [ chartDatasets ]
 }
-
-export default getChartDatasets

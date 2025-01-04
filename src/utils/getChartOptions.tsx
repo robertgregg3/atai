@@ -45,7 +45,7 @@ interface ChartOptionsType<T extends ChartType> {
   };
 }
 
-const getChartOptions = ({
+export const getChartOptions = ({
   chartType,
   isResponsive = true, 
   showChartTitle = false,
@@ -96,5 +96,3 @@ const getChartOptions = ({
     },
   };
 };
-
-export default getChartOptions;

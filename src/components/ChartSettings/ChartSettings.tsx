@@ -1,12 +1,10 @@
-import { chartFilters } from "@components/charts/DoughnutChart";
 import { useContext, useState } from "react";
 import { StateContext } from "@context/StateProvider";
 import { stateEnums } from "@context/reducer";
 import { FaGear } from "react-icons/fa6";
 import { TbFileDownload } from "react-icons/tb";
+import { chartFilters, IconOnlyButton, Button } from "@components";
 import exportAsImage from "@utils/exportAsImage";
-import IconOnlyButton from "@components/ui/buttons/IconOnlyButton/IconOnlyButton";
-import Button from "@components/ui/buttons/Button/Button";
 import './ChartSettings.css'
 
 
