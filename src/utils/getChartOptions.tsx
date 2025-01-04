@@ -71,7 +71,7 @@ const getChartOptions = ({
       },
       tooltip: {
         callbacks: {
-          label: (tooltipItem: TooltipItem<ChartType>) => `Value: ${tooltipItem.raw}`,
+          label: (tooltipItem: TooltipItem<ChartType>) => `Value: $${tooltipItem.raw}`,
         },
       },
     },
