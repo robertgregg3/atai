@@ -21,7 +21,7 @@ export interface ChartDataFilteredProps {
 
 type currentTotalsType = Record<chartFilters, string | number>;
 
-const AdvancedChart = ({
+export const AdvancedChart = ({
   chartData,
   savingsTotals, 
   labels
@@ -95,5 +95,3 @@ const AdvancedChart = ({
     </div>
   );
 };
-
-export default AdvancedChart;
