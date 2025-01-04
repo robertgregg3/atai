@@ -12,7 +12,7 @@ export enum stateEnums {
 
 export interface InitialStateProps {
   user: firebase.User | null;
-  data: CsvDataProps[];
+  data: CsvDataProps[] | null;
   displayName: string;
   sidebarOpen: boolean;
   showTopProducts?: boolean;
