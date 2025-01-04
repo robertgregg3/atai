@@ -1,11 +1,10 @@
 import { render, screen, fireEvent, waitFor, cleanup } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { act } from "react";
-import DashboardSidebar from './DashboardSidebar';
+import { DashboardSidebar } from '@components';
 import { StateContext } from "../../context/StateProvider";
 import { afterEach, describe, expect, it, vi } from 'vitest'; 
 import logoutUser from '@utils/logoutUser';
-import { stateEnums } from '@context/reducer';
+import { InitialStateProps, stateEnums } from '@context/reducer';
 
 afterEach(cleanup)
 
@@ -38,7 +37,7 @@ describe('DashboardSidebar', () => {
     isLoading: false
   };
 
-  const renderWithState = (state: any) => {
+  const renderWithState = (state: InitialStateProps) => {
     return render(
       <StateContext.Provider value={{ state, dispatch: mockDispatch }}>
         <DashboardSidebar
