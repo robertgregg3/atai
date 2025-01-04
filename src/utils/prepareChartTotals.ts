@@ -1,6 +1,6 @@
 import { CsvDataProps } from "@components/charts/chart.types";
 
-export const prepareChartTotals = (data: CsvDataProps[] ) => {
+export const prepareChartTotals = (data: CsvDataProps[] | null ) => {
   if (data) {
     const savingsTotalsRow = data[data.length - 1];
     // create an array of the totals

@@ -29,4 +29,12 @@ export enum ChartTypes {
   PRODUCT =   "product"
 }
 
+export interface ChartProps {
+  data: number[][] | number[] | null;
+  type?: ChartType;
+  labels?: string[];
+  isComplex?: boolean;
+  sidebarOpen: boolean;
+}
+
 export type ChartType = | "bar" | "doughnut" | "line";

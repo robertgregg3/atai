@@ -1,4 +1,4 @@
-import { useContext, useRef } from "react";
+import { useRef } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -12,8 +12,7 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import { Bar } from "react-chartjs-2";
-import { ChartType } from "./chart.types";
-import { StateContext } from "@context/StateProvider";
+import { ChartProps } from "./chart.types";
 import getChartOptions from "@utils/getChartOptions";
 import getChartData from "@utils/getChartDatasets";
 import ChartSettings from "@components/ChartSettings/ChartSettings";
@@ -29,19 +28,11 @@ ChartJS.register(
   Legend
 );
 
-interface ChartProps {
-  data: number[][] | number[];
-  type: ChartType;
-  labels: string[];
-  isComplex: boolean;
-}
-
-const Chart = ({ data, type = 'bar', labels, isComplex }: ChartProps) => {
-  const sidebarOpen = useContext(StateContext).state.sidebarOpen;
+const Chart = ({ data, type = 'bar', labels = [""], isComplex = true, sidebarOpen }: ChartProps) => {
   const chartOptions = getChartOptions({ chartType: type })
   const chartExportRef = useRef<HTMLDivElement>(null);
   
-  const [ chartDatasets ] = getChartData({ dataFormatted: data, isComplex: isComplex });
+  const [ chartDatasets ] = getChartData({ dataFormatted: data ?? [], isComplex: isComplex });
 
   const preparedChartData = {
     labels: labels,

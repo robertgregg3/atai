@@ -12,11 +12,11 @@ const savingsTotalLabels: SavingsTotalType[] = [
 ];
 
 export const usePrepareChartData = (
-    data: CsvDataProps[],
+    data: CsvDataProps[] | null,
     chartType: ChartTitlesType,
     showTopProducts: boolean = true,
     ) => {
-    const { savingsTotals } = useGetSavingsTotals(data);
+    const { savingsTotals } = useGetSavingsTotals(data ?? []);
     const topProductsPercentage = useContext(StateContext).state.topProductsPercentage;
 
     // initialise chart data variables
@@ -27,16 +27,16 @@ export const usePrepareChartData = (
     });
 
     // format the data when any of the dependencies change
-    const formattedData = useMemo(() => 
+    const formattedData = useMemo(() => data &&
       getFormattedChartData({chartType, data, showTopProducts, topProductsPercentage, savingsTotalLabels}), 
     [data, chartType, showTopProducts, savingsTotalLabels, topProductsPercentage]);
       
     // update the chart data when the formatted data changes
     useEffect(() => {
       setChartData({
-        ActualSavingsForCurrentYear: formattedData.ActualSavingsForCurrentYear ?? [],
-        ActualSavingsForYear: formattedData.ActualSavingsForYear ?? [],
-        ActualSavingsPerMonth: formattedData.ActualSavingsPerMonth ?? []
+        ActualSavingsForCurrentYear: formattedData?.ActualSavingsForCurrentYear ?? [],
+        ActualSavingsForYear: formattedData?.ActualSavingsForYear ?? [],
+        ActualSavingsPerMonth: formattedData?.ActualSavingsPerMonth ?? []
       });
     }, [formattedData]);
 
