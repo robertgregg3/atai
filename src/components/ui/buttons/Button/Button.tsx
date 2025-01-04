@@ -11,7 +11,7 @@ interface ButtonProps {
     type?: | "submit" | "reset" | "button" | undefined;
 }
 
-const Button = ({ 
+export const Button = ({ 
     handleClick, 
     icon = null, 
     text, 
@@ -43,5 +43,3 @@ const Button = ({
         </button>
     )
 }
-
-export default Button

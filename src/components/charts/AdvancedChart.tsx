@@ -1,18 +1,17 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
-import { StateContext } from "@context/StateProvider";
-import { ComplexChartDataTypes, SavingsTotalsTypes } from "./chart.types";
-import { formatChartData, formatChartLabels } from "@utils";
-import getChartOptions from "@utils/getChartOptions";
+import { chartFilters, FormattedChartProps, SavingsTotalsTypes } from "./chart.types";
+import { getChartOptions, getchartDatasets } from "@utils";
 import getchartDatasets from "@utils/getChartDatasets";
 import ChartSettings from "@components/ChartSettings/ChartSettings";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export interface DoughnutChartProps {
-  chartData: ComplexChartDataTypes;
+export interface AdvancedChartProps {
+  chartData: FormattedChartProps;
   savingsTotals: SavingsTotalsTypes;
+  labels: string[];
 }
 
 export interface ChartDataFilteredProps {
@@ -21,27 +20,19 @@ export interface ChartDataFilteredProps {
   month: number[];
 }
 
-export type chartFilters = 'currentYear' | 'year' | 'month';
-type currentTotals = Record<chartFilters, string | number>;
+type currentTotalsType = Record<chartFilters, string | number>;
 
-const DoughnutChart = ({
+const AdvancedChart = ({
   chartData,
   savingsTotals, 
-}: DoughnutChartProps) => {
-  const sidebarOpen = useContext(StateContext).state.sidebarOpen;
+  labels
+}: AdvancedChartProps) => {
   const chartRef = useRef<ChartJS<"doughnut"> | null>(null); // trigger chart animation on button press. 
   const chartExportRef = useRef<HTMLDivElement>(null);
   const [currentChart, setCurrentChart] = useState<chartFilters>(() => "currentYear");
+  const [currentChartData, setCurrentChartData] = useState<number[]>(chartData['currentYear']);
 
-  const formattedData = {
-    'currentYear': formatChartData({ chartData: chartData.ActualSavingsForCurrentYear }),
-    'year': formatChartData({ chartData: chartData.ActualSavingsForYear }),
-    'month': formatChartData({ chartData: chartData.ActualSavingsPerMonth }),
-  }
-
-  const [currentChartData, setCurrentChartData] = useState<number[]>(formattedData['currentYear']);
-
-  const currentTotals: currentTotals = {
+  const currentTotals: currentTotalsType = {
     'currentYear': savingsTotals.ActualSavingsForCurrentYear,
     'year': savingsTotals.ActualSavingsForYear,
     'month': savingsTotals.ActualSavingsPerMonth,
@@ -53,25 +44,27 @@ const DoughnutChart = ({
     if (chartRef.current) {
       const chartInstance = chartRef.current;
 
-      // Temporarily set data to an empty array to force a rerender
-      chartInstance.config.data.datasets[0].data = [];
-      chartInstance.update();
-      
-      // Synchronously update to the desired data
-      chartInstance.config.data.datasets[0].data = [...currentChartData];
-      chartInstance.update(); // Trigger chart update and animation
+      if (chartInstance.config?.data?.datasets?.[0]) {
+        // Temporarily set data to an empty array to force a rerender
+        chartInstance.config.data.datasets[0].data = [];
+        chartInstance.update();
+
+        // Synchronously update to the desired data
+        chartInstance.config.data.datasets[0].data = [...currentChartData];
+        chartInstance.update(); // Trigger chart update and animation
+      }
     }
   }, [currentTotal]);
   
   // render the chart on first load with the currentYear data
   useEffect(() => {
     setCurrentTotal(savingsTotals.ActualSavingsForCurrentYear);
-    setCurrentChartData(() => formattedData['currentYear']);
+    setCurrentChartData(() => chartData['currentYear']);
   }, [chartData]);
   
   
   const handleChartSelectionClick = (timeFrame: chartFilters) => {
-    setCurrentChartData(formattedData[timeFrame]);
+    setCurrentChartData(chartData[timeFrame]);
     setCurrentChart(timeFrame);
     setCurrentTotal(currentTotals[timeFrame]);
     // Updating these triggers a rerender as the getchartDatasets function is called again
@@ -81,16 +74,15 @@ const DoughnutChart = ({
   const chartOptions = getChartOptions({ chartType: "doughnut", chartTitle, showChartTitle: true });
 
   const [ chartDatasets ] = getchartDatasets({ dataFormatted: currentChartData, isDoughnutChart: true });
-  const chartLabels: string[] = formatChartLabels({chartData: chartData.ActualSavingsForCurrentYear });
   
   const data = {
-    labels: chartLabels,
+    labels: labels,
     datasets: chartDatasets
   };
   
   return (
     <div
-      className={`chart-horizontal ${!sidebarOpen ? "chart--sidebar-closed" : ""}`}
+      className='chart-horizontal'
       ref={chartExportRef}
     >
       <ChartSettings 
@@ -105,4 +97,4 @@ const DoughnutChart = ({
   );
 };
 
-export default DoughnutChart;
+export default AdvancedChart;

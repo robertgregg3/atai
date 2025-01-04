@@ -7,7 +7,7 @@ interface IconOnlyButtonProps {
     ariaLabel: string;
 }
 
-const IconOnlyButton = ({ handleClick, icon, className, ariaLabel} : IconOnlyButtonProps) => {
+export const IconOnlyButton = ({ handleClick, icon, className, ariaLabel} : IconOnlyButtonProps) => {
     const getClassNames = () => {
         return `icon-only-button ${className ? className : ''}`;
     }
@@ -21,5 +21,3 @@ const IconOnlyButton = ({ handleClick, icon, className, ariaLabel} : IconOnlyBut
     </button>
   )
 }
-
-export default IconOnlyButton

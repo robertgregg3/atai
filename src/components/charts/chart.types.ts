@@ -34,7 +34,14 @@ export interface ChartProps {
   type?: ChartType;
   labels?: string[];
   isComplex?: boolean;
-  sidebarOpen: boolean;
 }
+
+export interface FormattedChartProps {
+  currentYear: number[];
+  year: number[];
+  month: number[];
+}
+
+export type chartFilters = 'currentYear' | 'year' | 'month';
 
 export type ChartType = | "bar" | "doughnut" | "line";
