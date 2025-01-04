@@ -27,7 +27,7 @@ ChartJS.register(
   Legend
 );
 
-const Chart = ({ data, type = 'bar', labels = [""], isComplex = true }: ChartProps) => {
+export const Chart = ({ data, type = 'bar', labels = [""], isComplex = true }: ChartProps) => {
   const chartOptions = getChartOptions({ chartType: type })
   const chartExportRef = useRef<HTMLDivElement>(null);
   
@@ -54,6 +54,3 @@ const Chart = ({ data, type = 'bar', labels = [""], isComplex = true }: ChartPro
     </div>
   );
 };
-
-export default Chart;
-

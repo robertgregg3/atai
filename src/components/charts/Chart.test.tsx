@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
-import Chart from "./Chart";
+import { Chart } from "@components";
 
 vi.mock("@utils", () => ({
     getChartDatasets: vi.fn(({ dataFormatted }) => {
