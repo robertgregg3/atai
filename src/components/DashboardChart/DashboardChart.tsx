@@ -9,7 +9,7 @@ interface DashboardChartProps {
 }
 
 export const DashboardChart = ({ selectedChart }:  DashboardChartProps) => {
-    const { showTopProducts, data, displayName } = useContext(StateContext).state;
+    const { showTopProducts, data, sidebarOpen } = useContext(StateContext).state;
 
      // hooks to format the various chart data
       const simpleBarChartData = useMemo(() => prepareChartTotals(data), [data]) ?? [0,0,0];
@@ -36,10 +36,10 @@ export const DashboardChart = ({ selectedChart }:  DashboardChartProps) => {
 
     return (
         <div className="data-area">
-        {selectedChart === "savings" && <Chart data={simpleBarChartData} type='bar' labels={[""]} isComplex={false} />}
-        {selectedChart === "cost" && <Chart data={formattedCostData} type="bar" labels={costChartLabels}  isComplex={true} />}
-        {selectedChart === "environment" && <Chart data={formattedEnvironmentData} type="line" labels={environmentChartLabels} isComplex={true} />} 
-        {selectedChart === "product" && <DoughnutChart chartData={productData} savingsTotals={savingsTotals} />}
+        {selectedChart === "savings" && <Chart data={simpleBarChartData} isComplex={false} sidebarOpen={sidebarOpen} />}
+        {selectedChart === "cost" && <Chart data={formattedCostData} labels={costChartLabels} sidebarOpen={sidebarOpen} />}
+        {selectedChart === "environment" && <Chart data={formattedEnvironmentData} type="line" labels={environmentChartLabels} sidebarOpen={sidebarOpen} />} 
+        {selectedChart === "product" && <DoughnutChart chartData={productData} savingsTotals={savingsTotals} sidebarOpen={sidebarOpen} />}
       </div>
     )
 }
