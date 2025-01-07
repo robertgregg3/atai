@@ -1,5 +1,5 @@
 import { ChangeEvent } from "react";
-import exportAsImage from "./exportAsImage";
+import { exportAsImage } from "@utils";
 import "../App.css";
 
 interface DownloadChartProps {
