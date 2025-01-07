@@ -14,17 +14,22 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Run Tests
-        run: npm test
+        run: |
+          npm test
+        continue-on-error: false
+
+      - name: Debug Status
+        run: echo "Job Status: ${{ job.status }}"
 
       - name: Notify Slack on Success
-        if: ${{ success() }}
+        if: ${{ job.status == 'success' }}
         run: |
           curl -X POST -H 'Content-type: application/json' \
           --data '{"text":"✅ CI Pipeline succeeded for *${{ github.event.repository.full_name }}*\n> Commit: ${{ github.event.head_commit.url }}"}' \
           ${{ secrets.SLACK_WEBHOOK_URL }}
 
       - name: Notify Slack on Failure
-        if: ${{ failure() }}
+        if: ${{ job.status == 'failure' }}
         run: |
           curl -X POST -H 'Content-type: application/json' \
           --data '{"text":"❌ CI Pipeline failed for *${{ github.event.repository.full_name }}*\n> Commit: ${{ github.event.head_commit.url }}"}' \
