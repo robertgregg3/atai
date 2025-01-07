@@ -1,3 +1,3 @@
 export * from './AdvancedChart';
 export * from './Chart';
-export * from './chart.types'
+export * from './chart.types';

@@ -5,8 +5,8 @@ import { FaGear } from "react-icons/fa6";
 import { TbFileDownload } from "react-icons/tb";
 import { chartFilters, IconOnlyButton, Button } from "@components";
 import { exportAsImage } from "@utils";
+import { getOthersPercentageMapping } from "@utils";
 import './ChartSettings.css'
-import { getOthersPercentageMapping } from "@utils/getOthersPercentageMapping";
 
 
 export interface ChartSettingsProps {

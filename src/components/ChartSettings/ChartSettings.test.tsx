@@ -1,14 +1,15 @@
 import { describe, expect, it, vi } from "vitest";
-import { ChartSettings, ChartSettingsProps } from "./ChartSettings";
+import { ChartSettings, ChartSettingsProps } from "@components";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { StateContext } from "@context/StateProvider";
-import { exportAsImage } from "@utils";
+import { exportAsImage, getOthersPercentageMapping } from "@utils";
 import { stateEnums } from "@context/reducer";
 
 const handleChartSelectionClick = vi.fn();
 
 vi.mock('@utils', () => ({
-    exportAsImage: vi.fn()
+    exportAsImage: vi.fn(),
+    getOthersPercentageMapping: vi.fn()
 }));
 
 describe('ChartSettings', () => {
@@ -46,6 +47,7 @@ describe('ChartSettings', () => {
 
         const settingsButton = screen.getByRole('button', { name: /open settings menu/i });
         expect(settingsButton).toBeInTheDocument();
+        expect(getOthersPercentageMapping).toHaveBeenCalled();
     });
 
     it('renders the download options when the settings are visible', async () => {

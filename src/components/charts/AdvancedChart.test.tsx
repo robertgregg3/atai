@@ -3,6 +3,7 @@ import { AdvancedChart } from "@components";
 import { render, screen } from "@testing-library/react";
 
 vi.mock("@utils", () => ({
+    getOthersPercentageMapping: (percentage: number) => `${percentage}%`,
     getChartDatasets: vi.fn(({ dataFormatted }) => {
       return [
         {
