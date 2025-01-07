@@ -29,8 +29,8 @@ jobs:
 
   notify:
     runs-on: ubuntu-latest
-    needs: test  # This ensures that the notification job depends on the 'test' job
-    if: always()  # This ensures the notification runs regardless of success or failure
+    needs: test  
+    if: always() 
     steps:
       - name: Notify Slack on Success or Failure
         run: |
