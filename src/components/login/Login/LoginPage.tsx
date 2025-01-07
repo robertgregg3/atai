@@ -15,7 +15,7 @@ const LoginPage = () => {
 
   return (
     <>
-      <div className="login__container">
+      <main className="login__container">
         <div className="login__left-side">
           <img
             alt="Atainr Logo"
@@ -28,7 +28,7 @@ const LoginPage = () => {
           <LoginHeader activeButton={activeButton} buttonClick={handleButtonClick} />
           <LoginForm login={login} />
         </div>
-      </div>
+      </main>
     </>
   );
 };
