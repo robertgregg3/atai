@@ -4,11 +4,12 @@ import { stateEnums } from "@context/reducer";
 import { FaGear } from "react-icons/fa6";
 import { TbFileDownload } from "react-icons/tb";
 import { chartFilters, IconOnlyButton, Button } from "@components";
-import exportAsImage from "@utils/exportAsImage";
+import { exportAsImage } from "@utils";
 import './ChartSettings.css'
+import { getOthersPercentageMapping } from "@utils/getOthersPercentageMapping";
 
 
-interface ChartSettingsProps {
+export interface ChartSettingsProps {
     title: string;
     currentChart?: chartFilters;
     handleChartSelectionClick?: (timeFrame: chartFilters) => void;
@@ -16,11 +17,10 @@ interface ChartSettingsProps {
     isDougnutChart?: boolean;
   }
   
-  const ChartSettings = ({ currentChart, handleChartSelectionClick, chartExportRef, isDougnutChart = false, title }: ChartSettingsProps) => {
+  export const ChartSettings = ({ currentChart, handleChartSelectionClick, chartExportRef, isDougnutChart = false, title }: ChartSettingsProps) => {
     const [ showSettings, setShowSettings ] = useState<boolean>(false);
     const { state, dispatch } = useContext(StateContext);
     const { topProductsPercentage, showTopProducts } = state;
-
     // open the settings menu
     const handleSettingsClick = () => {
       setShowSettings(!showSettings);
@@ -37,21 +37,6 @@ interface ChartSettingsProps {
 
     const handleRangeSliderUpdate = (e: React.ChangeEvent<HTMLInputElement>) => {
       dispatch({ type: stateEnums.OTHERS_PERCENTAGE, payload: parseInt(e.target.value)});
-    }
-
-    const getOthersPercentageMapping = () => {
-      switch(topProductsPercentage) {
-        case 1:
-          return 'Top 5%';
-        case 2:
-          return 'Top 4%';
-        case 3:
-          return 'Top 3%';
-        case 4:
-          return 'Top 2%';
-        case 5:
-          return 'Top 1%';        
-      }
     }
 
     const handleDownload = async (type: string) => {
@@ -149,7 +134,7 @@ interface ChartSettingsProps {
               <div className="chart-selection__buttons slider-container">
                 <div className="chart-settings__section-container slider">
                   <label htmlFor="range" style={{ color: `${showTopProducts ? '#000000' : '#aaaaaa'}` }}>
-                    {getOthersPercentageMapping()} of products:
+                    {getOthersPercentageMapping(topProductsPercentage)} of products:
                   </label>
                   <input 
                     type='range' 
@@ -170,6 +155,3 @@ interface ChartSettingsProps {
       </div>
     );
   };
-
-  export default ChartSettings;
-  
