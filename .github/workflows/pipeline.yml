@@ -1,0 +1,31 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Run Tests
+        run: npm test
+
+      - name: Notify Slack on Success
+        if: success()
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+          --data '{"text":"✅ CI Pipeline succeeded for *${{ github.event.repository.full_name }}*\n> for commit $GITHUB_SHA ${{ github.event.head_commit.url }}"}' \
+          ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Notify Slack on Failure
+        if: failure()
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+          --data '{"text":"❌ CI Pipeline failed for commit $GITHUB_SHA"}' \
+          ${{ secrets.SLACK_WEBHOOK_URL }}
