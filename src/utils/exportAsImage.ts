@@ -6,7 +6,7 @@ interface ExportAsImageProps {
   type: string;
 }
 
-const exportAsImage = async ({element, imageFileName, type}: ExportAsImageProps) => {
+export const exportAsImage = async ({element, imageFileName, type}: ExportAsImageProps) => {
   const html = document.getElementsByTagName("html")[0];
   const body = document.getElementsByTagName("body")[0];
   let htmlWidth = html.clientWidth;
@@ -50,5 +50,3 @@ const downloadImage = (blob: string, fileName: string) => {
   document.body.removeChild(fakeLink);
   fakeLink.remove();
 };
-
-export default exportAsImage;

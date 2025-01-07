@@ -27,16 +27,6 @@ vi.mock("@utils", () => ({
         },
       },
     })),
-    default: vi.fn(() => [
-      [
-        {
-          label: "Dataset 1",
-          data: [10, 20, 30],
-          backgroundColor: "rgba(75,192,192,0.4)",
-          borderColor: "rgba(75,192,192,1)",
-        },
-      ],
-    ]),
   })
 );
 
