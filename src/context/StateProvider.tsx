@@ -45,6 +45,8 @@ export const StateProvider = ({ children  }: { children: React.ReactNode }) => {
                         displayName: "",
                     },
                  });
+                 isAuthChecked = true;
+                 checkLoadingComplete();
             }
         });
     
