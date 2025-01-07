@@ -1,10 +1,10 @@
 import { render, screen, fireEvent, waitFor, cleanup } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { DashboardSidebar } from '@components';
 import { StateContext } from "../../context/StateProvider";
 import { afterEach, describe, expect, it, vi } from 'vitest'; 
-import logoutUser from '@utils/logoutUser';
 import { InitialStateProps, stateEnums } from '@context/reducer';
+import userEvent from '@testing-library/user-event';
+import logoutUser from '@utils/logoutUser';
 
 afterEach(cleanup)
 

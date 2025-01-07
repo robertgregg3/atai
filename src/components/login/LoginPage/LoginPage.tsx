@@ -1,6 +1,6 @@
 import { SetStateAction, useState } from "react";
-import ataiLogo from "@images/atai1.svg";
 import { LoginHeader, LoginForm } from "@components";
+import ataiLogo from "@images/atai1.svg";
 import "./LoginPage.css";
 
 export const LoginPage = () => {

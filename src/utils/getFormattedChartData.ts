@@ -1,4 +1,4 @@
-import { ChartTitlesType, ChartTypes, CsvDataProps, SavingsTotalType } from "@components";
+import{ ChartTypes, type ChartTitlesType, type CsvDataProps, type SavingsTotalType } from "@components/Charts/chart.types";
 
 const labelKeyMap = new Map<ChartTitlesType, string>([
   [ChartTypes.SAVINGS, ''],
@@ -18,14 +18,13 @@ interface GetFormattedChartDataProps {
   topProductsPercentage?: number;
   savingsTotalLabels: SavingsTotalType[];
 }
-const getFormattedChartData = ({
+export const getFormattedChartData = ({
   chartType,
   data,
   showTopProducts = false,
   topProductsPercentage = 1,
   savingsTotalLabels,
 }: GetFormattedChartDataProps) => {
-
   const labelKey = mapLabelKeys(chartType) ?? '';
   
   const newChartData: { [key: string]: { key: string; value: number; }[] } = {
@@ -84,5 +83,3 @@ const getFormattedChartData = ({
 
   return newChartData;
 };
-
-export default getFormattedChartData;
