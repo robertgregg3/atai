@@ -27,5 +27,5 @@ jobs:
         if: failure()
         run: |
           curl -X POST -H 'Content-type: application/json' \
-          --data '{"text":"❌ CI Pipeline failed for commit $GITHUB_SHA"}' \
+          --data '{"text":"❌ CI Pipeline failed for *${{ github.event.repository.full_name }}*\n> for commit $GITHUB_SHA ${{ github.event.head_commit.url }}"}' \
           ${{ secrets.SLACK_WEBHOOK_URL }}
