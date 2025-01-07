@@ -1,4 +1,4 @@
-import{ ChartTypes, type ChartTitlesType, type CsvDataProps, type SavingsTotalType } from "@components/Charts/chart.types";
+import { ChartTitlesType, ChartTypes, CsvDataProps, SavingsTotalType } from "@components/Charts/chart.types";
 
 const labelKeyMap = new Map<ChartTitlesType, string>([
   [ChartTypes.SAVINGS, ''],
