@@ -1,4 +1,4 @@
-import { CsvDataProps, SavingsTotalsTypes } from '@components/charts/chart.types';
+import { CsvDataProps, SavingsTotalsTypes } from '@components';
 import { useEffect, useState } from 'react'
 
 const useGetSavingsTotals = (data: CsvDataProps[]) => {

@@ -1,4 +1,4 @@
-import { ChartTitlesType } from "@components/charts";
+import { ChartTitlesType } from "@components";
 
 export const chartTitles: Record<ChartTitlesType, string> = {
   "savings": "Total Savings Bar Chart",

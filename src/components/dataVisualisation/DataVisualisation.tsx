@@ -2,7 +2,7 @@ import { useState, useMemo, useContext, useCallback, } from "react";
 import { StateContext } from "@context/StateProvider";
 import { DashboardHeader, DashboardSidebar, DashboardChart, type ChartTitlesType } from "@components";
 import { chartTitles } from "@utils";
-import "./dataVisualisation.css";
+import "./DataVisualisation.css";
 
 // pulling in the data for the dashboard, formatting the data, displaying with the data
 export const DataVisualisation = () => {

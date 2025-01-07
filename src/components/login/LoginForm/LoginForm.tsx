@@ -8,7 +8,7 @@ interface LoginFormProps {
     login: boolean;
 }
 
-const LoginForm = ({ login}: LoginFormProps) => {
+export const LoginForm = ({ login}: LoginFormProps) => {
     const [name, setName] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
@@ -69,5 +69,3 @@ const LoginForm = ({ login}: LoginFormProps) => {
         </form>
     )
 }
-
-export default LoginForm

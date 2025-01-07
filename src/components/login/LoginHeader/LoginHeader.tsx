@@ -5,7 +5,7 @@ interface LoginHeaderProps {
     buttonClick: (arg1: boolean, arg2: string) => void;
 }
 
-const LoginHeader = ({ activeButton, buttonClick }: LoginHeaderProps) => {
+export const LoginHeader = ({ activeButton, buttonClick }: LoginHeaderProps) => {
     const selectedPage = activeButton === "login__active" ? "login__active" : "Create Account";
   return (
     <div className="login__options">
@@ -22,5 +22,3 @@ const LoginHeader = ({ activeButton, buttonClick }: LoginHeaderProps) => {
         </div>
   )
 }
-
-export default LoginHeader

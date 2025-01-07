@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { StateContext } from '@context/StateProvider';
 import { useMemo } from 'react';
-import { ChartTitlesType, ComplexChartDataTypes, CsvDataProps, SavingsTotalType } from '@components/charts/chart.types';
+import { ChartTitlesType, ComplexChartDataTypes, CsvDataProps, SavingsTotalType } from '@components';
 import getFormattedChartData from '@utils/getFormattedChartData';
 import useGetSavingsTotals from './useGetSavingsTotals';
 

@@ -1,4 +1,4 @@
-import { CsvDataProps } from "@components/charts/chart.types";
+import { CsvDataProps } from "@components";
 
 export const prepareChartTotals = (data: CsvDataProps[] | null ) => {
   if (data) {

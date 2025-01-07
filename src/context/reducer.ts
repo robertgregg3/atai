@@ -1,4 +1,4 @@
-import { CsvDataProps } from '@components/charts/chart.types';
+import { CsvDataProps } from '@components';
 import firebase from 'firebase/compat/app';
 
 export enum stateEnums {

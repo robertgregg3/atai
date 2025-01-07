@@ -1,10 +1,9 @@
 import { SetStateAction, useState } from "react";
 import ataiLogo from "@images/atai1.svg";
-import LoginHeader from "../LoginHeader/LoginHeader";
-import LoginForm from "../LoginForm/LoginForm";
+import { LoginHeader, LoginForm } from "@components";
 import "./LoginPage.css";
 
-const LoginPage = () => {
+export const LoginPage = () => {
   const [activeButton, setActiveButton] = useState("Login");
   const [login, setLogin] = useState(true);
 
@@ -32,5 +31,3 @@ const LoginPage = () => {
     </>
   );
 };
-
-export default LoginPage;

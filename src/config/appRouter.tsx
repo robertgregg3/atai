@@ -1,7 +1,7 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
-import { DataVisualisation } from "@components/dataVisualisation/DataVisualisation";
+import { DataVisualisation } from "@components/DataVisualisation/DataVisualisation";
+import { LoginPage } from "@components";
 import firebase from 'firebase/compat/app';
-import LoginPage from "@components/login/Login/LoginPage";
 
 interface CreateAppRouterProps {
   isAuthUser: firebase.User | null;

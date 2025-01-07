@@ -1,4 +1,4 @@
-import { ChartType } from "@components/charts/chart.types";
+import { ChartType } from "@components";
 import { TooltipItem } from "chart.js";
 
 interface GetChartOptionsProps {

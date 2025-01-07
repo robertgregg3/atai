@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import LoginPage from "./LoginPage";
+import { LoginPage } from "@components";
 import { render, screen } from "@testing-library/react";
 import { InitialStateProps } from "@context/reducer";
 import { StateContext } from "@context/StateProvider";

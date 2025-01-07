@@ -1,6 +1,6 @@
 import { useContext, useMemo } from "react";
 import { usePrepareChartData } from "@hooks";
-import { Chart, AdvancedChart, FormattedChartProps} from "@components/charts";
+import { Chart, AdvancedChart, FormattedChartProps } from "@components";
 import { formatChartLabels, formatChartData, prepareChartTotals } from "@utils";
 import { StateContext } from "@context/StateProvider";
 

@@ -11,7 +11,7 @@
       "@utils/*": ["src/utils/*"],
       "@utils": ["src/utils"],
       "@context/*": ["src/context/*"],
-      "@charts/*": ["src/components/charts/*"]
+      "@charts/*": ["src/components/Charts/*"]
     },
     "target": "esnext",
     "module": "esnext", // Set this to "esnext" or "es2020"
