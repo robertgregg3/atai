@@ -22,13 +22,6 @@ export interface SavingsTotalsTypes {
 export type ChartTitlesType = | "savings" | "cost" | "environment" | "product";
 export type SavingsTotalType = | "ActualSavingsForCurrentYear" | "ActualSavingsForYear" | "ActualSavingsPerMonth";
 
-export enum ChartTypes {
-  SAVINGS = "savings",
-  COST = "cost",
-  ENVIRONMENT =  "environment",
-  PRODUCT =   "product"
-}
-
 export interface ChartProps {
   data: number[][] | number[] | null;
   type?: ChartType;

@@ -1,6 +1,6 @@
 import { RiAccountCircleFill } from "react-icons/ri";
 import { StateContext } from "@context/StateProvider";
-import { memo, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "./DashboardHeader.css";
 
 interface DashboardHeaderProps {

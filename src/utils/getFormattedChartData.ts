@@ -1,5 +1,11 @@
-import { ChartTitlesType, ChartTypes, CsvDataProps, SavingsTotalType } from "@components/Charts/chart.types";
+import { type ChartTitlesType, type CsvDataProps, type SavingsTotalType } from "@components";
 
+export enum ChartTypes {
+  SAVINGS = "savings",
+  COST = "cost",
+  ENVIRONMENT =  "environment",
+  PRODUCT =   "product"
+}
 const labelKeyMap = new Map<ChartTitlesType, string>([
   [ChartTypes.SAVINGS, ''],
   [ChartTypes.COST, 'CostCenterTag'],
