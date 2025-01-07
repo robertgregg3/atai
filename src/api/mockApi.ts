@@ -1,4 +1,4 @@
-import { CsvDataProps } from "@components/Charts";
+import { CsvDataProps } from "@components/DataCharts";
 import { parseCsvData } from "../data/dataService";
 import csvFile from "../data/static-data.csv?raw";
 

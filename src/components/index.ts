@@ -1,4 +1,4 @@
-export * from './Charts';
+export * from './DataCharts';
 export * from './ChartSettings';
 export * from './DashboardHeader';
 export * from './DashboardSidebar';
