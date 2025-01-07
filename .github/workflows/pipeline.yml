@@ -17,15 +17,15 @@ jobs:
         run: npm test
 
       - name: Notify Slack on Success
-        if: success()
+        if: ${{ success() }}
         run: |
           curl -X POST -H 'Content-type: application/json' \
-          --data '{"text":"✅ CI Pipeline succeeded for *${{ github.event.repository.full_name }}*\n> for commit ${{ github.event.head_commit.url }}"}' \
+          --data '{"text":"✅ CI Pipeline succeeded for *${{ github.event.repository.full_name }}*\n> Commit: ${{ github.event.head_commit.url }}"}' \
           ${{ secrets.SLACK_WEBHOOK_URL }}
 
       - name: Notify Slack on Failure
-        if: failure()
+        if: ${{ failure() }}
         run: |
           curl -X POST -H 'Content-type: application/json' \
-          --data '{"text":"❌ CI Pipeline failed for *${{ github.event.repository.full_name }}*\n> for commit ${{ github.event.head_commit.url }}"}' \
+          --data '{"text":"❌ CI Pipeline failed for *${{ github.event.repository.full_name }}*\n> Commit: ${{ github.event.head_commit.url }}"}' \
           ${{ secrets.SLACK_WEBHOOK_URL }}
