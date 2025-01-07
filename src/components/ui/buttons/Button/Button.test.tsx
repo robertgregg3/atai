@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import Button from './Button';
+import { Button } from '@components';
 import '@testing-library/jest-dom'; 
 
 const buttonDefaultProps = {
