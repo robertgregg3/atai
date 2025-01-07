@@ -31,3 +31,21 @@ jobs:
       # Run Vitest
       - name: Run Vitest tests
         run: npm run test:ci
+
+      # Notify Slack
+      - name: Notify Slack
+        if: always() # Run this step regardless of the test result
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          if [[ "${{ job.status }}" == "success" ]]; then
+            curl -X POST -H 'Content-type: application/json' \
+            --data '{"text":"✅ Vitest tests passed for *${{ github.event.repository.full_name }}*\n> Commit: ${{ github.event.head_commit.url }}"}' \
+            $SLACK_WEBHOOK_URL
+          elif [[ "${{ job.status }}" == "failure" ]]; then
+            curl -X POST -H 'Content-type: application/json' \
+            --data '{"text":"❌ Vitest tests failed for *${{ github.event.repository.full_name }}*\n> Commit: ${{ github.event.head_commit.url }}"}' \
+            $SLACK_WEBHOOK_URL
+          else
+            echo "Unexpected status: ${{ job.status }}"
+          fi
