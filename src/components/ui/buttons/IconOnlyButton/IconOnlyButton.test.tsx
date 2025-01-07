@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { RiMenuFold3Fill } from "react-icons/ri";
-import IconOnlyButton from "./IconOnlyButton";
+import { IconOnlyButton } from "@components";
 
 describe('IconOnlyButton', () => {
     it('renders the button', () => {

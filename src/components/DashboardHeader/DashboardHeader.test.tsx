@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import DashboardHeader from "./DashboardHeader";
+import { DashboardHeader } from "@components";
 
 describe('Dashboard Header', () => {
     it('should display the title and update the title when the title prop changes', () => {
