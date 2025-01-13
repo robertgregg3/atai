@@ -1,4 +1,5 @@
 import { Button } from "@components";
+import './LoginHeader.css'
 
 interface LoginHeaderProps {
     activeButton: string;
@@ -6,18 +7,19 @@ interface LoginHeaderProps {
 }
 
 export const LoginHeader = ({ activeButton, buttonClick }: LoginHeaderProps) => {
-    const selectedPage = activeButton === "login__active" ? "login__active" : "Create Account";
   return (
     <div className="login__options">
         <Button
             handleClick={() => buttonClick(false, "Create Account")}
-            text="Create Account (DEMO Only)"
-            className={`button__text-only ${selectedPage}`}
+            text="Create Account"
+            aria-label="Create Account"
+            className={`button__text-only ${activeButton !== 'login' ? 'active' : ''}`}
         />
         <Button
             handleClick={() => buttonClick(true, "Login")}
             text="Login"
-            className={`button__text-only ${selectedPage}`}
+            aria-label="Login"
+            className={`button__text-only ${activeButton === 'login' ? 'active' : ''}`}
         />
         </div>
   )
