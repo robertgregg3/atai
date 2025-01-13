@@ -8,7 +8,7 @@ interface LoginFormProps {
     login: boolean;
 }
 
-export const LoginForm = ({ login}: LoginFormProps) => {
+export const LoginForm = ({ login }: LoginFormProps) => {
     const [name, setName] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
@@ -22,50 +22,54 @@ export const LoginForm = ({ login}: LoginFormProps) => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form role='form' onSubmit={handleSubmit}>
             {!login && (
                 <>
-                    <label>Full Name</label>
+                    <label htmlFor="name">Full Name</label>
                     <input
+                        id="name"
                         type="text"
+                        name="name"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         required
                     />
                 </>
             )}
-            <label>E-mail</label>
+            <label htmlFor="email">E-mail</label>
             <input
+                id="email"
                 type="email"
+                name="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
             />
-            <label>Password</label>
+            <label htmlFor="password">Password</label>
             <input
+                id="password"
                 type="password"
+                name="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
             />
-
             {login ? (
                 <Button 
                     icon={<SlLogin />}
                     text="Login"
                     textCenter
-                    type='submit'
+                    type="submit"
                 />
             ) : (
                 <Button 
                     icon={<SlLogin />}
                     text="Create ATAINR Account"
                     textCenter
-                    type='submit'
+                    type="submit"
                 />
             )}
-           
-                <span className="error-message">{error}</span>
+            <span className="error-message">{error}</span>
         </form>
     )
 }
