@@ -3,6 +3,6 @@ export * from './ChartSettings';
 export * from './DashboardChart';
 export * from './DashboardHeader';
 export * from './DashboardSidebar';
-export * from './DataVisualisation';
-export * from './login'
-export * from './ui'
+export * from './DataVis';
+export * from './login';
+export * from './ui';

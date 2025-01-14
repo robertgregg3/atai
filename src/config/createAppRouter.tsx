@@ -1,5 +1,5 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
-import { DataVisualisation } from "@components";
+import { DataVis } from "@components";
 import { LoginPage } from "@components";
 import firebase from 'firebase/compat/app';
 
@@ -15,7 +15,7 @@ const createAppRouter = ({ isAuthUser }: CreateAppRouterProps) => {
       {
         path: "/dashboard",
         element: isAuthUser ? (
-          <DataVisualisation />
+          <DataVis />
         ) : (
           <Navigate to="/" />
         ),

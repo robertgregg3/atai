@@ -2,10 +2,10 @@ import { useState, useMemo, useContext, useCallback, } from "react";
 import { StateContext } from "@context/StateProvider";
 import { DashboardHeader, DashboardSidebar, DashboardChart, type ChartTitlesType } from "@components";
 import { chartTitles } from "@utils";
-import "./DataVisualisation.css";
+import "./DataVis.css";
 
 // pulling in the data for the dashboard, formatting the data, displaying with the data
-export const DataVisualisation = () => {
+export const DataVis = () => {
   const { displayName } = useContext(StateContext).state;
 
   // used to switch between the different charts, triggered by the sidebar
