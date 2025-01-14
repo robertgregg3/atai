@@ -1,14 +1,12 @@
-import { SetStateAction, useState } from "react";
+import { useState } from "react";
 import { LoginHeader, LoginForm } from "@components";
 import ataiLogo from "@images/atai1.svg";
 import "./LoginPage.css";
 
 export const LoginPage = () => {
-  const [activeButton, setActiveButton] = useState("Login");
   const [login, setLogin] = useState(true);
 
-  const handleButtonClick = (value: boolean, linkName: SetStateAction<string>) => {
-    setActiveButton(linkName);
+  const handleButtonClick = (value: boolean) => {
     setLogin(value);
   };
 
@@ -24,7 +22,7 @@ export const LoginPage = () => {
           />
         </div>
         <div>
-          <LoginHeader activeButton={activeButton} buttonClick={handleButtonClick} />
+          <LoginHeader buttonClick={handleButtonClick} />
           <LoginForm login={login} />
         </div>
       </main>
