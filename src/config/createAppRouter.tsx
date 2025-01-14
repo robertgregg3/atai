@@ -1,5 +1,5 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
-import { DataVisualisation } from "@components/DataVisualisation/DataVisualisation";
+import { DataVisualisation } from "@components";
 import { LoginPage } from "@components";
 import firebase from 'firebase/compat/app';
 
