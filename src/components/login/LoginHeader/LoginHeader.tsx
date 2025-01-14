@@ -1,25 +1,31 @@
 import { Button } from "@components";
+import { useState } from "react";
 import './LoginHeader.css'
 
 interface LoginHeaderProps {
-    activeButton: string;
-    buttonClick: (arg1: boolean, arg2: string) => void;
+    buttonClick: (arg1: boolean) => void;
 }
 
-export const LoginHeader = ({ activeButton, buttonClick }: LoginHeaderProps) => {
+export const LoginHeader = ({ buttonClick }: LoginHeaderProps) => {
+    const [ isLogin, setIsLogin ] = useState<boolean>(true);
+
+    const handleButtonClick = (value: boolean) => {
+        setIsLogin(value);
+        buttonClick(value)
+    }
   return (
     <div className="login__options">
         <Button
-            handleClick={() => buttonClick(false, "Create Account")}
+            handleClick={() => handleButtonClick(false)}
             text="Create Account"
             aria-label="Create Account"
-            className={`button__text-only ${activeButton !== 'login' ? 'active' : ''}`}
+            className={`button__text-only ${!isLogin ? 'active' : ''}`}
         />
         <Button
-            handleClick={() => buttonClick(true, "Login")}
+            handleClick={() => handleButtonClick(true)}
             text="Login"
             aria-label="Login"
-            className={`button__text-only ${activeButton === 'login' ? 'active' : ''}`}
+            className={`button__text-only ${isLogin ? 'active' : ''}`}
         />
         </div>
   )
