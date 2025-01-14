@@ -5,17 +5,25 @@ import { ChartTitlesType, ComplexChartDataTypes, CsvDataProps, SavingsTotalType 
 import { getFormattedChartData } from '@utils';
 import useGetSavingsTotals from './useGetSavingsTotals';
 
+
 const savingsTotalLabels: SavingsTotalType[] = [
   "ActualSavingsForCurrentYear",
   "ActualSavingsForYear",
   "ActualSavingsPerMonth",
 ];
 
+export interface PrepareChartDataProps {
+  data: CsvDataProps[] | null;
+  chartType: ChartTitlesType;
+  showTopProducts?: boolean;
+}
+
 export const usePrepareChartData = (
     data: CsvDataProps[] | null,
     chartType: ChartTitlesType,
     showTopProducts: boolean = true,
     ) => {
+    
     const { savingsTotals } = useGetSavingsTotals(data ?? []);
     const topProductsPercentage = useContext(StateContext).state.topProductsPercentage;
 
