@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { formatChartData } from "./formatChartData";
+import { ChartDataProps, formatChartData } from "./formatChartData";
 
 describe("formatChartData", () => {
-    const mockData = {
+    const mockData: ChartDataProps = {
         "ActualSavingsForCurrentYear": [
             { "key": "eng", "value": 200.15 },
             { "key": "ops", "value": 89.34 },

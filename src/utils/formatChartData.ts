@@ -1,4 +1,4 @@
-interface ChartDataProps {
+export interface ChartDataProps {
   [key: string] : { key: string, value: number}[];
 };
 
