@@ -1,4 +1,4 @@
-import { type ChartTitlesType, type CsvDataProps, type SavingsTotalType } from "@components";
+import { ComplexChartDataTypes, type ChartTitlesType, type CsvDataProps, type SavingsTotalType } from "@components";
 
 export enum ChartTypes {
   SAVINGS = "savings",
@@ -17,7 +17,7 @@ const mapLabelKeys = (labelKey: ChartTitlesType) => {
   return labelKeyMap.get(labelKey)
 }
 
-interface GetFormattedChartDataProps {
+export interface GetFormattedChartDataProps {
   chartType: ChartTitlesType;
   data: CsvDataProps[];
   showTopProducts?: boolean;
@@ -30,10 +30,10 @@ export const getFormattedChartData = ({
   showTopProducts = false,
   topProductsPercentage = 1,
   savingsTotalLabels,
-}: GetFormattedChartDataProps) => {
+}: GetFormattedChartDataProps): ComplexChartDataTypes => {
   const labelKey = mapLabelKeys(chartType) ?? '';
   
-  const newChartData: { [key: string]: { key: string; value: number; }[] } = {
+  const newChartData: ComplexChartDataTypes = {
     ActualSavingsForCurrentYear: [],
     ActualSavingsForYear: [],
     ActualSavingsPerMonth: [],
@@ -86,6 +86,8 @@ export const getFormattedChartData = ({
     // one item has an empty key which is the total, remove it
     newChartData[label] = formattedArray.filter(( item ) => item.key !== '');
   });
+
+  debugger;
 
   return newChartData;
 };
