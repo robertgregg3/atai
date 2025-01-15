@@ -35,6 +35,6 @@ export interface FormattedChartProps {
   month: number[];
 }
 
-export type chartFilters = 'currentYear' | 'year' | 'month';
+export type chartFilters = 'current-year' | 'year' | 'month';
 
 export type ChartType = | "bar" | "doughnut" | "line";

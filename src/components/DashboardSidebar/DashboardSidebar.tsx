@@ -53,7 +53,7 @@ export const DashboardSidebar = memo(({
   const handleProductSavingsDataClick = useCallback(() => {
     handleProductSavingsData();
     handleSideBarToggle();
-    navigate('/charts/product');
+    navigate('/charts/product?timeframe=current-year');
   }, [handleEnvironmentData, handleSideBarToggle]);
 
   const handleLogout = () => {

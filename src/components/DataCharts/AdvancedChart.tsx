@@ -4,6 +4,7 @@ import { Doughnut } from "react-chartjs-2";
 import { chartFilters, FormattedChartProps, SavingsTotalsTypes } from "@components";
 import { getChartOptions, getChartDatasets } from "@utils";
 import { ChartSettings } from "@components";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -28,16 +29,22 @@ export const AdvancedChart = ({
 }: AdvancedChartProps) => {
   const chartRef = useRef<ChartJS<"doughnut"> | null>(null); // trigger chart animation on button press. 
   const chartExportRef = useRef<HTMLDivElement>(null);
-  const [currentChart, setCurrentChart] = useState<chartFilters>(() => "currentYear");
+
+  const navigate = useNavigate();
+  
+  const [searchParams] = useSearchParams();
+  const timeframe = searchParams.get('timeframe') as chartFilters;
+
+  const [currentChart, setCurrentChart] = useState<chartFilters>(() => timeframe || "current-year");
   const [currentChartData, setCurrentChartData] = useState<number[]>(chartData['currentYear']);
 
   const currentTotals: currentTotalsType = {
-    'currentYear': savingsTotals.ActualSavingsForCurrentYear,
+    'current-year': savingsTotals.ActualSavingsForCurrentYear,
     'year': savingsTotals.ActualSavingsForYear,
     'month': savingsTotals.ActualSavingsPerMonth,
   }
   
-  const [currentTotal, setCurrentTotal] = useState<string | number>(currentTotals['currentYear']);
+  const [currentTotal, setCurrentTotal] = useState<string | number>(currentTotals['current-year']);
   
   useEffect(() => {
     if (chartRef.current) {
@@ -62,11 +69,13 @@ export const AdvancedChart = ({
   }, [chartData]);
   
   
-  const handleChartSelectionClick = (timeFrame: chartFilters) => {
-    setCurrentChartData(chartData[timeFrame]);
-    setCurrentChart(timeFrame);
-    setCurrentTotal(currentTotals[timeFrame]);
-    // Updating these triggers a rerender as the getChartDataAsets function is called again
+  const handleChartSelectionClick = (chartTimeFrame: chartFilters) => {
+    setCurrentChartData(chartData[chartTimeFrame as keyof typeof chartData]);
+    setCurrentChart(chartTimeFrame);
+    setCurrentTotal(currentTotals[chartTimeFrame]);
+
+    // update the url to be used as state. 
+    navigate(`/charts/product?timeframe=${chartTimeFrame}`)
   }
   
   const chartTitle = `Total Savings for ${currentChart}: $${currentTotal} `;
