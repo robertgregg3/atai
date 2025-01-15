@@ -31,7 +31,7 @@ export const Chart = ({ data, type = 'bar', labels = [""], isComplex = true }: C
   const chartOptions = getChartOptions({ chartType: type })
   const chartExportRef = useRef<HTMLDivElement>(null);
   
-  const [ chartDatasets ] = getChartDatasets({ dataFormatted: data ?? [], isComplex: isComplex });
+  const chartDatasets = getChartDatasets({ dataFormatted: data ?? [], isComplex: isComplex });
 
   const preparedChartData = {
     labels: labels,

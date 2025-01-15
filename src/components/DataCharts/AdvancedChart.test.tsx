@@ -105,12 +105,12 @@ describe("AdvancedChart", () => {
     // Ensure the structure matches the expected value
     expect(chart).toHaveAttribute('data-data', JSON.stringify({
       labels: labels,
-      datasets: {
+      datasets: [{
           label: 'Dataset 1',
           data: [100, 200, 300],
           backgroundColor: 'rgba(75,192,192,0.4)',
           borderColor: 'rgba(75,192,192,1)',
-        }
+        }]
     }));
   });  
 })

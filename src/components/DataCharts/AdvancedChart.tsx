@@ -72,7 +72,7 @@ export const AdvancedChart = ({
   const chartTitle = `Total Savings for ${currentChart}: $${currentTotal} `;
   const chartOptions = getChartOptions({ chartType: "doughnut", chartTitle, showChartTitle: true });
 
-  const [ chartDatasets ] = getChartDatasets({ dataFormatted: currentChartData, isDoughnutChart: true });
+  const chartDatasets = getChartDatasets({ dataFormatted: currentChartData, isDoughnutChart: true });
   
   const data = {
     labels: labels,
