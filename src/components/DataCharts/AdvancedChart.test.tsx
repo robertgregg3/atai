@@ -1,6 +1,21 @@
 import { describe, expect, it, vi } from "vitest";
 import { AdvancedChart } from "@components";
 import { render, screen } from "@testing-library/react";
+import { useSearchParams } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
+
+vi.mock('react-router-dom', () => ({ 
+    useNavigate: vi.fn(),
+    useSearchParams: vi.fn(() => [
+      {
+        get: vi.fn((key) => {
+          if (key === 'timeframe') return 'current-year';
+          return null;
+        }),
+      },
+    ]),
+  }
+))
 
 vi.mock("@utils", () => ({
     getOthersPercentageMapping: (percentage: number) => `${percentage}%`,
