@@ -1,3 +1,5 @@
+import { ChartDataProps } from "@utils/formatChartData";
+
 type MockData = {
   ActualSavingsForCurrentYear: string;
   ActualSavingsForYear: string;
@@ -48,5 +50,14 @@ export const mockData: MockData = [
       "EnvironmentTag": "fin-prod",
       "ProductNameTag": "accounting"
     }
-  ]
+]
   
+export const mockFormatChartData: ChartDataProps = {
+  "ActualSavingsForCurrentYear": [
+    { "key": "eng", "value": 200.15 },
+    { "key": "ops", "value": 89.34 },
+    { "key": "hr", "value": 145.5 },
+    { "key": "marketing", "value": 320 },
+    { "key": "finance", "value": 75 }
+],
+}
