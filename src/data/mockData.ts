@@ -1,4 +1,13 @@
-export const mockData = [
+type MockData = {
+  ActualSavingsForCurrentYear: string;
+  ActualSavingsForYear: string;
+  ActualSavingsPerMonth: string;
+  CostCenterTag: string;
+  EnvironmentTag: string;
+  ProductNameTag: string;
+}[];
+
+export const mockData: MockData = [
     {
       "ActualSavingsForCurrentYear": "$200.15",
       "ActualSavingsForYear": "$2401.80",
