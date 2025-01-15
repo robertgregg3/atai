@@ -1,6 +1,7 @@
 import html2canvas from "html2canvas";
+import { downloadBlob } from "./downloadBlob";
 
-interface ExportAsImageProps {
+export interface ExportAsImageProps {
   element: HTMLElement | null;
   imageFileName: string;
   type: string;
@@ -33,20 +34,10 @@ export const exportAsImage = async ({element, imageFileName, type}: ExportAsImag
   const image = canvas.toDataURL(mimeType, 1.0);
   const fileNameWithExtension = `${imageFileName}.${type}`;
 
-  downloadImage(image, fileNameWithExtension);
+  downloadBlob({ blob: image, fileName: fileNameWithExtension});
   html.style.width = "";
   body.style.width = "";
   canvas.remove();
 };
 
-const downloadImage = (blob: string, fileName: string) => {
-  const fakeLink = window.document.createElement("a");
-  fakeLink.style.display = "none";
-  fakeLink.download = fileName;
-  fakeLink.href = blob;
 
-  document.body.appendChild(fakeLink);
-  fakeLink.click();
-  document.body.removeChild(fakeLink);
-  fakeLink.remove();
-};
