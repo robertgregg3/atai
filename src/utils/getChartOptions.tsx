@@ -1,7 +1,7 @@
 import { ChartType } from "@components";
 import { TooltipItem } from "chart.js";
 
-interface GetChartOptionsProps {
+export interface GetChartOptionsProps {
   chartType: ChartType;
   isResponsive?: boolean;
   showChartTitle?: boolean;
