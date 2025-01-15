@@ -1,4 +1,4 @@
-interface GetChartDataProps {
+export interface GetChartDataProps {
     dataFormatted: number[] | number[][];
     isComplex?: boolean;
     isDoughnutChart?: boolean;
@@ -48,5 +48,5 @@ export const getChartDatasets = ({ dataFormatted, isComplex = false, isDoughnutC
           backgroundColor: ["#cccccc"],
         },
       ]
-  return [ chartDatasets ]
+  return chartDatasets
 }
