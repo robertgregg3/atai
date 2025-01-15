@@ -16,13 +16,14 @@ const authUser = {
 describe("createAppRouter", () => {
     it("redirects unauthenticated users to LoginPage", () => {
         const router = createAppRouter({ isAuthUser: null });
-        const rootRoute = router.routes.find(route => route.path === "/");
+        const rootRoute = router.routes.find(route => route.path === "/login");
         expect(rootRoute).toBeTruthy(); // LoginPage or redirect
       });
     
-    it("redirects authenticated users to /dashboard", () => {
+    it("redirects authenticated users to the dashboard at /", () => {
         const router = createAppRouter({ isAuthUser: authUser });
-        const rootRoute = router.routes.find(route => route.path === "/dashboard");
+        const rootRoute = router.routes.find(route => route.path === "/");
+
         expect(rootRoute).toBeTruthy(); // Dashboard redirect
     });
 });
