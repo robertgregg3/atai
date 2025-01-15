@@ -87,7 +87,5 @@ export const getFormattedChartData = ({
     newChartData[label] = formattedArray.filter(( item ) => item.key !== '');
   });
 
-  debugger;
-
   return newChartData;
 };
