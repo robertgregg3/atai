@@ -35,26 +35,30 @@ export const DashboardSidebar = memo(({
   const handleSavingsTotalClick = useCallback(() => {
     handleSavingsTotals();
     handleSideBarToggle();
+    navigate('/charts/savings');
   }, [handleSavingsTotals, handleSideBarToggle]);
-
+  
   const handleCostCentreSavingsClick = useCallback(() => {
     handleCostCentreSavings();
     handleSideBarToggle();
+    navigate('/charts/cost');
   }, [handleCostCentreSavings, handleSideBarToggle]);
-
+  
   const handleEnvironmentDataClick = useCallback(() => {
     handleEnvironmentData();
     handleSideBarToggle();
+    navigate('/charts/environment');
   }, [, handleSideBarToggle]);
-
+  
   const handleProductSavingsDataClick = useCallback(() => {
     handleProductSavingsData();
     handleSideBarToggle();
+    navigate('/charts/product');
   }, [handleEnvironmentData, handleSideBarToggle]);
 
   const handleLogout = () => {
     logoutUser({dispatch});
-    navigate('/');
+    navigate('/login');
   }
 
   return (

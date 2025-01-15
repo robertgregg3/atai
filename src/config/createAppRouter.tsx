@@ -11,14 +11,13 @@ const createAppRouter = ({ isAuthUser }: CreateAppRouterProps) => {
   console.log(isAuthUser);
   return (createBrowserRouter(
     [
-      { path: "/", element: isAuthUser ? <Navigate to="/dashboard" /> : <LoginPage /> },
+      { path: "/login", element: isAuthUser ? <Navigate to="/" /> : <LoginPage /> },
       {
-        path: "/dashboard",
-        element: isAuthUser ? (
-          <DataVis />
-        ) : (
-          <Navigate to="/" />
-        ),
+        path: "/",
+        element: isAuthUser ? <DataVis /> : <Navigate to="/login" />,
+        children: [
+          { path: "charts/:chartType", element: <DataVis /> },
+        ],
       },
       { path: "*", element: <Navigate to="/" /> },
     ],

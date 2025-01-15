@@ -1,11 +1,11 @@
 import { useContext, useMemo } from "react";
 import { usePrepareChartData } from "@hooks";
-import { Chart, AdvancedChart, FormattedChartProps } from "@components";
+import { Chart, AdvancedChart, FormattedChartProps, ChartTitlesType } from "@components";
 import { formatChartLabels, formatChartData, prepareChartTotals } from "@utils";
 import { StateContext } from "@context/StateProvider";
 
 interface DashboardChartProps {
-    selectedChart: string
+    selectedChart: ChartTitlesType
 }
 
 /*
@@ -48,8 +48,11 @@ export const DashboardChart = ({ selectedChart }:  DashboardChartProps) => {
       'month': formatChartData({ chartData: productData.ActualSavingsPerMonth }),
     }
 
+    const validChartTypes = new Set<ChartTitlesType>(['savings', 'cost', 'product', 'environment']);
+
     return (
-        <div className="data-area">
+      <div className="data-area">
+        {!validChartTypes.has(selectedChart) &&   <p>Please select another chart type from the sidebar</p>}
         {selectedChart === "savings" && <Chart data={simpleBarChartData} isComplex={false} />}
         {selectedChart === "cost" && <Chart data={formattedCostData} labels={costChartLabels} />}
         {selectedChart === "environment" && <Chart data={formattedEnvironmentData} type="line" labels={environmentChartLabels} />} 
