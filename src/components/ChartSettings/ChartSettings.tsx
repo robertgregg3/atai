@@ -91,9 +91,9 @@ export interface ChartSettingsProps {
               <span className="chart-selection__btn-header">Choose time frame:</span>
               <div className="chart-selection__buttons">
                 <Button 
-                  handleClick={() => handleUpdateChartTimeFrame('currentYear') }
+                  handleClick={() => handleUpdateChartTimeFrame('current-year') }
                   text="Current Year"
-                  className={currentChart === "currentYear" ? "chart-selected" : ""}
+                  className={currentChart === "current-year" ? "chart-selected" : ""}
                   textCenter
                   tabIndex={showSettings ? 0 : -1}
                 />
