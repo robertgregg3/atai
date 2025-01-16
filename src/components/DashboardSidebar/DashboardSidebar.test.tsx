@@ -29,7 +29,7 @@ describe('DashboardSidebar', () => {
   const mockHandleProductSavingsData = vi.fn();
   
   // Default state for the context provider
-  const defaultState = { 
+  const defaultState: InitialStateProps = { 
     sidebarOpen: true,
     user: null,
     data: [],

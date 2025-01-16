@@ -1,6 +1,6 @@
 import './IconOnlyButton.css';
 
-interface IconOnlyButtonProps {
+export interface IconOnlyButtonProps {
     handleClick: (e: React.FormEvent<HTMLButtonElement>) => void;
     icon: JSX.Element | null;
     className?: string;

@@ -2,7 +2,7 @@ import { StateContext } from "@context/StateProvider";
 import { renderHook } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { act } from "react";
-import { stateEnums } from "@context/reducer";
+import { InitialStateProps, stateEnums } from "@context/reducer";
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from "react-router-dom";
 import useAuth from "./useAuth";
@@ -24,7 +24,7 @@ vi.mock('../firebaseConfig', () => ({
 describe("useAuth", () => {
     const mockDispatch = vi.fn();
 
-    const initialState = {
+    const initialState: InitialStateProps = {
         user: null,
         data: [],
         sidebarOpen: false,
@@ -32,9 +32,9 @@ describe("useAuth", () => {
         displayName: '',
     }
 
-    const name = 'Rob';
-    const email = 'test@test.com';
-    const password = 'password';
+    const name: string = 'Rob';
+    const email: string = 'test@test.com';
+    const password: string = 'password';
 
     beforeEach(() => {
         vi.clearAllMocks();

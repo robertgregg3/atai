@@ -1,6 +1,6 @@
 import { ChartDataProps } from "@utils/formatChartData";
 
-type MockData = {
+export type MockData = {
   ActualSavingsForCurrentYear: string;
   ActualSavingsForYear: string;
   ActualSavingsPerMonth: string;

@@ -3,7 +3,7 @@ import { StateContext } from "@context/StateProvider";
 import { useContext, useEffect, useState } from "react";
 import "./DashboardHeader.css";
 
-interface DashboardHeaderProps {
+export interface DashboardHeaderProps {
   title: string;
   displayName?: string;
 }

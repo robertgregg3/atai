@@ -1,6 +1,5 @@
 import { describe, expect, it } from "vitest";
 import { getChartOptions, GetChartOptionsProps } from "./getChartOptions";
-import { TooltipItem } from "chart.js";
 
 describe("getChartOptions", () => {
     const defaultProps: GetChartOptionsProps = {

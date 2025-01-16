@@ -1,7 +1,7 @@
 import { renderHook } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { act } from "react";
-import { stateEnums } from "@context/reducer";
+import { InitialStateProps, stateEnums } from "@context/reducer";
 import logoutUser from "../utils/logoutUser";
 
 // Any request via firebase/auth will be intercepted and the values will be returned in the tests. 
@@ -12,7 +12,7 @@ vi.mock('@firebase/auth', () => ({
 
 const dispatch = vi.fn();
 
-const initialState = {
+const initialState: InitialStateProps = {
   user: null,
   data: [],
   sidebarOpen: false,

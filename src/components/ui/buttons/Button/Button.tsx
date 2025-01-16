@@ -1,6 +1,6 @@
 import './Button.css';
 
-interface ButtonProps {
+export interface ButtonProps {
     handleClick?: (e: React.FormEvent<HTMLButtonElement>) => void;
     icon?: JSX.Element | null;
     text: string;

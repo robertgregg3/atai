@@ -1,27 +1,27 @@
 import { describe, expect, it, vi } from "vitest";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { RiMenuFold3Fill } from "react-icons/ri";
-import { IconOnlyButton } from "@components";
+import { IconOnlyButton, IconOnlyButtonProps } from "@components";
 
 describe('IconOnlyButton', () => {
     it('renders the button', () => {
-        const ariaLabel = 'some-label'
-        const handleButtonClick = vi.fn();
+
+        const defaultProps: IconOnlyButtonProps = {
+            ariaLabel: 'some-label',
+            handleClick: vi.fn(),
+            icon: <RiMenuFold3Fill />
+        }
 
         render(
-            <IconOnlyButton
-                ariaLabel={ariaLabel}
-                handleClick={handleButtonClick}
-                icon={<RiMenuFold3Fill />}
-            />
+            <IconOnlyButton {...defaultProps} />
         );
 
-        const button = screen.getByLabelText(ariaLabel);
+        const button = screen.getByLabelText(defaultProps.ariaLabel);
 
         expect(button).toBeInTheDocument();
 
         fireEvent.click(button);
 
-        expect(handleButtonClick).toHaveBeenCalled();
+        expect(defaultProps.handleClick).toHaveBeenCalled();
     })
 })

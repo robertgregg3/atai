@@ -15,7 +15,7 @@ vi.mock('@utils', () => ({
 describe('ChartSettings', () => {
     const defaultProps: ChartSettingsProps = {
         title: 'Product Savings',
-        currentChart: 'currentYear',
+        currentChart: 'current-year',
         handleChartSelectionClick,
         chartExportRef: { current: document.createElement('div') },
         isDougnutChart: true
