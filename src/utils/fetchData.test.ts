@@ -1,6 +1,6 @@
 import { fetchChartData } from "../api/mockApi";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { fetchData } from "./fetchData";
+import { fetchData } from "@utils";
 import { stateEnums } from "@context/reducer";
 
 vi.mock('../api/mockApi', () => ({

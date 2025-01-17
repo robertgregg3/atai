@@ -59,5 +59,6 @@ export const mockFormatChartData: ChartDataProps = {
     { "key": "hr", "value": 145.5 },
     { "key": "marketing", "value": 320 },
     { "key": "finance", "value": 75 }
-],
+  ],
 }
+
