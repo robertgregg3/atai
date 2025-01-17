@@ -1,8 +1,7 @@
-import { createContext, Dispatch, useEffect, useMemo, useReducer } from 'react';
+import { createContext, Dispatch, useEffect, useMemo, useReducer, useState } from 'react';
 import stateReducer, { ActionProps, initialState, InitialStateProps, stateEnums } from './reducer';
 import { auth } from "../firebaseConfig";
-import { fetchChartData } from '../api/mockApi';
-import csvFile from "../data/static-data.csv?raw";
+import { updateUser, fetchData } from '@utils';
 
 export const StateContext = createContext<{
     state: InitialStateProps,
@@ -13,41 +12,24 @@ export const StateContext = createContext<{
 });
 
 export const StateProvider = ({ children  }: { children: React.ReactNode }) => {
-    const [state, dispatch] = useReducer<React.Reducer<InitialStateProps, ActionProps>>(stateReducer, initialState);
+    const [ state, dispatch ] = useReducer<React.Reducer<InitialStateProps, ActionProps>>(stateReducer, initialState);
+    const [ isDataInitilaised, setIsDataInitialised ] = useState<boolean>(false);
+    const [ isAuthChecked, setIsAuthChecked ] = useState<boolean>(false);
 
-    let isDataInitialized = false;
-    let isAuthChecked = false;
+    console.log("Render StateProvider:", { isDataInitilaised, isAuthChecked, state });
 
-    const checkLoadingComplete = () => {
-        if (isDataInitialized && isAuthChecked) {
+    // once all auth / data checks are done set loading to false
+    useEffect(() => {
+        if (isAuthChecked && isDataInitilaised) {
             dispatch({ type: stateEnums.SET_LOADING, payload: false });
         }
-    };
+    }, [isDataInitilaised, isAuthChecked])
 
     // Handle user authentication changes
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((authUser) => {
-            if (authUser) {
-                dispatch({
-                    type: stateEnums.SET_USER,
-                    payload: {
-                        user: authUser,
-                        displayName: authUser.displayName || "Unknown",
-                    },
-                });
-                isAuthChecked = true;
-                checkLoadingComplete();
-            } else {
-                dispatch({ 
-                    type: stateEnums.SET_USER,
-                    payload: {
-                        user: null,
-                        displayName: "",
-                    },
-                 });
-                 isAuthChecked = true;
-                 checkLoadingComplete();
-            }
+            updateUser({ authUser, dispatch });
+            setIsAuthChecked(true);
         });
     
         return () => unsubscribe(); // Cleanup subscription on unmount
@@ -55,32 +37,10 @@ export const StateProvider = ({ children  }: { children: React.ReactNode }) => {
 
     // Fetch initial data for the app using the mocked API
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const data = await fetchChartData();
-                dispatch({
-                    type: stateEnums.SET_DATA,
-                    payload: data,
-                });
-                isDataInitialized = true;
-                checkLoadingComplete();
-            } catch (error) {
-                console.error("Error fetching mocked data:", error);
-            }
-        };
+        fetchData({ dispatch, setIsDataInitialised });
+    }, []);
 
-        fetchData();
-    }, [csvFile]);
-
-    // for development purpose and will leave in for production
-    useEffect(() => {
-        console.log('state', state)
-    }, [state])
-
-    const contextValue = useMemo(() => ({
-        state, 
-        dispatch,
-    }), [state, dispatch]);
+    const contextValue = useMemo(() => ({ state, dispatch }), [state, dispatch]);
 
     return (
         <StateContext.Provider value={contextValue}>
