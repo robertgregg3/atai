@@ -4,15 +4,20 @@ import { User as FirebaseUser } from "firebase/auth";
 
 interface UpdateUserProps {
     authUser: FirebaseUser | null,
-    dispatch: Dispatch<any>
+    dispatch: Dispatch<any>,
 }
 
+
 export const updateUser = ({ authUser, dispatch }: UpdateUserProps) => {
-    dispatch({
-        type: stateEnums.SET_USER,
-        payload: {
-            user: authUser ? authUser : null,
-            displayName: authUser ? authUser.displayName || "Unknown" : '',
-        },
-    });
+    try {
+        dispatch({
+            type: stateEnums.SET_USER,
+            payload: {
+                user: authUser ? authUser : null,
+                displayName: authUser ? authUser.displayName || "Unknown" : '',
+            },
+        });
+    } catch(error) {
+        console.log('Error logging in user:', error);
+    }
 }

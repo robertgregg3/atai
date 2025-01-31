@@ -7,6 +7,6 @@ export * from './getChartDatasets';
 export * from './getChartOptions';
 export * from './getFormattedChartData';
 export * from './getOthersPercentageMapping';
-export * from './logoutUser';
+export * from '../hooks/useLogoutUser';
 export * from './prepareChartTotals';
 export * from './updateUser';

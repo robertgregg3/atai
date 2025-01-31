@@ -1,7 +1,8 @@
 import { createContext, Dispatch, useEffect, useMemo, useReducer, useState } from 'react';
 import stateReducer, { ActionProps, initialState, InitialStateProps, stateEnums } from './reducer';
 import { auth } from "../firebaseConfig";
-import { updateUser, fetchData } from '@utils';
+import { fetchData, updateUser } from '@utils';
+import { ToastMessage } from '@components/ui/ToastMessage/ToastMessage';
 
 export const StateContext = createContext<{
     state: InitialStateProps,
@@ -15,6 +16,7 @@ export const StateProvider = ({ children  }: { children: React.ReactNode }) => {
     const [ state, dispatch ] = useReducer<React.Reducer<InitialStateProps, ActionProps>>(stateReducer, initialState);
     const [ isDataInitilaised, setIsDataInitialised ] = useState<boolean>(false);
     const [ isAuthChecked, setIsAuthChecked ] = useState<boolean>(false);
+    const { toasts } = state;
 
     console.log("Render StateProvider:", { isDataInitilaised, isAuthChecked, state });
 
@@ -45,6 +47,7 @@ export const StateProvider = ({ children  }: { children: React.ReactNode }) => {
     return (
         <StateContext.Provider value={contextValue}>
             {children}
+            {toasts.length > 0 && <ToastMessage toasts={toasts} />}
         </StateContext.Provider>
     )
 }

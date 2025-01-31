@@ -6,9 +6,10 @@ import { SlLogout } from "react-icons/sl";
 import { memo, useCallback, useContext } from "react";
 import { stateEnums } from "../../context/reducer";
 import { useNavigate } from "react-router-dom";
-import ataiLogo from "../../images/atai1.svg";
 import { IconOnlyButton, Button }  from "@components";
-import logoutUser from "@utils/logoutUser";
+import { useToast } from "@components";
+import { useLogoutUser } from "@hooks";
+import ataiLogo from "../../images/atai1.svg";
 import "./DashboardSidebar.css";
 
 interface DashboardSidebarProps {
@@ -27,6 +28,8 @@ export const DashboardSidebar = memo(({
   const { state, dispatch } = useContext(StateContext);
   const { sidebarOpen } = state;
   const navigate = useNavigate();
+  const addToast = useToast();
+  const logoutUser = useLogoutUser();
 
   const handleSideBarToggle = useCallback(() => {
     dispatch({ type: stateEnums.TOGGLE_SIDEBAR, payload: !sidebarOpen });
@@ -57,7 +60,13 @@ export const DashboardSidebar = memo(({
   }, [handleEnvironmentData, handleSideBarToggle]);
 
   const handleLogout = () => {
-    logoutUser({dispatch});
+    logoutUser();
+    addToast({
+      id: 1,
+      message: 'Logout successful',
+      position: 'top',
+      status: 'info',
+    })
     navigate('/login');
   }
 

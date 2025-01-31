@@ -4,7 +4,7 @@ import { StateContext } from "../../context/StateProvider";
 import { afterEach, describe, expect, it, vi } from 'vitest'; 
 import { InitialStateProps, stateEnums } from '@context/reducer';
 import userEvent from '@testing-library/user-event';
-import logoutUser from '@utils/logoutUser';
+import logoutUser from '@hooks/useLogoutUser';
 
 afterEach(cleanup)
 

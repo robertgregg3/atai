@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { SlLogin } from "react-icons/sl";
 import { Button } from "@components";
-import useAuth from "@hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "@components";
+import useAuth from "@hooks/useAuth";
 
 interface LoginFormProps {
     login: boolean;
@@ -14,10 +15,17 @@ export const LoginForm = ({ login }: LoginFormProps) => {
     const [password, setPassword] = useState<string>("");
     const { error, signIn, register } = useAuth({email, password, name})
     const navigate = useNavigate();
+    const addToast = useToast();
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         login ? signIn() : register();
+        addToast({
+            id: 4,
+            message: 'Login successful',
+            position: 'top',
+            status: 'success',
+          })
         return navigate("/dashboard")
     };
 
