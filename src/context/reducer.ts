@@ -1,4 +1,5 @@
 import { CsvDataProps } from '@components';
+import { ToastMessageprops } from '@components/ui/ToastMessage/ToastMessage';
 import firebase from 'firebase/compat/app';
 
 export enum stateEnums {
@@ -8,6 +9,8 @@ export enum stateEnums {
   TOGGLE_USE_OTHERS_PERCENTAGE='TOGGLE_USE_OTHERS_PERCENTAGE',
   OTHERS_PERCENTAGE='OTHERS_PERCENTAGE',
   SET_LOADING='SET_LOADING',
+  ADD_TOAST='ADD_TOAST',
+  REMOVE_TOAST='REMOVE_TOAST'
 }
 
 export interface InitialStateProps {
@@ -18,6 +21,7 @@ export interface InitialStateProps {
   showTopProducts?: boolean;
   topProductsPercentage?: number;
   isLoading: boolean;
+  toasts: ToastMessageprops[]
 }
 
 export type ActionProps = 
@@ -26,7 +30,9 @@ export type ActionProps =
   | { type: stateEnums.TOGGLE_SIDEBAR, payload: boolean }
   | { type: stateEnums.TOGGLE_USE_OTHERS_PERCENTAGE, payload: boolean }
   | { type: stateEnums.OTHERS_PERCENTAGE, payload: number }
-  | { type: stateEnums.SET_LOADING, payload: boolean };
+  | { type: stateEnums.SET_LOADING, payload: boolean }
+  | { type: stateEnums.ADD_TOAST, payload: ToastMessageprops }
+  | { type: stateEnums.REMOVE_TOAST, payload: number}
 
 export const initialState: InitialStateProps = {
   user: null,
@@ -35,7 +41,8 @@ export const initialState: InitialStateProps = {
   sidebarOpen: false,
   showTopProducts: true,
   topProductsPercentage: 1,
-  isLoading: true
+  isLoading: true,
+  toasts: []
 };
 
 const stateReducer = (state: InitialStateProps, action: ActionProps) => {
@@ -71,6 +78,16 @@ const stateReducer = (state: InitialStateProps, action: ActionProps) => {
         ...state,
         isLoading: action.payload,
       };
+    case stateEnums.ADD_TOAST:
+      return {
+        ...state,
+        toasts: [...state.toasts, action.payload]
+      };
+    case stateEnums.REMOVE_TOAST:
+      return {
+        ...state,
+        toasts: state.toasts.filter((toast) => toast.id !== action.payload)
+      }
     default:
     return state;
   }
