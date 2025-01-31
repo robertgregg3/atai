@@ -8,7 +8,6 @@ export interface CreateAppRouterProps {
 }
 
 const createAppRouter = ({ isAuthUser }: CreateAppRouterProps) => {
-  console.log(isAuthUser);
   return (createBrowserRouter(
     [
       { path: "/login", element: isAuthUser ? <Navigate to="/" /> : <LoginPage /> },
