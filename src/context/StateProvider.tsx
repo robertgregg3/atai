@@ -18,7 +18,7 @@ export const StateProvider = ({ children  }: { children: React.ReactNode }) => {
     const [ isAuthChecked, setIsAuthChecked ] = useState<boolean>(false);
     const { toasts } = state;
 
-    console.log("Render StateProvider:", { isDataInitilaised, isAuthChecked, state });
+    console.log("State", { isDataInitilaised, isAuthChecked, state });
 
     // once all auth / data checks are done set loading to false
     useEffect(() => {
