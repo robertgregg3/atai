@@ -1,0 +1,58 @@
+.toast-message {
+    position: fixed;
+    z-index: 9999;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    padding: 1rem 2rem;
+    grid-gap: 0.5rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+}
+
+.toast-message svg {
+    display: grid;
+    font-size: 1.5rem;
+}
+
+.top {
+    top: 1rem;
+}
+
+.bottom {
+    bottom: 1rem;
+}
+
+.top-right {
+    top: 1rem;
+    right: 1rem
+}
+
+.bottom-right {
+    bottom: 1rem;
+    right: 1rem;
+}
+
+.success {
+    border: 1px solid #0fa8a9;
+}
+
+.success svg {
+    color: #0fa8a9;
+}
+
+.info {
+    border: 1px solid#000038;
+}
+
+.info svg {
+    color: #000038;
+}
+
+.error {
+    border: 1px solid red;
+}
+
+.error svg {
+    color: red;
+}
