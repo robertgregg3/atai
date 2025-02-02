@@ -1,13 +1,19 @@
 import { stateEnums } from "@context/reducer";
 import { StateContext } from "@context/StateProvider";
 import { useContext } from "react";
+import { FaCheckCircle, FaInfoCircle } from "react-icons/fa";
+import { MdOutlineError } from "react-icons/md";
+import './ToastMessage.css';
+
+type ToastPositionsType =  'top' | 'bottom' | 'top-right' | 'bottom-right';
+type ToastStatusType = 'success' | 'error' | 'info';
 
 export interface ToastMessageprops {
     id: number;
     message: string;
-    status: 'success' | 'error' | 'info'; 
+    status: ToastStatusType;
     duration?: number; 
-    position: 'top' | 'bottom' | 'top-right' | 'bottom-right'
+    position: ToastPositionsType
 }[];
 
 type ToastProps = {
@@ -39,23 +45,26 @@ export const useToast = () => {
 }
 
 
-export const ToastMessage = ({ toasts }: ToastProps) => {
-    return (
-        <div style={{ position: 'fixed', top: 10, right: 10, zIndex: 9999 }}>
-          {toasts.map(({ status, message, id }, index) => (
-            <div
-              key={id}
-              style={{
-                marginBottom: 10,
-                padding: '10px 20px',
-                borderRadius: 5,
-                backgroundColor: status === 'success' ? 'green' : status === 'error' ? 'red' : 'blue',
-                color: 'white',
-              }}
-            >
-              {message}
+export const ToastMessage = ({ toasts }: ToastProps): JSX.Element => {
+  const getToastIcon = (status: ToastStatusType) => {
+    if(status === 'success') {
+      return <FaCheckCircle />
+    } else if (status === 'info') {
+      return <FaInfoCircle />
+    } else {
+      return <MdOutlineError />
+    }
+  }
+
+  return(
+    <>
+      {toasts.map(({ status, message, id, position }) => {
+          return (
+            <div className={`toast-message ${position} ${status}`} key={id}>
+              <span>{getToastIcon(status)}</span>
+              <span>{message}</span>
             </div>
-          ))}
-      </div>
-    )
+          )}
+      )}
+    </>)
 }
