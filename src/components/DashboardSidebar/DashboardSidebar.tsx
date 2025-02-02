@@ -64,7 +64,7 @@ export const DashboardSidebar = memo(({
     addToast({
       id: 1,
       message: 'Logout successful',
-      position: 'top',
+      position: 'bottom-right',
       status: 'info',
     })
     navigate('/login');

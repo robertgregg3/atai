@@ -23,7 +23,7 @@ export const LoginForm = ({ login }: LoginFormProps) => {
         addToast({
             id: 4,
             message: 'Login successful',
-            position: 'top',
+            position: 'bottom-right',
             status: 'success',
           })
         return navigate("/dashboard")
