@@ -1,12 +1,11 @@
 import { stateEnums } from "@context/reducer";
 import { StateContext } from "@context/StateProvider";
 import { useContext } from "react";
-import { FaCheckCircle, FaInfoCircle } from "react-icons/fa";
-import { MdOutlineError } from "react-icons/md";
 import './ToastMessage.css';
+import { getToastIcon } from "@utils/getToastIcon";
 
 type ToastPositionsType =  'top' | 'bottom' | 'top-right' | 'bottom-right';
-type ToastStatusType = 'success' | 'error' | 'info';
+export type ToastStatusType = 'success' | 'error' | 'info';
 
 export interface ToastMessageprops {
     id: number;
@@ -23,7 +22,7 @@ type ToastProps = {
 export const useToast = () => {
   const { dispatch } = useContext(StateContext);
   
-  const addToast = ({ id, message, position, duration = 2000, status }: ToastMessageprops) => {
+  const addToast = ({ id, message, position, duration = 200000, status }: ToastMessageprops) => {
     try {
       dispatch({
         type: stateEnums.ADD_TOAST,
@@ -44,18 +43,7 @@ export const useToast = () => {
   return addToast
 }
 
-
 export const ToastMessage = ({ toasts }: ToastProps): JSX.Element => {
-  const getToastIcon = (status: ToastStatusType) => {
-    if(status === 'success') {
-      return <FaCheckCircle />
-    } else if (status === 'info') {
-      return <FaInfoCircle />
-    } else {
-      return <MdOutlineError />
-    }
-  }
-
   return(
     <>
       {toasts.map(({ status, message, id, position }) => {
