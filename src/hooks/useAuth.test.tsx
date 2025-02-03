@@ -30,6 +30,7 @@ describe("useAuth", () => {
         sidebarOpen: false,
         isLoading: false,
         displayName: '',
+        toasts: []
     }
 
     const name: string = 'Rob';

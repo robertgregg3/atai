@@ -1,15 +1,13 @@
-import { render, screen, fireEvent, waitFor, cleanup } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, cleanup, renderHook } from '@testing-library/react';
 import { DashboardSidebar } from '@components';
 import { StateContext } from "../../context/StateProvider";
 import { afterEach, describe, expect, it, vi } from 'vitest'; 
 import { InitialStateProps, stateEnums } from '@context/reducer';
+import { mockInitialState } from '../../data/mockData';
 import userEvent from '@testing-library/user-event';
-import logoutUser from '@hooks/useLogoutUser';
 
 afterEach(cleanup)
 
-// Mocking the logoutUser function
-vi.mock('@utils/logoutUser', () => ({ default: vi.fn(() => Promise.resolve())}));
 
 // intercept the firebase/auth request
 vi.mock('@firebase/auth', () => ({
@@ -20,6 +18,11 @@ vi.mock('@firebase/auth', () => ({
 // Mock `useNavigate` to return a mock function
 vi.mock('react-router-dom', () => ({  useNavigate: vi.fn(() => vi.fn())}));
 
+// Mocking the logoutUser function
+vi.mock('@hooks', () => ({
+  useLogoutUser: vi.fn(() => vi.fn(() => Promise.resolve())),
+}));
+
 const mockDispatch = vi.fn();
 
 describe('DashboardSidebar', () => {
@@ -27,15 +30,9 @@ describe('DashboardSidebar', () => {
   const mockHandleCostCentreSavings = vi.fn();
   const mockHandleEnvironmentData = vi.fn();
   const mockHandleProductSavingsData = vi.fn();
-  
-  // Default state for the context provider
-  const defaultState: InitialStateProps = { 
-    sidebarOpen: true,
-    user: null,
-    data: [],
-    displayName: '',
-    isLoading: false
-  };
+  const mockLogoutClick = vi.fn();
+
+  // Default state for the context provide
 
   const renderWithState = (state: InitialStateProps) => {
     return render(
@@ -45,6 +42,7 @@ describe('DashboardSidebar', () => {
           handleCostCentreSavings={mockHandleCostCentreSavings}
           handleEnvironmentData={mockHandleEnvironmentData}
           handleProductSavingsData={mockHandleProductSavingsData}
+          logoutClick={mockLogoutClick}
         />
       </StateContext.Provider>
     );
@@ -55,7 +53,7 @@ describe('DashboardSidebar', () => {
   });
 
   it('renders the sidebar and buttons', () => {
-    renderWithState(defaultState);
+    renderWithState(mockInitialState);
 
     // Check if the sidebar is open and the toggle icon is rendered
     expect(screen.getByLabelText('Close Sidebar')).toBeInTheDocument();
@@ -69,7 +67,7 @@ describe('DashboardSidebar', () => {
   });
 
   it('calls handleSavingsTotals on click of Savings Totals button', async () => {
-    renderWithState(defaultState);
+    renderWithState(mockInitialState);
 
     const button = screen.getByLabelText('Savings Totals');
 
@@ -81,7 +79,7 @@ describe('DashboardSidebar', () => {
   });
 
   it('calls handleCostCentreSavings on click of Cost Centre Savings button', async () => {
-    renderWithState(defaultState);
+    renderWithState(mockInitialState);
 
     const button = screen.getByLabelText('Cost Centre Savings');
 
@@ -93,7 +91,7 @@ describe('DashboardSidebar', () => {
   });
 
   it('calls handleEnvironmentData on click of Environment Savings button', async () => {
-    renderWithState(defaultState);
+    renderWithState(mockInitialState);
 
     const button = screen.getByLabelText('Environment Savings');
 
@@ -105,7 +103,7 @@ describe('DashboardSidebar', () => {
   });
 
   it('calls handleProductSavingsData on click of Product Savings button', async () => {
-    renderWithState(defaultState);
+    renderWithState(mockInitialState);
 
     const button = screen.getByLabelText('Product Savings');
 
@@ -117,19 +115,19 @@ describe('DashboardSidebar', () => {
   });
 
   it('calls logout on click of Logout button', async () => {
-    renderWithState(defaultState);
-
+    renderWithState(mockInitialState);
+  
     const button = screen.getByText('Logout');
-
+  
     fireEvent.click(button);
-
+  
     await waitFor(() => {
-      expect(logoutUser).toHaveBeenCalled();
+      expect(mockLogoutClick).toHaveBeenCalled();
     });
   });
   
   it('Opens the sidebar when its closed and the menu button is clicked', async () => {
-    renderWithState({ ...defaultState, sidebarOpen: false });
+    renderWithState({ ...mockInitialState, sidebarOpen: false });
   
     const button = screen.getByLabelText("Open Sidebar");
     expect(button).toBeInTheDocument();
@@ -143,7 +141,7 @@ describe('DashboardSidebar', () => {
   });
 
   it('Closes the sidebar when the side bar is open and the menu button is clicked', async () => {
-    renderWithState(defaultState);
+    renderWithState(mockInitialState);
 
     const button = screen.getByLabelText("Close Sidebar");
 
