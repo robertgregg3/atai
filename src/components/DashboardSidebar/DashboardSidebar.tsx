@@ -17,6 +17,7 @@ interface DashboardSidebarProps {
   handleCostCentreSavings: () => void;
   handleEnvironmentData: () => void;
   handleProductSavingsData: () => void;
+  logoutClick: () => void
 }
 
 export const DashboardSidebar = memo(({
@@ -24,12 +25,12 @@ export const DashboardSidebar = memo(({
   handleCostCentreSavings,
   handleEnvironmentData,
   handleProductSavingsData,
+  logoutClick
 }: DashboardSidebarProps) => {
   const { state, dispatch } = useContext(StateContext);
   const { sidebarOpen } = state;
   const navigate = useNavigate();
   const addToast = useToast();
-  const logoutUser = useLogoutUser();
 
   const handleSideBarToggle = useCallback(() => {
     dispatch({ type: stateEnums.TOGGLE_SIDEBAR, payload: !sidebarOpen });
@@ -60,7 +61,7 @@ export const DashboardSidebar = memo(({
   }, [handleEnvironmentData, handleSideBarToggle]);
 
   const handleLogout = () => {
-    logoutUser();
+    logoutClick();
     addToast({
       id: 1,
       message: 'Logout successful',
