@@ -1,3 +1,4 @@
+import { InitialStateProps } from "@context/reducer";
 import { ChartDataProps } from "@utils/formatChartData";
 
 export type MockData = {
@@ -8,6 +9,15 @@ export type MockData = {
   EnvironmentTag: string;
   ProductNameTag: string;
 }[];
+
+export const mockInitialState: InitialStateProps = {
+  sidebarOpen: true,
+  user: null,
+  data: [],
+  displayName: '',
+  isLoading: false,
+  toasts: []
+}
 
 export const mockData: MockData = [
     {
