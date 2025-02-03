@@ -1,4 +1,4 @@
-import { ToastStatusType } from "@components/ui";
+import { ToastStatusType } from "@components";
 import { FaCheckCircle, FaInfoCircle } from "react-icons/fa";
 import { MdOutlineError } from "react-icons/md";
 
