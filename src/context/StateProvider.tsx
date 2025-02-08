@@ -2,7 +2,7 @@ import { createContext, Dispatch, useEffect, useMemo, useReducer, useState } fro
 import stateReducer, { ActionProps, initialState, InitialStateProps, stateEnums } from './reducer';
 import { auth } from "../firebaseConfig";
 import { fetchData, updateUser } from '@utils';
-import { ToastMessage } from '@components/ui/ToastMessage/ToastMessage';
+import { ToastMessage } from '@components';
 
 export const StateContext = createContext<{
     state: InitialStateProps,
