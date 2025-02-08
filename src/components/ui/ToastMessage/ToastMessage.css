@@ -1,13 +1,55 @@
-.toast-message {
+.toasts-container {
     position: fixed;
     z-index: 9999;
     display: grid;
+    grid-gap: 1rem;
+    margin: 1rem;
+}
+
+.toast-message {
+    display: grid;
     grid-template-columns: auto 1fr;
     align-items: center;
-    padding: 1rem 2rem;
+    padding: 1rem 2rem 1rem 1rem;
     grid-gap: 0.5rem;
     border-radius: 6px;
     font-size: 0.9rem;
+    border: 1px solid #eeeeee;
+    background-color: #ffffff;
+    transform: translateX(0)
+}
+
+.toast-message::after {
+    content: '\00D7';
+    position: absolute;
+    top: 0.25rem;
+    right: 0.5rem;
+    cursor: pointer;
+}
+
+.toast-message--remove {
+    transform: translateX(200%);
+    transition: transform 0.3s;
+}
+
+.toast-message__timed-border {
+    position: absolute;
+    bottom: 0;
+    height: 3px;
+    left: 0;
+    border-radius: 0 0 0 6px;
+}
+
+.success svg {
+    color: #0fa8a9;
+}
+
+.info svg {
+    color: #000038;
+}
+
+.error svg {
+    color: red;
 }
 
 .toast-message svg {
@@ -15,44 +57,35 @@
     font-size: 1.5rem;
 }
 
-.top {
+.toasts-container.top {
     top: 1rem;
 }
 
-.bottom {
+.toasts-container.bottom {
     bottom: 1rem;
 }
 
-.top-right {
+.toasts-container.top-right {
     top: 1rem;
     right: 1rem
 }
 
-.bottom-right {
+.toasts-container.bottom-right {
     bottom: 1rem;
     right: 1rem;
 }
 
-.success {
-    border: 1px solid #0fa8a9;
+.toast-message__timed-border.success {
+    background-color: #0fa8a9;
+    border: none;
 }
 
-.success svg {
-    color: #0fa8a9;
+.toast-message__timed-border.info {
+    background-color: #000038;
+    border: none;
 }
 
-.info {
-    border: 1px solid#000038;
-}
-
-.info svg {
-    color: #000038;
-}
-
-.error {
-    border: 1px solid red;
-}
-
-.error svg {
-    color: red;
+.toast-message__timed-border.error {
+    background-color: red;
+    border: none;
 }
