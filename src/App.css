@@ -58,26 +58,6 @@ p {
   color: #333333;
 }
 
-::-webkit-scrollbar {
-  width: 7px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-  border-radius: 10px;
-}
- 
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: #000038; 
-  border-radius: 10px;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: #10a8a9; 
-}
-
 body {
   margin-left: calc(100vw - 100%);
   margin-right: 0;
