@@ -3,6 +3,7 @@ import { SlLogin } from "react-icons/sl";
 import { Button } from "@components";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@components";
+import { TOAST_DURATION } from "@utils";
 import useAuth from "@hooks/useAuth";
 
 interface LoginFormProps {
@@ -25,6 +26,7 @@ export const LoginForm = ({ login }: LoginFormProps) => {
             message: 'Login successful',
             position: 'bottom-right',
             status: 'success',
+            duration: TOAST_DURATION
           })
         return navigate("/dashboard")
     };

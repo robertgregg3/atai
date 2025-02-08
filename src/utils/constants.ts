@@ -6,3 +6,5 @@ export const chartTitles: Record<ChartTitlesType, string> = {
   "environment": "Environment Savings Bar Chart",
   "product": "Product Savings Doughnut Chart",
 };
+
+export const TOAST_DURATION = 2000;

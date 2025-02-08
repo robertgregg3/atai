@@ -1,5 +1,5 @@
 import { CsvDataProps } from '@components';
-import { ToastMessageprops } from '@components/ui/ToastMessage/ToastMessage';
+import { ToastMessageprops } from '@components';
 import firebase from 'firebase/compat/app';
 
 export enum stateEnums {
@@ -10,7 +10,7 @@ export enum stateEnums {
   OTHERS_PERCENTAGE='OTHERS_PERCENTAGE',
   SET_LOADING='SET_LOADING',
   ADD_TOAST='ADD_TOAST',
-  REMOVE_TOAST='REMOVE_TOAST'
+  REMOVE_TOAST='REMOVE_TOAST',
 }
 
 export interface InitialStateProps {

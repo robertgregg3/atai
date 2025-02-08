@@ -8,7 +8,7 @@ import { stateEnums } from "../../context/reducer";
 import { useNavigate } from "react-router-dom";
 import { IconOnlyButton, Button }  from "@components";
 import { useToast } from "@components";
-import { useLogoutUser } from "@hooks";
+import { TOAST_DURATION } from "@utils";
 import ataiLogo from "../../images/atai1.svg";
 import "./DashboardSidebar.css";
 
@@ -66,7 +66,8 @@ export const DashboardSidebar = memo(({
       id: 1,
       message: 'Logout successful',
       position: 'bottom-right',
-      status: 'info',
+      status: 'error',
+      duration: TOAST_DURATION
     })
     navigate('/login');
   }
