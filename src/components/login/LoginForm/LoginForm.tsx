@@ -11,12 +11,12 @@ interface LoginFormProps {
 }
 
 export const LoginForm = ({ login }: LoginFormProps) => {
-    const [name, setName] = useState<string>("");
-    const [email, setEmail] = useState<string>("");
-    const [password, setPassword] = useState<string>("");
+    const [ name, setName ] = useState<string>("");
+    const [ email, setEmail ] = useState<string>("");
+    const [ password, setPassword ] = useState<string>("");
     const { error, signIn, register } = useAuth({email, password, name})
+    const { addToast } = useToast();
     const navigate = useNavigate();
-    const addToast = useToast();
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();

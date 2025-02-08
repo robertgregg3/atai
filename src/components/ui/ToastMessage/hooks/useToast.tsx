@@ -25,5 +25,5 @@ export const useToast = () => {
       }
     }
   
-    return addToast
+    return { addToast }
   }
