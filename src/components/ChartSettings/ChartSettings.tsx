@@ -60,7 +60,7 @@ export interface ChartSettingsProps {
           className={`chart-settings__icon ${showSettings ? 'settings-visible' : ''}`}
           ariaLabel={showSettings ? "Close Settings menu" : "Open Settings menu"}
         />
-       <FlyoutNav showNav={showSettings} flyoutFrom="top">
+       <FlyoutNav showNav={showSettings} flyoutFrom="right">
           <div className="chart-selection">
             <span className="chart-selection__btn-header">Download Chart:</span>
             <div className="download-options">
