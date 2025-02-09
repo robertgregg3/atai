@@ -1,0 +1,44 @@
+.flyout-nav {
+    position: fixed;
+    width: 385px;
+    display: grid;
+    transition: all 0.3s ease;
+    margin-top: 5rem;
+    background-color: #ffffff;
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+    border-radius: 8px;
+}
+
+.flyout-nav.right {
+    right: -400px;
+}
+
+.flyout-nav.left {
+    left: -400px;
+}
+
+.flyout-nav.top {
+    top: -100%;
+    right: 20px;
+}
+
+.flyout-nav.bottom {
+    bottom: -100%;
+    right: 20px;
+}
+
+.flyout-nav.right.flyout-nav--visible {
+    right: 20px;
+}
+
+.flyout-nav.left.flyout-nav--visible {
+    left: 20px;
+}
+
+.flyout-nav.top.flyout-nav--visible {
+    top: 50px;
+}
+
+.flyout-nav.bottom.flyout-nav--visible {
+    bottom: 50px;
+}
