@@ -3,7 +3,7 @@ import { StateContext } from "@context/StateProvider";
 import { stateEnums } from "@context/reducer";
 import { FaGear } from "react-icons/fa6";
 import { TbFileDownload } from "react-icons/tb";
-import { chartFilters, IconOnlyButton, Button } from "@components";
+import { chartFilters, IconOnlyButton, Button, FlyoutNav } from "@components";
 import { exportAsImage } from "@utils";
 import { getOthersPercentageMapping } from "@utils";
 import './ChartSettings.css'
@@ -60,10 +60,7 @@ export interface ChartSettingsProps {
           className={`chart-settings__icon ${showSettings ? 'settings-visible' : ''}`}
           ariaLabel={showSettings ? "Close Settings menu" : "Open Settings menu"}
         />
-        <div 
-          className={`chart-settings__options  ${showSettings ? 'options-visible' : ''}`}
-          tabIndex={-1}
-        >
+       <FlyoutNav showNav={showSettings} flyoutFrom="top">
           <div className="chart-selection">
             <span className="chart-selection__btn-header">Download Chart:</span>
             <div className="download-options">
@@ -151,7 +148,7 @@ export interface ChartSettingsProps {
             </div>
             </>
           )}
-        </div>
+        </FlyoutNav>
       </div>
     );
   };
