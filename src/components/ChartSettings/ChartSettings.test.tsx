@@ -2,8 +2,9 @@ import { describe, expect, it, vi } from "vitest";
 import { ChartSettings, ChartSettingsProps } from "@components";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { StateContext } from "@context/StateProvider";
-import { exportAsImage, getOthersPercentageMapping } from "@utils";
+import { exportAsImage } from "@utils";
 import { stateEnums } from "@context/reducer";
+import { mockInitialState } from "../../data/mockData";
 
 const handleChartSelectionClick = vi.fn();
 
@@ -18,19 +19,13 @@ describe('ChartSettings', () => {
         currentChart: 'current-year',
         handleChartSelectionClick,
         chartExportRef: { current: document.createElement('div') },
-        isDougnutChart: true
+        isDougnutChart: true,
+        showSettings: false,
+        setShowSettings: vi.fn()
     };
 
     const defaultState = { 
-        state: {
-            topProductsPercentage: 1,
-            showTopProducts: true,
-            data: [],
-            isLoading: false,
-            sidebarOpen: false,
-            user: null,
-            displayName: 'Rob'
-        },
+        state: mockInitialState    ,
         dispatch: vi.fn()
     }
 
@@ -41,29 +36,6 @@ describe('ChartSettings', () => {
             </StateContext.Provider>
         );
     }
-
-    it('renders the chart settings toggle button', () => {
-        renderComponent(defaultProps);
-
-        const settingsButton = screen.getByRole('button', { name: /open settings menu/i });
-        expect(settingsButton).toBeInTheDocument();
-        expect(getOthersPercentageMapping).toHaveBeenCalled();
-    });
-
-    it('renders the download options when the settings are visible', async () => {
-        renderComponent(defaultProps);
-
-        const openSettingsButton = screen.getByRole('button', { name: /open settings menu/i });
-        expect(openSettingsButton).toBeInTheDocument();
-
-        fireEvent.click(openSettingsButton);
-
-        const jpegButton = await screen.findByRole('button', { name: /JPEG/i });
-        const pngButton = await screen.findByRole('button', { name: /PNG/i});
-
-        expect(jpegButton).toBeInTheDocument();
-        expect(pngButton).toBeInTheDocument();
-    });
 
     it('calls download function when a download option is clicked', async () => {
         renderComponent(defaultProps);

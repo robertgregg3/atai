@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
-import { chartFilters, FormattedChartProps, SavingsTotalsTypes } from "@components";
+import { chartFilters, FlyoutNav, FormattedChartProps, IconOnlyButton, SavingsTotalsTypes } from "@components";
 import { getChartOptions, getChartDatasets } from "@utils";
 import { ChartSettings } from "@components";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { FaGear } from "react-icons/fa6";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -29,6 +30,7 @@ export const AdvancedChart = ({
 }: AdvancedChartProps) => {
   const chartRef = useRef<ChartJS<"doughnut"> | null>(null); // trigger chart animation on button press. 
   const chartExportRef = useRef<HTMLDivElement>(null);
+  const [ showSettings, setShowSettings ] = useState<boolean>(false);
 
   const navigate = useNavigate();
   
@@ -87,19 +89,36 @@ export const AdvancedChart = ({
     labels: labels,
     datasets: chartDatasets
   };
+
+  // open the settings menu
+  const handleSettingsClick = () => {
+    setShowSettings(!showSettings);
+  };
   
   return (
     <div
       className='chart-horizontal'
       ref={chartExportRef}
     >
-      <ChartSettings 
-        currentChart={currentChart} 
-        handleChartSelectionClick={handleChartSelectionClick} 
-        chartExportRef={chartExportRef}
-        isDougnutChart={true}
-        title={`Total Savings for ${currentChart}`}
-      />
+      <div className='chart-settings'>
+        <IconOnlyButton 
+          handleClick={handleSettingsClick}
+          icon={<FaGear />}
+          className={`chart-settings__icon ${showSettings ? 'settings-visible' : ''}`}
+          ariaLabel={showSettings ? "Close Settings menu" : "Open Settings menu"}
+        />
+        <FlyoutNav showNav={showSettings} flyoutFrom="right">
+          <ChartSettings 
+            currentChart={currentChart} 
+            handleChartSelectionClick={handleChartSelectionClick} 
+            chartExportRef={chartExportRef}
+            isDougnutChart={true}
+            title={`Total Savings for ${currentChart}`}
+            showSettings={showSettings}
+            setShowSettings={setShowSettings}
+          />
+        </FlyoutNav>
+      </div>
       <Doughnut ref={chartRef} data={data} options={chartOptions} />
     </div>
   );

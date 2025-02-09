@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { AdvancedChart } from "@components";
-import { render, screen } from "@testing-library/react";
-import { useSearchParams } from "react-router-dom";
+import { fireEvent, render, screen } from "@testing-library/react";
+import { getOthersPercentageMapping } from "@utils/getOthersPercentageMapping";
 // import { useNavigate } from "react-router-dom";
 
 vi.mock('react-router-dom', () => ({ 
@@ -128,4 +128,58 @@ describe("AdvancedChart", () => {
         }]
     }));
   });  
+
+   it('renders the chart settings toggle button', async () => {
+    render(
+      <AdvancedChart
+          chartData={{
+              currentYear: [100, 200, 300],
+              year: [100, 200, 300],
+              month: [100, 200, 300]
+          }}
+          savingsTotals={{
+              ActualSavingsForCurrentYear: 3248.28,
+              ActualSavingsForYear: 3248.28,
+              ActualSavingsPerMonth: 3248.28
+          }}
+          labels={['work-to-fix', 'dd-client-preadvice', 'dd-data-gateway', 'svoc', 'some-other']}
+      />
+  )
+  
+          const settingsButton = screen.getByRole('button', { name: /open settings menu/i });
+          expect(settingsButton).toBeInTheDocument();
+      });
+
+  it('renders the download options when the settings are visible', async () => {
+    render(
+        <AdvancedChart
+            chartData={{
+                currentYear: [100, 200, 300],
+                year: [100, 200, 300],
+                month: [100, 200, 300]
+            }}
+            savingsTotals={{
+                ActualSavingsForCurrentYear: 3248.28,
+                ActualSavingsForYear: 3248.28,
+                ActualSavingsPerMonth: 3248.28
+            }}
+            labels={['work-to-fix', 'dd-client-preadvice', 'dd-data-gateway', 'svoc', 'some-other']}
+        />
+    )
+
+    const chart = screen.getByTestId('chart-doughnut');
+
+    expect(chart).toBeInTheDocument();
+
+    const openSettingsButton = screen.getByRole('button', { name: /open settings menu/i });
+    expect(openSettingsButton).toBeInTheDocument();
+
+    fireEvent.click(openSettingsButton);
+    
+    const jpegButton = await screen.findByRole('button', { name: /JPEG/i });
+    const pngButton = await screen.findByRole('button', { name: /PNG/i});
+
+    expect(jpegButton).toBeInTheDocument();
+    expect(pngButton).toBeInTheDocument();
+  });
 })
