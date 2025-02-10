@@ -1,8 +1,7 @@
 import { stateEnums } from "@context/reducer";
-import { auth } from "../firebaseConfig";
 import { StateContext } from '@context/StateProvider';
 import { useContext, useState } from 'react'
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 
 interface UseAuthProps {
     email: string;
@@ -13,18 +12,20 @@ interface UseAuthProps {
 const useAuth = ({email, password, name}: UseAuthProps) => {
   const [error, setError] = useState<string>("");
   const dispatch = useContext(StateContext).dispatch;
+  const auth = getAuth();
 
   const signIn = () => {
     signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       let loggedInUser = userCredential.user;
       console.log("user: ", loggedInUser);
-      if (loggedInUser && loggedInUser.displayName) {
+      if (loggedInUser && loggedInUser.displayName && loggedInUser.email) {
         dispatch({
           type: stateEnums.SET_USER,
           payload: {
             user: loggedInUser,
             displayName: loggedInUser.displayName,
+            email: loggedInUser.email,
           },
           });        
         }
@@ -46,6 +47,7 @@ const useAuth = ({email, password, name}: UseAuthProps) => {
             payload: {
               user: { ...user, displayName: name },
               displayName: name,
+              email: email,
             },
           });
         }

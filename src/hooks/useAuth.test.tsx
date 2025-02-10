@@ -10,16 +10,11 @@ import useAuth from "./useAuth";
 vi.mock('react-router-dom', () => ({ useNavigate: vi.fn() }));
 
 vi.mock('firebase/auth', () => ({
-    getAuth: vi.fn(() => {}),
+    getAuth: vi.fn(() => ({})),
     signInWithEmailAndPassword: vi.fn(),
     createUserWithEmailAndPassword: vi.fn(),
     updateUserProfile: vi.fn(),
 }));
-
-vi.mock('../firebaseConfig', () => ({
-    auth: {},
-}));
-
 
 describe("useAuth", () => {
     const mockDispatch = vi.fn();
@@ -30,7 +25,10 @@ describe("useAuth", () => {
         sidebarOpen: false,
         isLoading: false,
         displayName: '',
-        toasts: []
+        email: '',
+        toasts: [],
+        showDialog: false,
+        dialogContent: null,
     }
 
     const name: string = 'Rob';
@@ -50,25 +48,27 @@ describe("useAuth", () => {
 
     it("should sign in a user", async () => {
         (signInWithEmailAndPassword as any).mockResolvedValue({
-            user: { displayName: 'Rob' },
+            user: { displayName: 'Rob', email: 'test@test.com' }
         });
         
         // the second parameter is what wraps the hook
         const { result } = renderHook(() => useAuth({ email, password, name}), { wrapper });
         
-        // Test the signIn function. The first await is for the re-rendering of the component, the second is for the signIn function
         await act(async () => {
            await result.current.signIn();
         });
 
-        // Empty object represents the auth object which is mocked at the top of the test, 
-        expect(signInWithEmailAndPassword).toHaveBeenCalledWith({}, email, password) 
+        expect(signInWithEmailAndPassword).toHaveBeenCalledWith(expect.any(Object), email, password) 
 
         expect(mockDispatch).toHaveBeenCalledWith({
             type: stateEnums.SET_USER,
             payload: {
-                user: { displayName: name },
+                user: { 
+                    displayName: name, 
+                    email: email 
+                },
                 displayName: name,
+                email: email,
             },
         });
     });
@@ -84,14 +84,14 @@ describe("useAuth", () => {
             await result.current.signIn();
         });
 
-        expect(signInWithEmailAndPassword).toHaveBeenCalledWith({}, email, password);
+        expect(signInWithEmailAndPassword).toHaveBeenCalledWith(expect.any(Object), email, password);
 
         expect(mockDispatch).not.toHaveBeenCalled();
     })
 
     it('should register a user', async () => {
         (createUserWithEmailAndPassword as any).mockResolvedValue({
-            user: { displayName: 'Rob'}
+            user: { displayName: 'Rob', email: 'test@test.com' }
         })
 
         const { result } = renderHook(() => useAuth({ email, password, name }), { wrapper });
@@ -100,15 +100,17 @@ describe("useAuth", () => {
             await result.current.register();
         });
 
-        expect(createUserWithEmailAndPassword).toHaveBeenCalledWith({}, email, password);
+        expect(createUserWithEmailAndPassword).toHaveBeenCalledWith(expect.any(Object), email, password);
 
         expect(mockDispatch).toHaveBeenCalledWith({
             type: stateEnums.SET_USER,
             payload: {
-                displayName: name,
-                user: {
-                    displayName: name,
+                user: { 
+                    displayName: name, 
+                    email: email 
                 },
+                displayName: name,
+                email: email,
             },
         });
     });
