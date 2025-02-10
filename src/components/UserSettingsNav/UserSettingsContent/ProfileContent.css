@@ -1,0 +1,34 @@
+.profile__content-block {
+    display: grid;
+    grid-gap: 0;
+}
+
+.profile__content-block input {
+    width: 100%;
+    margin-top: -1rem;
+}
+
+.profile__content-block > button {
+    width: 150px;
+    margin-top: 1.5rem;
+    display: flex;
+    place-content: center;
+    position: relative;
+}
+
+.profile__content-block > button:hover {
+    background-color: #000039;
+}
+
+.profile__content-block > button svg {
+    position: absolute;
+    left: 1rem;
+    top: 1rem;
+    z-index: 100;
+} 
+
+.updated-message {
+    position: absolute;
+    bottom: 1rem;
+    left: 2rem;
+}
