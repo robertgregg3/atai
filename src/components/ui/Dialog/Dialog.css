@@ -1,0 +1,60 @@
+dialog {
+    width: 500px;
+    position: fixed;
+    inset: 0;
+    border-radius: 0.5rem;
+    border: none;
+    z-index: 1000;
+}
+
+.dialog-mask {
+    background-color: black;
+    width: 100vw;
+    height: 100svh;
+    opacity: 0.75;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 3;
+}
+
+.dialog-content {
+    position: relative;
+    display: grid;
+    padding: 2rem;
+}
+
+.dialog-close {
+    position: absolute;
+top: 0.5rem;
+    right: 0.5rem;
+    padding: 0;
+    margin: 0;
+    background: transparent;
+    color: #000039;
+    height: 20px;
+}
+
+.dialog-close:hover {
+    background: transparent;
+    color: #10a8a9;
+}
+
+.user-settings-nav___logout {
+    display: flex;
+    width: max-content;
+}
+
+.user-settings-nav___cancel {
+    background-color: #cccccc;
+    color: #000039;
+}
+
+
+.button-container {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: start;
+    grid-gap: 1rem;
+    margin-top: 1rem;
+}
