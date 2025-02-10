@@ -1,12 +1,11 @@
 header {
-    background: #cccccc50;
-    display: grid;
-    width: 100%;
-    grid-template-columns: auto auto;
-    align-items: center;
-    justify-content: space-between;
-    z-index: -1;
-    padding: 0.5rem 0;
+  background: #cccccc50;
+  display: grid;
+  width: 100%;
+  grid-template-columns: auto auto;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0;
 }
 
 header > h6 {
@@ -31,13 +30,32 @@ header > h6 {
   cursor: pointer;
 }
 
+.user-info__button {
+  background-color: transparent;
+  padding: 0 !important;
+  margin: 0;  
+}
+
+.user-info__button svg {
+  color: #000039;
+}
+
+button.user-info__button:hover {
+  background-color: transparent;
+}
+
+.user-info__button:hover > svg {
+  background-color: transparent;
+  color: #37374e;
+}
+
 @media(max-width: 550px) {
   .user-info span {
     display: none
   }
 }
 
-.user-info svg {
+.user-info .user-info__button svg {
   height: 40px;
   width: 40px;
 }

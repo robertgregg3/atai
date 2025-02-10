@@ -1,6 +1,10 @@
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { DashboardHeader, DashboardHeaderProps } from "@components";
+
+vi.mock('react-router-dom', () => ({
+    useNavigate: () => vi.fn()
+}))
 
 describe('Dashboard Header', () => {
     const defaultProps: DashboardHeaderProps = {
