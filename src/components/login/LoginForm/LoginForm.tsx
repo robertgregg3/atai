@@ -16,7 +16,6 @@ export const LoginForm = ({ login }: LoginFormProps) => {
     const [ password, setPassword ] = useState<string>("");
     const [ confirmPassword, setConfirmPassword ] = useState<string>("");
     const [ confirmPasswordError, setConfirmPasswordError ] = useState<string>("");
-    const [debouncedValue, setDebouncedValue] = useState("");
     const { error, signIn, register } = useAuth({email, password, name})
     const { addToast } = useToast();
     const navigate = useNavigate();
@@ -42,7 +41,7 @@ export const LoginForm = ({ login }: LoginFormProps) => {
             password !== confirmPassword
         );
     };
-    
+
     const handleConfirmPassword = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setConfirmPassword(value);
@@ -56,7 +55,6 @@ export const LoginForm = ({ login }: LoginFormProps) => {
         }
     };
     
-
     return (
         <form role='form' onSubmit={handleSubmit}>
             {!login && (
