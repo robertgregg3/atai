@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import { chartFilters, FlyoutNav, FormattedChartProps, IconOnlyButton, SavingsTotalsTypes } from "@components";
@@ -6,6 +6,8 @@ import { getChartOptions, getChartDatasets } from "@utils";
 import { ChartSettings } from "@components";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { FaGear } from "react-icons/fa6";
+import { StateContext } from "@context/StateProvider";
+import { stateEnums } from "@context/reducer";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -30,7 +32,8 @@ export const AdvancedChart = ({
 }: AdvancedChartProps) => {
   const chartRef = useRef<ChartJS<"doughnut"> | null>(null); // trigger chart animation on button press. 
   const chartExportRef = useRef<HTMLDivElement>(null);
-  const [ showSettings, setShowSettings ] = useState<boolean>(false);
+  const { state, dispatch } = useContext(StateContext);
+  const { showSettings } = state;
 
   const navigate = useNavigate();
   
@@ -92,7 +95,10 @@ export const AdvancedChart = ({
 
   // open the settings menu
   const handleSettingsClick = () => {
-    setShowSettings(!showSettings);
+    dispatch({
+      type: stateEnums.SHOW_SETTINGS,
+      payload: !showSettings
+    })
   };
   
   return (
@@ -107,15 +113,14 @@ export const AdvancedChart = ({
           className={`chart-settings__icon ${showSettings ? 'settings-visible' : ''}`}
           ariaLabel={showSettings ? "Close Settings menu" : "Open Settings menu"}
         />
-        <FlyoutNav showNav={showSettings} flyoutFrom="right">
+        <FlyoutNav showNav={showSettings ?? false} flyoutFrom="right">
           <ChartSettings 
             currentChart={currentChart} 
             handleChartSelectionClick={handleChartSelectionClick} 
             chartExportRef={chartExportRef}
             isDougnutChart={true}
             title={`Total Savings for ${currentChart}`}
-            showSettings={showSettings}
-            setShowSettings={setShowSettings}
+            showSettings={showSettings ?? false}
           />
         </FlyoutNav>
       </div>
