@@ -15,7 +15,6 @@ export interface ChartSettingsProps {
     chartExportRef: React.RefObject<HTMLDivElement>;
     isDougnutChart?: boolean;
     showSettings: boolean;
-    setShowSettings: (show: boolean) => void;
   }
   
   export const ChartSettings = (
@@ -26,14 +25,16 @@ export interface ChartSettingsProps {
       isDougnutChart = false, 
       title,
       showSettings,
-      setShowSettings 
     }: ChartSettingsProps) => {
     const { state, dispatch } = useContext(StateContext);
     const { topProductsPercentage, showTopProducts } = state;
 
     const handleUpdateChartTimeFrame = (timeFrame: chartFilters) => {
       handleChartSelectionClick && handleChartSelectionClick(timeFrame);
-      setShowSettings(false);
+      dispatch({
+        type: stateEnums.SHOW_SETTINGS,
+        payload: !showSettings
+      })
     }
 
     const handleCheckboxClick = () => {
