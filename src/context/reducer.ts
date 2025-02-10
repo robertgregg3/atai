@@ -1,6 +1,7 @@
 import { CsvDataProps } from '@components';
 import { ToastMessageprops } from '@components';
 import firebase from 'firebase/compat/app';
+import React from 'react';
 
 export enum stateEnums {
   SET_USER='SET_USER',
@@ -11,6 +12,9 @@ export enum stateEnums {
   SET_LOADING='SET_LOADING',
   ADD_TOAST='ADD_TOAST',
   REMOVE_TOAST='REMOVE_TOAST',
+  SHOW_DIALOG='SHOW_DIALOG',
+  SET_DIALOG_CONTENT='SET_DIALOG_CONTENT',
+  SHOW_SETTINGS='SHOW_SETTINGS',
 }
 
 export interface InitialStateProps {
@@ -21,7 +25,10 @@ export interface InitialStateProps {
   showTopProducts?: boolean;
   topProductsPercentage?: number;
   isLoading: boolean;
-  toasts: ToastMessageprops[]
+  toasts: ToastMessageprops[];
+  showDialog: boolean;
+  dialogContent: React.ReactNode | null;
+  showSettings?: boolean;
 }
 
 export type ActionProps = 
@@ -33,6 +40,9 @@ export type ActionProps =
   | { type: stateEnums.SET_LOADING, payload: boolean }
   | { type: stateEnums.ADD_TOAST, payload: ToastMessageprops }
   | { type: stateEnums.REMOVE_TOAST, payload: number}
+  | { type: stateEnums.SHOW_DIALOG, payload: boolean}
+  | { type: stateEnums.SET_DIALOG_CONTENT, payload: React.ReactNode | null}
+  | { type: stateEnums.SHOW_SETTINGS, payload: boolean}
 
 export const initialState: InitialStateProps = {
   user: null,
@@ -42,7 +52,10 @@ export const initialState: InitialStateProps = {
   showTopProducts: true,
   topProductsPercentage: 1,
   isLoading: true,
-  toasts: []
+  toasts: [],
+  showDialog: false,
+  dialogContent: null,
+  showSettings: false,
 };
 
 const stateReducer = (state: InitialStateProps, action: ActionProps) => {
@@ -87,6 +100,21 @@ const stateReducer = (state: InitialStateProps, action: ActionProps) => {
       return {
         ...state,
         toasts: state.toasts.filter((toast) => toast.id !== action.payload)
+      }
+    case stateEnums.SHOW_DIALOG:
+      return {
+        ...state,
+        showDialog: action.payload
+      }
+    case stateEnums.SET_DIALOG_CONTENT:
+      return {
+        ...state,
+        dialogContent: action.payload
+      }
+    case stateEnums.SHOW_SETTINGS:
+      return {
+        ...state,
+        showSettings: action.payload
       }
     default:
     return state;
