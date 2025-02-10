@@ -16,7 +16,9 @@ export const mockInitialState: InitialStateProps = {
   data: [],
   displayName: '',
   isLoading: false,
-  toasts: []
+  toasts: [],
+  showDialog: false,
+  dialogContent: null,
 }
 
 export const mockData: MockData = [
