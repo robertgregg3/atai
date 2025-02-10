@@ -1,6 +1,7 @@
 .flyout-nav {
     position: fixed;
-    width: 385px;
+    z-index: 99;
+    width: max-content;
     display: grid;
     transition: all 0.3s ease;
     margin-top: 5rem;
@@ -36,7 +37,7 @@
 }
 
 .flyout-nav.top.flyout-nav--visible {
-    top: 50px;
+    top: -25px;
 }
 
 .flyout-nav.bottom.flyout-nav--visible {

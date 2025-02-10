@@ -8,7 +8,7 @@ interface FlyoutNavProps {
     flyoutFrom: FlyoutFromTypes
 }
 
-export const FlyoutNav = ({ children, showNav, flyoutFrom = 'right' }: FlyoutNavProps) => {
+export const FlyoutNav = ({ children, showNav = false, flyoutFrom = 'right' }: FlyoutNavProps) => {
     return (
         <div 
             className={`flyout-nav ${flyoutFrom} ${showNav ? 'flyout-nav--visible' : ''}`}
