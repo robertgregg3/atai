@@ -1,8 +1,13 @@
 import { Audio } from "react-loader-spinner";
+import "./Spinner.css";
 
-const Spinner = () => {
+interface SpinnerProps {
+  customClass?: string;
+}
+
+export const Spinner = ({customClass}: SpinnerProps) => {
   return (
-    <div className="loading-spinner">
+    <div className={`loading-spinner ${customClass}`}>
         <Audio
           height="100"
           width="100"
@@ -15,5 +20,3 @@ const Spinner = () => {
       </div>
   )
 }
-
-export default Spinner

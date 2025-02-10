@@ -1,7 +1,7 @@
 import { RouterProvider } from "react-router-dom";
 import { StateContext } from "./context/StateProvider";
 import { useContext } from "react";
-import Spinner from "@components/ui/Spinner/Spinner";
+import { Spinner } from "@components";
 import createAppRouter from "./config/createAppRouter";
 
 const App = () => {
