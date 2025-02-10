@@ -11,9 +11,9 @@ export const DataVis = () => {
 
   // used to switch between the different charts, triggered by the sidebar
   const { chartType } = useParams<{ chartType: ChartTitlesType }>();
-  const [selectedChart, setSelectedChart] = useState<ChartTitlesType>("product");
+  const [ selectedChart, setSelectedChart ] = useState<ChartTitlesType>("product");
+  const { logoutUser } = useLogoutUser();
   const chartTitle = useMemo(() => chartTitles[selectedChart], [selectedChart]);
-  const logoutUser = useLogoutUser();
 
   const handleChartSelection = useCallback((chart: ChartTitlesType) =>  setSelectedChart(chart),[])
 

@@ -17,7 +17,7 @@ interface DashboardSidebarProps {
   handleCostCentreSavings: () => void;
   handleEnvironmentData: () => void;
   handleProductSavingsData: () => void;
-  logoutClick: () => void
+  logoutClick: () => Promise<void>;
 }
 
 export const DashboardSidebar = memo(({
