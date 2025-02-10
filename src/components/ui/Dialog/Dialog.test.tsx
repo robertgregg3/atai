@@ -1,4 +1,3 @@
-import { ProfilContent } from "@components/DashboardHeader";
 import { StateContext } from "@context/StateProvider";
 import { render, screen } from "@testing-library/react";
 import { mockInitialState } from "../../../data/mockData";
@@ -6,6 +5,7 @@ import { describe, expect, it, vi } from "vitest";
 import { Dialog } from "./Dialog";
 import { UserSettingsNav } from "@components/UserSettingsNav";
 import { useNavigate } from "react-router-dom";
+import { ProfileContent } from "@components/UserSettingsNav/UserSettingsContent/ProfileContent";
 
 vi.mock('react-router-dom', () => ({
     useNavigate: () => vi.fn()
@@ -14,7 +14,7 @@ vi.mock('react-router-dom', () => ({
 const mockDispatch = vi.fn();
 
 describe('Dialog', () => {
-    const profileContent = <ProfilContent />;
+    const profileContent = <ProfileContent />;
         
     const renderComponentWithDialogProfileContent = () => render(
         <StateContext.Provider 

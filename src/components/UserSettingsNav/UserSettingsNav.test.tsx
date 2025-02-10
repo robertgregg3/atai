@@ -1,12 +1,11 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import { UserSettingsNav } from "./UserSettingsNav";
 import { useNavigate } from "react-router-dom";
 import { StateContext } from "@context/StateProvider";
 import { mockInitialState } from "../../data/mockData";
-import { Dialog } from "@components/ui";
+import { Dialog, UserSettingsNav } from "@components";
 import { LogoutContent } from "./UserSettingsContent/LogoutUserContent";
-import { ProfilContent } from "@components/DashboardHeader";
+import { ProfileContent } from "./UserSettingsContent/ProfileContent";
 
 vi.mock('react-router-dom', () => ({
     useNavigate: () => vi.fn()
@@ -25,7 +24,7 @@ describe('UserSettingsNav', () => {
             />
         </StateContext.Provider>
     )
-    const profileContent = <ProfilContent />;
+    const profileContent = <ProfileContent />;
     
     const renderComponentWithDialogProfileContent = () => render(
         <StateContext.Provider value={{ state: {...mockInitialState, showDialog: true, dialogContent: profileContent}, dispatch: mockDispatch}}>
