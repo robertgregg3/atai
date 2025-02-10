@@ -5,6 +5,7 @@ import React from 'react';
 
 export enum stateEnums {
   SET_USER='SET_USER',
+  UPDATE_USER='UPDATE_USER',
   SET_DATA='SET_DATA',
   TOGGLE_SIDEBAR='TOGGLE_SIDEBAR',
   TOGGLE_USE_OTHERS_PERCENTAGE='TOGGLE_USE_OTHERS_PERCENTAGE',
@@ -21,6 +22,7 @@ export interface InitialStateProps {
   user: firebase.User | null;
   data: CsvDataProps[] | null;
   displayName: string;
+  email: string;
   sidebarOpen: boolean;
   showTopProducts?: boolean;
   topProductsPercentage?: number;
@@ -32,7 +34,8 @@ export interface InitialStateProps {
 }
 
 export type ActionProps = 
-  | { type: stateEnums.SET_USER, payload: { user: any, displayName: string} }
+  | { type: stateEnums.SET_USER, payload: { user: any, displayName: string, email: string} }
+  | { type: stateEnums.UPDATE_USER, payload: { displayName: string, email: string} }
   | { type: stateEnums.SET_DATA, payload: any }
   | { type: stateEnums.TOGGLE_SIDEBAR, payload: boolean }
   | { type: stateEnums.TOGGLE_USE_OTHERS_PERCENTAGE, payload: boolean }
@@ -48,6 +51,7 @@ export const initialState: InitialStateProps = {
   user: null,
   data: [],
   displayName: "",
+  email: "",
   sidebarOpen: false,
   showTopProducts: true,
   topProductsPercentage: 1,
@@ -65,6 +69,13 @@ const stateReducer = (state: InitialStateProps, action: ActionProps) => {
         ...state,
         user: action.payload.user,
         displayName: action.payload.displayName,
+        email: action.payload.email,
+      };
+    case stateEnums.UPDATE_USER:
+      return {
+        ...state,
+        displayName: action.payload.displayName,
+        email: action.payload.email,
       };
     case stateEnums.SET_DATA:
       return {

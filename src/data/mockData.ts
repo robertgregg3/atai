@@ -15,6 +15,7 @@ export const mockInitialState: InitialStateProps = {
   user: null,
   data: [],
   displayName: '',
+  email: '',
   isLoading: false,
   toasts: [],
   showDialog: false,
