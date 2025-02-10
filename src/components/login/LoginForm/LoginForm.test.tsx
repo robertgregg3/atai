@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { LoginForm } from "@components";
 import { StateContext } from "@context/StateProvider";
 import { useNavigate } from "react-router-dom";
-import { InitialStateProps } from "@context/reducer";
+import { mockInitialState } from "../../../data/mockData";
 
 vi.mock('react-router-dom', () => ({ useNavigate: vi.fn() }));
 
@@ -20,20 +20,11 @@ vi.mock("@hooks/useAuth", () => ({
 }));
 
 describe("LoginForm", () => {
-    const defaultState: InitialStateProps = {
-        showTopProducts: true,
-        data: [],
-        isLoading: false,
-        sidebarOpen: false,
-        user: null,
-        displayName: "Rob",
-    };
-
     const mockDispatch = vi.fn();
 
     const renderWithProps = (login: boolean) => {
         render(
-            <StateContext.Provider value={{ state: defaultState, dispatch: mockDispatch }}>
+            <StateContext.Provider value={{ state: mockInitialState, dispatch: mockDispatch }}>
                 <LoginForm login={login} />
             </StateContext.Provider>
         );
