@@ -30,7 +30,7 @@ describe('logoutUser', () => {
     const { result } = renderHook(() => useLogoutUser(), { wrapper });
 
     await act(async () => {
-      await result.current(); // Call the returned logout function
+      await result.current.logoutUser(); // Call the returned logout function
     });
 
     expect(getAuth).toHaveBeenCalled();
@@ -53,7 +53,7 @@ describe('logoutUser', () => {
     const { result } = renderHook(() => useLogoutUser(), { wrapper });
 
     await act(async () => {
-      await result.current();
+      await result.current.logoutUser();
     });
 
     expect(getAuth).toHaveBeenCalled();

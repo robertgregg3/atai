@@ -22,5 +22,5 @@ export const useLogoutUser = () => {
       }
     }
 
-    return logoutUser;
+    return { logoutUser };
 }
