@@ -16,7 +16,7 @@ describe('updateUser', () => {
             refreshToken: '',
             tenantId: '',
             uid: '',
-            email: '',
+            email: 'test@test.com',
             phoneNumber: '',
             photoURL: '',
             providerId: '',
@@ -33,7 +33,8 @@ describe('updateUser', () => {
             type: stateEnums.SET_USER,
             payload: {
                 user: mockAuthUser,
-                displayName: mockAuthUser.displayName
+                displayName: mockAuthUser.displayName,
+                email: mockAuthUser.email
             }
         })
     });
@@ -47,7 +48,8 @@ describe('updateUser', () => {
             type: stateEnums.SET_USER,
             payload: {
                 user: mockUser,
-                displayName: ''
+                displayName: '',
+                email: ''
             }
         })
     })

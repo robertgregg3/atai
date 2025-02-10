@@ -7,7 +7,6 @@ interface UpdateUserProps {
     dispatch: Dispatch<any>,
 }
 
-
 export const updateUser = ({ authUser, dispatch }: UpdateUserProps) => {
     try {
         dispatch({
@@ -15,6 +14,7 @@ export const updateUser = ({ authUser, dispatch }: UpdateUserProps) => {
             payload: {
                 user: authUser ? authUser : null,
                 displayName: authUser ? authUser.displayName || "Unknown" : '',
+                email: authUser ? authUser.email || "Unknown" : '',
             },
         });
     } catch(error) {
