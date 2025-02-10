@@ -40,6 +40,7 @@ describe('logoutUser', () => {
       payload: {
         user: null,
         displayName: "",
+        email: ''
       },
     });  
   });

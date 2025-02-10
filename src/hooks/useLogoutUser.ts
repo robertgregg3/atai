@@ -15,6 +15,7 @@ export const useLogoutUser = () => {
           payload: {
             user: null,
             displayName: "",
+            email: ''
           },
         });
       } catch (error) {
