@@ -32,8 +32,6 @@ export const AdvancedChart = ({
 }: AdvancedChartProps) => {
   const chartRef = useRef<ChartJS<"doughnut"> | null>(null); // trigger chart animation on button press. 
   const chartExportRef = useRef<HTMLDivElement>(null);
-  const { state, dispatch } = useContext(StateContext);
-  const { showSettings } = state;
 
   const navigate = useNavigate();
   
@@ -93,37 +91,18 @@ export const AdvancedChart = ({
     datasets: chartDatasets
   };
 
-  // open the settings menu
-  const handleSettingsClick = () => {
-    dispatch({
-      type: stateEnums.SHOW_SETTINGS,
-      payload: !showSettings
-    })
-  };
-  
   return (
     <div
       className='chart-horizontal'
       ref={chartExportRef}
     >
-      <div className='chart-settings'>
-        <IconOnlyButton 
-          handleClick={handleSettingsClick}
-          icon={<FaGear />}
-          className={`chart-settings__icon ${showSettings ? 'settings-visible' : ''}`}
-          ariaLabel={showSettings ? "Close Settings menu" : "Open Settings menu"}
-        />
-        <FlyoutNav showNav={showSettings ?? false} flyoutFrom="right">
-          <ChartSettings 
-            currentChart={currentChart} 
-            handleChartSelectionClick={handleChartSelectionClick} 
-            chartExportRef={chartExportRef}
-            isDougnutChart={true}
-            title={`Total Savings for ${currentChart}`}
-            showSettings={showSettings ?? false}
-          />
-        </FlyoutNav>
-      </div>
+      <ChartSettings 
+        currentChart={currentChart} 
+        handleChartSelectionClick={handleChartSelectionClick} 
+        chartExportRef={chartExportRef}
+        isDougnutChart={true}
+        title={`Total Savings for ${currentChart}`}
+      />
       <Doughnut ref={chartRef} data={data} options={chartOptions} />
     </div>
   );
