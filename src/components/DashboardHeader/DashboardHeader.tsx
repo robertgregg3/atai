@@ -7,6 +7,7 @@ import { stateEnums } from "@context/reducer";
 import { useNavigate } from "react-router-dom";
 import { useHandleDialog } from "@components/ui/Dialog/hooks/useDialog";
 import { LogoutContent } from "@components/UserSettingsNav/UserSettingsContent/LogoutUserContent";
+import { ProfileContent } from "@components/UserSettingsNav/UserSettingsContent/ProfileContent";
 import "./DashboardHeader.css";
 
 export interface DashboardHeaderProps {
@@ -15,8 +16,6 @@ export interface DashboardHeaderProps {
 }
 
 export type UserDialogContent = 'profile' | 'logout';
-
-export const ProfilContent = () => <p data-testid='profile-content'>Profile</p>
 
 export const DashboardHeader = ({ title, displayName }: DashboardHeaderProps) => {
   const [ chartTitle, setChartTitle ] = useState<string>('Savings Chart');
@@ -45,7 +44,7 @@ export const DashboardHeader = ({ title, displayName }: DashboardHeaderProps) =>
         setShowUserNav(false);
         handleDialogClick(
             content === 'profile' 
-                ? <ProfilContent /> 
+                ? <ProfileContent /> 
                 : <LogoutContent navigate={navigate} />
         );
     }

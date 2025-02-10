@@ -8,3 +8,5 @@ export const chartTitles: Record<ChartTitlesType, string> = {
 };
 
 export const TOAST_DURATION = 2000;
+
+export const PASSWORD_LENGTH = 6;

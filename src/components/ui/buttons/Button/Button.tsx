@@ -9,6 +9,7 @@ export interface ButtonProps {
     iconOnRight?: boolean;
     tabIndex?: number;
     type?: | "submit" | "reset" | "button" | undefined;
+    disabled?: boolean
 }
 
 export const Button = ({ 
@@ -19,7 +20,8 @@ export const Button = ({
     textCenter = false, 
     iconOnRight = false,
     tabIndex,
-    type = 'button'
+    type = 'button',
+    disabled = false
 }: ButtonProps) => {
     
     const getClassNames = () => {
@@ -38,6 +40,7 @@ export const Button = ({
             aria-label={text}
             tabIndex={tabIndex}
             type={type}
+            disabled={disabled}
         >
             {icon && icon} {text}
         </button>

@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { SlLogin } from "react-icons/sl";
 import { Button } from "@components";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@components";
-import { TOAST_DURATION } from "@utils";
+import { PASSWORD_LENGTH, TOAST_DURATION } from "@utils";
 import useAuth from "@hooks/useAuth";
 
 interface LoginFormProps {
@@ -14,6 +14,9 @@ export const LoginForm = ({ login }: LoginFormProps) => {
     const [ name, setName ] = useState<string>("");
     const [ email, setEmail ] = useState<string>("");
     const [ password, setPassword ] = useState<string>("");
+    const [ confirmPassword, setConfirmPassword ] = useState<string>("");
+    const [ confirmPasswordError, setConfirmPasswordError ] = useState<string>("");
+    const [debouncedValue, setDebouncedValue] = useState("");
     const { error, signIn, register } = useAuth({email, password, name})
     const { addToast } = useToast();
     const navigate = useNavigate();
@@ -30,6 +33,29 @@ export const LoginForm = ({ login }: LoginFormProps) => {
           })
         return navigate("/dashboard")
     };
+
+    const checkIfSubmitShouldBeDisabled = () => {
+        return (
+            password === "" ||
+            password.length < PASSWORD_LENGTH || 
+            confirmPassword === "" ||
+            password !== confirmPassword
+        );
+    };
+    
+    const handleConfirmPassword = (e: ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setConfirmPassword(value);
+    
+        if (password.length < PASSWORD_LENGTH) {
+            setConfirmPasswordError(`Password must be at least ${PASSWORD_LENGTH} characters long`);
+        } else if (value !== password) {
+            setConfirmPasswordError('Your passwords do not match');
+        } else {
+            setConfirmPasswordError('');
+        }
+    };
+    
 
     return (
         <form role='form' onSubmit={handleSubmit}>
@@ -64,6 +90,20 @@ export const LoginForm = ({ login }: LoginFormProps) => {
                 onChange={(e) => setPassword(e.target.value)}
                 required
             />
+            {!login && (
+                <>
+                    <label htmlFor="confirm-password">Confirm Password</label>
+                    <input
+                        id="confirm-password"
+                        type="password"
+                        name="confirm-password"
+                        value={confirmPassword}
+                        onChange={(e) => handleConfirmPassword(e)}
+                        required
+                    />
+                    <span>{confirmPasswordError}</span>
+                </>
+            )}
             {login ? (
                 <Button 
                     icon={<SlLogin />}
@@ -77,6 +117,7 @@ export const LoginForm = ({ login }: LoginFormProps) => {
                     text="Create ATAINR Account"
                     textCenter
                     type="submit"
+                    disabled={checkIfSubmitShouldBeDisabled()}
                 />
             )}
             <span className="error-message">{error}</span>
