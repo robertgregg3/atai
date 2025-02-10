@@ -1,0 +1,22 @@
+.user-settings-nav {
+    min-width: 150px;
+    list-style: none;
+    display: grid;
+    gap: 2rem;
+    padding: 1rem 1rem 1rem 2rem;
+}
+
+.user-settings-nav button {
+    background: transparent;
+    color: #000038;
+    font-size: 1rem;
+    padding: 0;
+}
+
+.user-settings-nav button:hover {
+    text-decoration: underline;
+}
+
+.user-settings-nav button > svg {
+    font-size: 1.25rem;
+}

@@ -6,3 +6,4 @@ export * from './DashboardSidebar';
 export * from './DataVis';
 export * from './login';
 export * from './ui';
+export * from './UserSettingsNav';
