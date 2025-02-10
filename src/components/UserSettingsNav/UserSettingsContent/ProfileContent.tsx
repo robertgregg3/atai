@@ -5,6 +5,7 @@ import { useContext, useState } from "react";
 import { getAuth, updateProfile } from "firebase/auth";
 import { Audio } from "react-loader-spinner";
 import './ProfileContent.css';
+import { useHandleDialog } from "@components/ui/Dialog/hooks/useDialog";
 
 type UpdateMessageType = 'Your profile was successfully updated' | 'There was an error updating your profile' | null;
 
@@ -26,7 +27,8 @@ export const ProfileContent: React.FC = () => {
     const { displayName, email } = state;
     const [ updatedDisplayName, setUpdatedDisplayName ] = useState<string>(displayName);
     const [ processingUpdate,  setProcessingUpdate ] = useState<boolean>(false)
-    const [ updateMessage,  setUpdateMessage ] = useState<UpdateMessageType>(null)
+    const [ updateMessage,  setUpdateMessage ] = useState<UpdateMessageType>(null);
+    const { handleDialogClick } = useHandleDialog();
 
     const handleSave = () => {
         setProcessingUpdate(true)
@@ -77,11 +79,16 @@ export const ProfileContent: React.FC = () => {
                 <h5>Email:</h5>
                 <input type="text" placeholder={email} disabled />
             </div>
-            <div className='profile__content-block'>
+            <div className='profile__content-block button-container'>
                 <Button 
                     handleClick={handleSave} 
                     text={`${processingUpdate ? 'Saving' : 'Save'}`} 
                     icon={processingUpdate ? prodcessingSpinner : <></>} 
+                />
+                <Button
+                    handleClick={() => handleDialogClick(null)}
+                    text="Cancel"
+                    className='user-settings-nav___cancel'
                 />
             </div>
             <span className='updated-message'>{updateMessage} </span>

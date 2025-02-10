@@ -56,5 +56,5 @@ dialog {
     grid-template-columns: auto auto;
     justify-content: start;
     grid-gap: 1rem;
-    margin-top: 1rem;
+    margin-top: 2rem;
 }

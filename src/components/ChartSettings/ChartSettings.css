@@ -62,6 +62,7 @@ button.chart-settings__icon.settings-visible {
     padding: 0.75rem 0.25rem;
     cursor: pointer;
     border-radius: 8px;
+    width: 100%;
 }
 
 .button__with-icon:focus-visible {
@@ -316,7 +317,6 @@ input[type=range]:focus::-webkit-slider-thumb {
 .download-options {
   display: grid;
   grid-template-columns: auto auto;
-  gap: 1rem;
   max-width: fit-content;
   font-size: 0.8rem;
 }
