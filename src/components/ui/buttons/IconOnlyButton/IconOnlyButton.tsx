@@ -5,9 +5,10 @@ export interface IconOnlyButtonProps {
     icon: JSX.Element | null;
     className?: string;
     ariaLabel: string;
+    autofocus?: boolean;
 }
 
-export const IconOnlyButton = ({ handleClick, icon, className, ariaLabel} : IconOnlyButtonProps) => {
+export const IconOnlyButton = ({ handleClick, icon, className, ariaLabel, autofocus }: IconOnlyButtonProps) => {
     const getClassNames = () => {
         return `icon-only-button ${className ? className : ''}`;
     }
@@ -16,6 +17,7 @@ export const IconOnlyButton = ({ handleClick, icon, className, ariaLabel} : Icon
       onClick={handleClick} 
       className={getClassNames()}
       aria-label={ariaLabel}
+      autoFocus={autofocus ?? false}
     >
         {icon}
     </button>
