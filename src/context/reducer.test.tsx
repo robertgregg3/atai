@@ -7,7 +7,8 @@ describe("reducer", () => {
             type: stateEnums.SET_USER as const,
             payload: { 
                 user: { name: "John Doe" }, 
-                displayName: "John Doe" 
+                displayName: "John Doe" ,
+                email:'john@document.com'
             }
         }
 

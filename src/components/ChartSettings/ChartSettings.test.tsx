@@ -20,8 +20,6 @@ describe('ChartSettings', () => {
         handleChartSelectionClick,
         chartExportRef: { current: document.createElement('div') },
         isDougnutChart: true,
-        showSettings: false,
-        setShowSettings: vi.fn()
     };
 
     const defaultState = { 
