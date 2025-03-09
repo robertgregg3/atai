@@ -1,14 +1,14 @@
 import { renderHook } from "@testing-library/react";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi, Mock } from "vitest";
 import { act } from "react";
 import { stateEnums } from "@context/reducer";
 import { useLogoutUser } from "@hooks";
 import { StateContext } from "@context/StateProvider";
 import { mockInitialState } from "../data/mockData";
-import { getAuth, signOut } from "@firebase/auth";
+import { getAuth, signOut } from 'firebase/auth';
 
 // Any request via firebase/auth will be intercepted and the values will be returned in the tests. 
-vi.mock('@firebase/auth', () => ({
+vi.mock('firebase/auth', () => ({
   getAuth: vi.fn(() => ({ currentUser: { uid: "123" } })), 
   signOut: vi.fn(() => Promise.resolve()), // Simulate a successful logout
 }));
@@ -47,7 +47,7 @@ describe('logoutUser', () => {
 
   it('logs an error if signOut fails', async () => {
     const error = new Error('Logout failed');
-    vi.mocked(signOut).mockRejectedValueOnce(error);
+    (signOut as Mock).mockRejectedValueOnce(error);
 
     const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
 

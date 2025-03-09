@@ -1,5 +1,5 @@
 import { stateEnums } from '@context/reducer';
-import { getAuth, signOut } from '@firebase/auth';
+import { getAuth, signOut } from 'firebase/auth';
 import { useContext } from 'react';
 import { StateContext } from '@context/StateProvider';
 
